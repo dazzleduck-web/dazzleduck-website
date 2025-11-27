@@ -14,14 +14,14 @@ const config = {
   },
 
   // Set the production url of your site here
-  url: 'https://shrikantsuryawanshi39.github.io', // Your GitHub Pages URL
+  url: 'https://dazzleduck.github.io', // Your GitHub Pages URL
   baseUrl: '/dazzleduck-website/', // The repository name, preceded by a slash
   deploymentBranch: "gh-pages", // Deployment branch for GitHub Pages
   onBrokenMarkdownLinks: 'warn',
 
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
-  organizationName: 'shrikantsuryawanshi39', // Usually your GitHub org/user name.
+  organizationName: 'dazzleduck-web', // Usually your GitHub org/user name.
   projectName: 'dazzleduck-website', // Usually your repo name.
 
   onBrokenLinks: 'throw',
