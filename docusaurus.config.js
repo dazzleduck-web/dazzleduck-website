@@ -14,14 +14,14 @@ const config = {
   },
 
   // Set the production url of your site here
-  url: 'https://dazzleduck.github.io', // Your GitHub Pages URL
+  url: 'https://shrikantsuryawanshi39.github.io', // Your GitHub Pages URL
   baseUrl: '/dazzleduck-website/', // The repository name, preceded by a slash
   deploymentBranch: "gh-pages", // Deployment branch for GitHub Pages
   onBrokenMarkdownLinks: 'warn',
 
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
-  organizationName: 'dazzleduck-web', // Usually your GitHub org/user name.
+  organizationName: 'shrikantsuryawanshi39', // Usually your GitHub org/user name.
   projectName: 'dazzleduck-website', // Usually your repo name.
 
   onBrokenLinks: 'throw',
@@ -143,7 +143,7 @@ const config = {
             ],
           },
         ],
-        copyright: `Copyright © ${new Date().getFullYear()} My Project, Inc. Built with Docusaurus.`,
+        copyright: `Copyright © ${new Date().getFullYear()} DazzleDuck Web, Built with ❤️.`,
       },
       prism: {
         theme: prismThemes.github,
