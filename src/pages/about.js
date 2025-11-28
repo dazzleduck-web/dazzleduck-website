@@ -76,13 +76,6 @@ export default function about() {
                         </a>
                     </div>
                 </section>
-
-                <section className="footer-note">
-                    <p>
-                        Built with ❤️ by the <strong>Dazzle Duck</strong> community.<br />
-                        Read more in our <a href="/docs/about">About Docs</a>.
-                    </p>
-                </section>
             </main>
         </Layout>
     );

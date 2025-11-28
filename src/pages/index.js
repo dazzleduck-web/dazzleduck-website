@@ -67,12 +67,6 @@ export default function Home() {
           ))}
         </div>
       </section>
-
-      <footer className="home-footer">
-        <p>
-          © {new Date().getFullYear()} Dazzle Duck SQL Server — Built with ❤️ using Docusaurus.
-        </p>
-      </footer>
     </Layout>
   );
 }
