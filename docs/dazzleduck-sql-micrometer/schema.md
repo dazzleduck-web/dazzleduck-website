@@ -1,5 +1,5 @@
 ---
-sidebar_label: "Schema"
+sidebar_label: "Metric & Arrow Schema"
 sidebar_position: 3
 ---
 
