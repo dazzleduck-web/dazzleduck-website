@@ -1,6 +1,6 @@
 ---
 sidebar_label: "About"
-sidebar_position: 3
+# sidebar_position: 3
 ---
 
 # About Dazzle Duck SQL Server
