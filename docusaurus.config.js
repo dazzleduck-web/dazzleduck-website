@@ -102,11 +102,11 @@ const config = {
                 label: 'Introduction',
                 to: '/docs/intro',
               },
-               {
+              {
                 label: 'About',
                 to: '/docs/about',
               },
-               {
+              {
                 label: 'Quick Start',
                 to: '/docs/quick-start/quickstart',
               },
@@ -148,6 +148,15 @@ const config = {
       prism: {
         theme: prismThemes.github,
         darkTheme: prismThemes.dracula,
+        additionalLanguages: [
+          'java',       // Your main language
+          'bash',       // For terminal commands (Linux/Mac)
+          'powershell', // For Windows terminal commands
+          'sql',        // Since you are building a SQL engine
+          'json',       // For config files
+          'yaml',       // For config files
+          'docker',     // If you have docker setups
+        ],
       },
     }),
 };
