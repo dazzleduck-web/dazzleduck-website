@@ -5,6 +5,8 @@ sidebar_position: 5
 
 # JDBC Access (Arrow Flight JDBC)
 
+> Connect using the Arrow Flight JDBC driver to run SQL, manage schemas, and execute batch operations.
+
 ---
 
 ## Overview

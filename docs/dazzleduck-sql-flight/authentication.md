@@ -5,6 +5,8 @@ sidebar_position: 3
 
 # Authentication & Authorization
 
+> Secure client connections using JWT, headers, and claims-based access control.
+
 ---
 
 ## Authentication Modes

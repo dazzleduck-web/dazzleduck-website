@@ -5,6 +5,8 @@ sidebar_position: 2
 
 # Installation & Startup
 
+> Set up and start the DazzleDuck SQL Flight Server with configuration options for ports, TLS, and warehouse storage.
+
 ---
 
 ## Requirements
