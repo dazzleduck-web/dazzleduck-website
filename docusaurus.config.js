@@ -8,13 +8,8 @@ const config = {
   tagline: 'Dazzleduck faster and flexible',
   favicon: 'img/favicon.ico',
 
-  // Future flags, see https://docusaurus.io/docs/api/docusaurus-config#future
-  future: {
-    v4: true, // Improve compatibility with the upcoming Docusaurus v4
-  },
-
   // Set the production url of your site here
-  url: 'https://dazzleduck.github.io', // Your GitHub Pages URL
+  url: 'https://dazzleduck-web.github.io', // Your GitHub Pages URL
   baseUrl: '/dazzleduck-website/', // The repository name, preceded by a slash
   deploymentBranch: "gh-pages", // Deployment branch for GitHub Pages
   onBrokenMarkdownLinks: 'warn',

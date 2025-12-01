@@ -5,6 +5,8 @@ sidebar_position: 4
 
 # Arrow Ingestion Pipeline
 
+> Upload Arrow and Parquet data into DuckDB with support for partitioning, transforms, and concurrent writes.
+
 ---
 
 ## Supported Formats
