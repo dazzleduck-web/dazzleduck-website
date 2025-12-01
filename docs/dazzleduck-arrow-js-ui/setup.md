@@ -24,7 +24,7 @@ Before starting Arrow JS UI, ensure that your **DazzleDuck SQL HTTP Server** is 
 
 If not, follow the server installation guide here:
 
-👉 **[Visit HTTP Server Setup →](./dazzleduck-sql-http/setup.md)**
+👉 **[Visit HTTP Server Setup →](../dazzleduck-sql-http/setup.md)**
 
 ---
 
