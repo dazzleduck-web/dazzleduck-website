@@ -1,64 +1,88 @@
 ---
 sidebar_label: "Quick Start"
-sidebar_position: 2
----
-# Quickstart
-
-## Get Up and Running with Dazzle Duck
-
-Welcome to **Dazzle Duck SQL Server** 🦆 — a fast, extensible, and modern SQL engine for analytics.  
-This guide will help you set up and run your **first query** in minutes.
-
+sidebar_position: 1
 ---
 
-## [Installation](/docs/quick-start/installation)  
+# Quick Start
 
-You can install Dazzle Duck using one of the following methods:
+Get **DazzleDuck SQL Server** up and running in minutes using Docker. This is the **recommended way** to try DazzleDuck and mirrors how it is typically used in production.
 
-### Option 1: Install via npm
-
-```bash
-npm install -g dazzleduck
-```
-
-### Option 2: Build from Source
-
-```bash
-git clone https://github.com/dazzleduck/sql-server
-cd sql-server
-make build
-```
-
-> 💡 See the [Installation Guide](./installation.md) for advanced setup options.
+DazzleDuck is a **remote server for DuckDB**, exposing analytical SQL over **Arrow Flight SQL (gRPC)** and **RESTful HTTP APIs**.
 
 ---
 
-## Run Your First Query
+## Prerequisites
 
-Start the server:
+- Docker 20+
+- (Optional) DuckDB CLI, Python, or a BI tool for querying
+
+---
+
+## Run DazzleDuck with Docker
+
+Start the server using the official Docker image:
 
 ```bash
-dazzleduck start
+docker run -ti -p 59307:59307 -p 8081:8081 dazzleduck/dazzleduck:latest --conf warehouse=/data
 ```
 
-Then open the CLI or connect via your favorite SQL client:
+You should see output similar to:
+
+```text
+DazzleDuck SQL Server
+---------------------
+Warehouse Path: /data
+HTTP Server:    http://localhost:8081
+Health Check:   http://localhost:8081/health
+UI Dashboard:   http://localhost:8081/v1/ui
+Flight SQL:     grpc+tcp://localhost:59307
+```
+
+---
+
+## Run Your First Query (HTTP)
+
+Execute a simple query using HTTP:
+
+```bash
+curl "http://localhost:8081/v1/query?q=SELECT%201"
+```
+
+The response is returned in **Apache Arrow** format and can be consumed directly by DuckDB, Python, or other Arrow-enabled tools.
+
+---
+
+## Query from Local DuckDB
+
+A local DuckDB instance can treat DazzleDuck as a remote data source:
 
 ```sql
-SELECT name, revenue
-FROM customers
-WHERE region = 'Asia'
-ORDER BY revenue DESC
-LIMIT 10;
+INSTALL arrow;
+LOAD arrow;
+SELECT * FROM read_arrow('http://localhost:8081/v1/query?q=SELECT+42');
 ```
 
-That’s it! You’ve successfully executed your first query with **Dazzle Duck SQL Server**.
+This enables **DuckDB-on-DuckDB** workflows with zero-copy data transfer.
 
 ---
 
-## Next Steps
+## Connect via Arrow Flight SQL (JDBC)
 
--  [Configuration Basics](/docs/quick-start/configuration)  
--  [SQL Reference](/)  
--  [Extending Dazzle Duck](/)
+Use the Apache Arrow Flight SQL JDBC driver with the following connection string:
+
+```text
+jdbc:arrow-flight-sql://localhost:59307?database=memory&useEncryption=0&user=admin&password=admin
+```
+
+This works with tools like **DBeaver**, **Tableau**, and other JDBC-compatible clients.
 
 ---
+
+## What’s Next?
+
+- **[Installation](installation.md)** — Build and run from source
+- **[Configuration](configuration.md)** — Warehouse paths, auth, TLS, and performance tuning
+- **HTTP API** — Querying, ingestion, and planning endpoints
+- **Arrow Flight SQL** — High-performance analytics connectivity
+
+DazzleDuck is designed to be simple to start, yet powerful enough for serious analytical workloads.

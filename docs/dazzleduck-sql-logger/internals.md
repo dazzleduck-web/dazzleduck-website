@@ -5,11 +5,12 @@ sidebar_position: 5
 
 # Internals (Advanced)
 
+> Internals around file tailing + HTTP ingestion
 ---
 
 ## Arrow Schema
 
-Logs are transmitted as Arrow rows:
+Logs are transmitted as Arrow rows with the following fields:
 
 ```text
 timestamp
@@ -17,86 +18,65 @@ level
 logger
 thread
 message
-applicationId
-applicationName
-host
-destinationUrl
+application_id
+application_name
+application_host
+file_name
 ```
 
-Typed as UTF8 fields.
+All fields are UTF8 for compatibility and simplicity.
 
 ---
 
-## Transport
-
-* Arrow Flight `PUT` operations
-* Binary Arrow IPC payloads
-* Backpressure via `BlockingQueue`
-* Batching + scheduled flushing
-
----
-
-## Async Sender Loop
+## Processing Loop
 
 ```text
-Queue → Batch → ArrowReader → Flight PUT
+File tail → JSON parse → Arrow batch → HTTP send
 ```
 
-### Flow
+### Detailed Flow
 
-1. Logs are enqueued into a bounded queue
-2. Background thread groups into batches
-3. Arrow IPC stream is reconstructed
-4. Stream is sent via Flight `startPut`
-5. Server acknowledges receipt
+1. Log lines are read from files
+2. JSON objects are validated
+3. Records are appended to Arrow vectors
+4. Batches are flushed based on size or time
+5. Arrow IPC streams are sent via HTTP
+
+---
+
+## Backpressure Model
+
+- Uses bounded queues
+- Prevents unbounded memory growth
+- Drops logs under sustained pressure
+
+This design prioritizes **application safety over log completeness**.
 
 ---
 
 ## Error Handling
 
-Designed for safety and isolation:
-
-* No application crash on failures
-* Logs dropped under pressure
-* Failures printed locally
-* Sender thread is daemonized
-
----
-
-## Extending the Server
-
-The Flight log server can be extended to:
-
-* Insert rows into DuckDB
-* Write logs to Parquet
-* Push to Kafka
-* Stream to HTTP
-* Persist to S3 / blob stores
+- Invalid JSON is skipped
+- Network failures trigger retries
+- Persistent failures result in drops
+- Sender threads never block producers
 
 ---
 
 ## Security Model
 
-### Current
-
-* ❌ No encryption
-* ❌ No authentication
-
-### Planned
-
-* ✅ JWT authentication
-* ✅ TLS encryption
-* ✅ Token-based ingestion control
+- Transport security is provided by the HTTP layer
+- JWT authentication is supported via `HttpProducer`
+- Secrets should be provided via environment variables
 
 ---
 
 ## Performance Notes
 
-Arrow logging avoids:
+This design avoids:
 
-* JSON overhead
-* String parsing
-* Regex-based processing
-* Unstructured formats
+- Line-by-line text parsing
+- Regex-heavy processing
+- Synchronous I/O
 
-This enables **analytics-ready logging at scale**.
+Resulting in **analytics-ready logs at scale**.

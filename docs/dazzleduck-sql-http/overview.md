@@ -5,117 +5,74 @@ sidebar_position: 1
 
 # DazzleDuck SQL HTTP Server
 
-> Expose DuckDB as a production-ready HTTP analytics service.
+> HTTP layer that exposes DuckDB as a remote, Arrow-native analytics service.
 
 ---
 
-## ✨ Overview
+## Overview
 
-The **DazzleDuck SQL HTTP Server** exposes DuckDB and Arrow Flight SQL as a lightweight, high-performance HTTP service.
+The **DazzleDuck SQL HTTP Server** provides a **RESTful HTTP interface** on top of the DazzleDuck SQL execution engine. It allows clients to execute analytical SQL queries, ingest Arrow data, and manage query lifecycles using simple HTTP requests, while internally delegating all execution to a **single Arrow Flight SQL producer backed by DuckDB**.
 
-It enables you to:
+This module is intentionally designed as a **thin HTTP façade** — it does not re-implement query planning or execution logic. Instead, it focuses on:
 
-- Execute analytical SQL queries remotely
-- Ingest Apache Arrow datasets
-- Stream results over Flight SQL
-- Authenticate users via JWT
-- Cancel and plan queries programmatically
-- Serve UI clients from the same backend
-
-In short: **it turns DuckDB into a remote analytics engine.**
+- HTTP request handling
+- Authentication and authorization
+- Streaming Arrow results over HTTP
+- Coordinating ingestion and query lifecycle APIs
 
 ---
 
-## 🏗 Built on
+## What This Server Provides
 
-> ### The HTTP server is built with a modern, high-performance stack:
+### API Reference (HTTP)
 
-- Helidon WebServer
-- Apache Arrow
-- Apache Arrow Flight SQL
-- DuckDB
-- JWT Authentication
+All API endpoints are prefixed with `/v1`.
 
-> ### This design keeps the server:
-
-- Lightweight
-- Fast
-- Dependency-free
-- Ready for embedded deployments
-
----
-
-## 🔧 What does this server provide?
-
-The server exposes a complete analytics API layer:
-
-- SQL execution over HTTP
-- Arrow-native ingestion
-- Flight SQL streaming
-- JWT-based authentication
-- Query cancellation
-- Web UI backend
-- SQL planning API
-- Access-mode enforcement
+| Method     | Endpoint     | Description                                                 |
+| :--------- | :----------- | :---------------------------------------------------------- |
+| `POST`     | `/v1/login`  | Authenticate and retrieve a JWT token.                      |
+| `GET/POST` | `/v1/query`  | Execute a SQL query. Params: `q` (query string).            |
+| `POST`     | `/v1/plan`   | Generate a query plan (splits) for distributed execution.   |
+| `POST`     | `/v1/ingest` | Upload Arrow stream to a Parquet file. Query param: `path`. |
+| `POST`     | `/v1/cancel` | Cancel a currently running query.                           |
+| `GET`      | `/v1/ui`     | Open the web dashboard.                                     |
+| `GET`      | `/health`    | Server health check (Unversioned).                          |
 
 ---
 
-## 🌐 Available Endpoints
+## Key Design Principles
 
-| Endpoint  | Purpose                 |
-| --------- | ----------------------- |
-| `/query`  | Execute SQL             |
-| `/plan`   | Pre-flight SQL planning |
-| `/ingest` | Upload Arrow datasets   |
-| `/cancel` | Cancel running queries  |
-| `/login`  | Authentication          |
-| `/ui`     | Serves Arrow JS UI      |
+- **Arrow-first**: All data transfer uses Apache Arrow formats
+- **Single execution core**: One DuckDB + Flight SQL producer handles all work
+- **Streaming by default**: Large results are streamed with backpressure awareness
+- **Minimal abstraction**: HTTP layer stays thin and predictable
 
 ---
 
-## ⚙ Supported Operations
+## When to Use the HTTP Server
 
-- Execute analytical SQL queries
-- Upload Arrow batches into DuckDB
-- Plan queries remotely
-- Cancel long-running statements
-- Enforce JWT authorization
-- Control read/write access mode
+This module is ideal when you need:
 
----
-
-## 🎯 Intended Use Cases
-
-This HTTP server is ideal for:
-
-- Web-based SQL systems
-- Embedded analytics services
-- Remote DuckDB workloads
-- Arrow-based ingestion pipelines
-- Auth-enabled data APIs
+- SQL-over-HTTP access to DuckDB
+- A backend for web-based analytics
+- Lightweight data APIs returning Arrow data
+- A bridge between Arrow pipelines and SQL analytics
 
 ---
 
-## ▶ How it runs
+## Relationship to Other Modules
 
-At runtime, the server initializes:
-
-- Helidon routing layer
-- Arrow memory allocator
-- DuckDB + Flight SQL producer
-- Configured warehouse directory
-- Optional JWT security filter
-
-All endpoints route through a single analytics engine.
+- **Execution**: Delegates to `dazzleduck-sql-flight`
+- **Security**: Integrates with `dazzleduck-sql-login`
+- **Metrics**: Exposes telemetry via `dazzleduck-sql-micrometer`
+- **UI**: Serves the Arrow JS frontend
 
 ---
 
-## ✅ Summary
+## Summary
 
-DazzleDuck SQL HTTP Server provides a clean, production-grade HTTP layer for DuckDB.
-
-No heavy infrastructure. No external metastore. Just SQL over HTTP.
+DazzleDuck SQL HTTP Server turns DuckDB into a **remote analytics engine accessible over HTTP**, without sacrificing performance or Arrow-native efficiency.
 
 ---
 
-Next Step: **[Installation →](installation.md)**
+Next: **[Installation →](installation.md)**

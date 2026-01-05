@@ -3,94 +3,81 @@ sidebar_label: "Installation"
 sidebar_position: 2
 ---
 
-# Installation & Running the Server
+# Installation & Running
 
-> Build and launch the DazzleDuck SQL HTTP Server in minutes.
+> Build and run the DazzleDuck SQL HTTP Server as part of the full server distribution.
 
 ---
 
-## ✅ Requirements
+## Requirements
 
-Before you start, ensure you have:
-
-- Java 21 or later
+- Java 21+
 - Maven 3.8+
-- An open port (default: `8080`)
+- Linux / macOS / Windows
 
 ---
 
-## 🔨 Build the Server
+## Recommended: Run via Docker
 
-From the project root, run:
+The preferred production and evaluation method is Docker:
 
 ```bash
-mvn clean install
+docker run -ti \
+  -p 8081:8081 \
+  -p 59307:59307 \
+  dazzleduck/dazzleduck:latest \
+  --conf warehouse=/data
 ```
 
-This will compile the server and create the runnable JAR.
+This launches the full DazzleDuck SQL Server, including:
+
+- HTTP API
+- Arrow Flight SQL
+- DuckDB execution engine
 
 ---
 
-## ▶ Run the Server
+## Running from Source (Development)
 
-Launch the server with:
+The HTTP module is not intended to be run in isolation. It is started by the **runtime module**.
+
+### Build
 
 ```bash
-java -jar target/dazzleduck-sql-http.jar
+mvn clean package
 ```
 
-### Expected Output
-
-If successful, you should see:
-
-```text
-Http Server is up: Listening on URL: http://localhost:8080
-```
-
----
-
-## 🌐 Change Host or Port
-
-Edit your configuration file to customize binding:
-
-```hocon
-http.host = "0.0.0.0"
-http.port = 8080
-```
-
-Restart the server after making changes.
-
----
-
-## ✅ Verify Installation
-
-Test the server with:
+### Run (via runtime)
 
 ```bash
-curl "http://localhost:8080/query?q=SELECT+1"
+java -jar dazzleduck-sql-runtime/target/dazzleduck-sql-runtime.jar --conf warehouse=warehouse
 ```
-
-If running correctly, the server will return a valid response.
 
 ---
 
-## 📁 Directory Structure
+## Verify Installation
 
-The **warehouse path** controls where the server stores data:
-
-```text
-warehouse/
- ├── tables/   # DuckDB tables
- ├── ingest/   # Uploaded Arrow files
- ├── temp/     # Temporary working files
+```bash
+curl "http://localhost:8081/v1/query?q=SELECT%201"
 ```
 
-Ensure this directory is writable by the server process.
+Expected result: a valid Arrow or JSON response.
 
 ---
 
-## ✅ Summary
+## Ports
 
-You now have the HTTP server running locally.
+|  Port | Purpose          |
+| ----: | ---------------- |
+|  8081 | HTTP API & UI    |
+| 59307 | Arrow Flight SQL |
 
-Next Step: **[Setup & Configuration →](configuration.md)**
+---
+
+## Summary
+
+The HTTP server runs as part of the complete DazzleDuck SQL Server stack and should not be deployed standalone in production.
+
+---
+
+Next: **[Configuration →](configuration.md)**

@@ -5,94 +5,88 @@ sidebar_position: 1
 
 # DazzleDuck SQL Logger
 
-> High-performance Arrow-native logging over Apache Arrow Flight.
+> File-based log ingestion pipeline powered by Apache Arrow and DazzleDuck SQL Server.
 
 ---
 
 ## Overview
 
-**DazzleDuck SQL Logger** is an Arrow-based log transport system that sends application logs over **Apache Arrow Flight** instead of traditional files or sockets.
+**DazzleDuck SQL Logger** is a **production-grade log ingestion pipeline** that tails JSON log files from disk, converts them into **Apache Arrow** format, and ingests them into **DazzleDuck SQL Server** over HTTP for durable storage and analytics (Parquet).
 
-It enables structured, high-throughput, zero-copy logging pipelines using Arrow IPC and Flight streaming.
-
----
-
-## What It Provides
-
-✅ SLF4J-compatible logging  
-✅ Arrow-native structured logs  
-✅ Columnar log streams  
-✅ Network transport via Flight  
-✅ Asynchronous log batching  
-✅ Zero-copy ingestion  
-✅ Pluggable destinations  
-✅ Backpressure & queue control  
+Unlike traditional logging systems that write line-oriented text files, this module produces **structured, columnar log data** that is immediately analytics-ready.
 
 ---
 
-## Components
+## What This Module Does
 
-### Logger Client (Java Agent)
-
-- Captures logs via SLF4J
-- Converts logs into Arrow batches
-- Buffers asynchronously
-- Sends Arrow over Flight
-
-### Flight Log Server
-
-- Accepts Arrow streams
-- Decodes record batches
-- Prints or forwards logs
-- Extensible receiver
+- Watches a directory for log files (`*.log`)
+- Safely tails newly appended log lines
+- Parses one-JSON-object-per-line log records
+- Converts records into Apache Arrow batches
+- Sends Arrow streams to DazzleDuck HTTP ingestion (`/v1/ingest`)
+- Persists logs as Parquet in the warehouse
 
 ---
 
-## Why Arrow-Based Logging?
+## Core Components
+
+### Log Processing
+
+- **LogFileTailReader**
+  Detects new files and incrementally tails appended lines without rereading old data.
+
+- **LogTailToArrowProcessor**
+  Orchestrates tailing → JSON parsing → Arrow conversion → sending.
+
+- **JsonToArrowConverter**
+  Converts validated JSON log records into Arrow vectors using a fixed schema.
+
+---
+
+### Sending & Ingestion
+
+- **HttpProducer**
+  Sends Arrow IPC streams to the DazzleDuck SQL Server HTTP ingestion endpoint.
+  Handles batching, retries, backpressure, and JWT authentication.
+
+---
+
+### Log Generation (Development & Testing)
+
+- **SimpleLogGenerator** — Static logs for unit tests
+- **LogFileGenerator** — Realistic rolling log files for end-to-end tests
+
+---
+
+## Why Arrow-Based Log Ingestion?
 
 Traditional logging is:
 
-❌ Line-based  
-❌ Text-only  
-❌ Hard to process at scale  
-❌ Costly to parse  
+❌ Line-based
+❌ Text-only
+❌ Expensive to parse
+❌ Poor for analytics
 
-Arrow logging is:
+Arrow-based ingestion is:
 
-✅ Columnar  
-✅ Typed  
-✅ Compressible  
-✅ Analytics-ready  
-✅ Streamable  
-✅ Zero-copy  
+✅ Columnar
+✅ Typed & schema-driven
+✅ Zero-copy friendly
+✅ Analytics-ready
+✅ Efficient at scale
 
 ---
 
-## Typical Flow
+## When to Use This
 
-```text
-Application Log
-      ↓
-ArrowSimpleLogger (SLF4J)
-      ↓
-Arrow Batch Builder
-      ↓
-AsyncArrowFlightSender
-      ↓
-Arrow Flight Server
-      ↓
-Console / DB / Lake / Stream
-```
+Use **DazzleDuck SQL Logger** when you need:
+
+- File-based log ingestion
+- Real-time or near-real-time analytics
+- Arrow-native transport
+- Reliable end-to-end validation
+- Logs stored as Parquet for SQL analytics
+
 ---
-
-## Use Cases
-
-- Distributed logging  
-- Audit pipelines  
-- SQL workload tracing  
-- Analytics-ready log ingestion  
-- Structured observability  
-- Stream processing  
-- Schema-based logs  
 
 Next: **[Installation & Setup →](setup.md)**

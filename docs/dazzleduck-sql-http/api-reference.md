@@ -1,19 +1,29 @@
 ---
 sidebar_label: "API Reference"
-sidebar_position: 4
+sidebar_position: 5
 ---
 
 # API Reference
 
-> HTTP + Flight SQL bridge for executing DuckDB remotely.
+> HTTP API for executing DuckDB queries via Arrow Flight SQL.
 
-All endpoints accept **GET or POST** where applicable and may return **Arrow streams, JSON, or Flight binary** depending on endpoint.
+#### All API endpoints are prefixed with `/v1`.
+
+---
+
+## Authentication
+
+When enabled, endpoints require a JWT token:
+
+```http
+Authorization: Bearer <JWT>
+```
 
 ---
 
 ## /query — Execute SQL
 
-Executes SQL by internally issuing a **Flight SQL request** using a signed `StatementHandle`.
+Execute a SQL statement and stream results.
 
 ### GET
 
@@ -44,170 +54,63 @@ POST /query
 Body:
 
 ```json
-{
-  "query": "SELECT * FROM users",
-  "id": 100
-}
+{ "query": "SELECT * FROM users", "id": 42 }
 ```
 
 ### Response
 
-- Arrow data stream (Flight format)
-- Chunked row batches
-- Binary response when Flight mode is enabled
+- Arrow IPC stream
+- Chunked streaming
 
-### Execution semantics
-
-- Each request creates a `StatementHandle`
-- Handle is cryptographically signed
-- Query routed to DuckDB via FlightSQL producer
-- Arrow stream is piped directly to HTTP response
-
-### DuckDB integration
-
-DuckDB can directly consume query results:
-
-```sql
-SELECT *
-FROM read_arrow(url_encode('http://localhost:8080/query?q=SELECT+1'));
-```
-
-Add authorization using DuckDB HTTP secrets:
-
-```sql
-CREATE SECRET http_auth (
-  TYPE http,
-  EXTRA_HTTP_HEADERS MAP {
-    'Authorization': 'Bearer <JWT>'
-  }
-);
-```
-
----
-
-### POST
-
-```http
-POST /query
-```
-
-Body:
-
-```json
-{
-  "query": "SELECT * FROM users",
-  "id": 100
-}
-```
-
-### Response
-
-- Arrow data stream (Flight format)
-- Chunked row batches
-- Binary response when Flight mode is enabled
-
-### Execution semantics
-
-- Each request creates a `StatementHandle`
-- Handle is cryptographically signed
-- Query routed to DuckDB via FlightSQL producer
-- Arrow stream is piped directly to HTTP response
+Execution is delegated to the Flight SQL producer.
 
 ---
 
 ## /plan — Query Planning
 
-Prepares a SQL plan _without executing it_.
-
-Internally, this uses `FlightProducer.getFlightInfo()` to return **statement tickets**.
+Prepare a query without executing it.
 
 ```http
 POST /plan
 ```
 
-Body:
-
 ```json
-{
-  "query": "SELECT * FROM users"
-}
+{ "query": "SELECT * FROM users" }
 ```
 
-### Advanced headers
-
-Control splitting behavior:
-
-```http
-X-SPLIT-SIZE: 1
-```
-
-Split size determines the number of generated execution fragments.
-
-### Response
-
-```json
-[{ "id": 1, "query": "...", "signed": true }]
-```
-
-Each entry is a signed `StatementHandle` that can later be executed using `/query` or canceled via `/cancel`.
+Returns signed execution handles suitable for distributed execution.
 
 ---
 
 ## /cancel — Cancel Query
 
-Stops a running statement by ID.
+Cancel a running query by ID.
 
 ```http
 POST /cancel
 ```
 
-Body:
-
 ```json
 { "id": 42 }
 ```
 
-### Result codes
-
-| Status | Meaning           |
-| ------ | ----------------- |
-| 200    | Cancel succeeded  |
-| 202    | Cancel accepted   |
-| 409    | Already completed |
-
 ---
 
-## /ingest — Upload Arrow
+## /ingest — Arrow Ingestion
 
-Uploads Arrow IPC streams and ingests them into DuckDB.
+Upload Arrow IPC streams for ingestion.
 
 ```http
 POST /ingest?path=table/users
 ```
 
-### Headers
-
-```http
-Content-Type: application/arrow
-X-DATA-FORMAT: parquet | arrow
-X-PRODUCER-ID: my_app
-X-SORT-ORDER: id
-X-DATA-PARTITION: column_name
-X-DATA-TRANSFORMATION: (a + 1) AS b
-```
-
-### Behavior
-
-- Accepts Arrow IPC streams
-- Writes partitions under warehouse path
-- Applies server-side SQL expressions
-- Supports concurrent ingestion
+Supports partitioning, sorting, and transformations via headers.
 
 ---
 
-## /login — Authenticate
+## /login — Authentication
 
-Issues a JWT token using the configured secret.
+Issue a JWT token.
 
 ```http
 POST /login
@@ -215,46 +118,28 @@ POST /login
 
 ---
 
-## /ui — Frontend
+## /ui — Web UI
 
-Serves the Arrow JS UI for browser-based SQL execution.
+Serve the Arrow JS frontend.
 
 ```http
-http://localhost:8080/ui
+/ui
 ```
 
 ---
 
-## 🔐 Authorization
+## Error Codes
 
-When JWT authentication is enabled, these endpoints require a token:
-
-- `/query`
-- `/plan`
-- `/ingest`
-- `/cancel`
-
-### Header format
-
-```http
-Authorization: Bearer <JWT>
-```
-
-Filter applied automatically before request execution.
+| Status | Meaning         |
+| -----: | --------------- |
+|    400 | Invalid request |
+|    401 | Unauthorized    |
+|    404 | Not found       |
+|    500 | Internal error  |
 
 ---
 
-## ✅ Summary
+## Summary
 
-This API exposes DuckDB as a remote SQL engine via:
+The HTTP API provides secure, Arrow‑native access to DuckDB using standard web protocols.
 
-- SQL execution
-- Query planning
-- Streaming ingestion
-- Cancellation
-- Authentication
-- Web UI integration
-
----
-
-Wanna go Next? Visit : **[Architecture →](architecture.md)**
