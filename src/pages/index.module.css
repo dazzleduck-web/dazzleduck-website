@@ -1,6 +1,7 @@
 /**
  * CSS files with the .module.css suffix will be treated as CSS modules
  * and scoped locally.
+ * This allows you to write locally-scoped CSS styles that won't accidentally affect other components or pages on your site. 
  */
 
 .heroBanner {
