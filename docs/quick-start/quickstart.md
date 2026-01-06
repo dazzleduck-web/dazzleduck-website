@@ -28,15 +28,17 @@ docker run -ti -p 59307:59307 -p 8081:8081 dazzleduck/dazzleduck:latest --conf w
 
 You should see output similar to:
 
-```text
-DazzleDuck SQL Server
----------------------
-Warehouse Path: /data
-HTTP Server:    http://localhost:8081
-Health Check:   http://localhost:8081/health
-UI Dashboard:   http://localhost:8081/v1/ui
-Flight SQL:     grpc+tcp://localhost:59307
-```
+  ```text
+  ============================================================
+  DazzleDuck SQL Server v0.0.13-SNAPSHOT
+  ============================================================
+  Warehouse Path: /data
+  HTTP Server started successfully
+  Listening on: http://0.0.0.0:8081
+  Health check: http://0.0.0.0:8081/health
+  UI dashboard: http://0.0.0.0:8081/v1/ui
+  Flight Server is up: Listening on URI: grpc+tcp://0.0.0.0:59307
+  ```
 
 ---
 
