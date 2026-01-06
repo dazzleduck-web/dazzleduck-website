@@ -1,4 +1,5 @@
 ---
+sidebar_label: "Introduction"
 sidebar_position: 1
 ---
 
@@ -36,7 +37,7 @@ This makes DazzleDuck ideal for:
 
 ## Core Capabilities
 
-### 🔌 Dual Protocol Access
+### Dual Protocol Access
 
 - **Arrow Flight SQL (gRPC)**
   Designed for high‑performance analytical workloads. Compatible with JDBC and ADBC clients (Python, R, BI tools).
@@ -46,7 +47,7 @@ This makes DazzleDuck ideal for:
 
 ---
 
-### 📦 Arrow‑Native Data Transfer
+### Arrow‑Native Data Transfer
 
 All query results and ingestion payloads use **Apache Arrow** formats. This ensures:
 
@@ -56,7 +57,7 @@ All query results and ingestion payloads use **Apache Arrow** formats. This ensu
 
 ---
 
-### 🔐 Security & Operations
+### Security & Operations
 
 - **JWT authentication** for HTTP APIs
 - **Health checks** for orchestration and monitoring

@@ -1,6 +1,6 @@
 {
   "label": "DazzleDuck Arrow-js UI",
-  "position": 4,
+  "position": 9,
   "link": {
     "type": "generated-index",
     "description": "Getting started with Arrow-js UI a web-based frontend for running SQL queries with the DazzleDuck SQL HTTP Server."
