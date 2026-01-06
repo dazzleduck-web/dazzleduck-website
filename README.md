@@ -83,13 +83,13 @@ dazzleduck-website/
 
 ## Available Commands
 
-| Command          | Description                            |
-|------------------|----------------------------------------|
-| `npm install`    | Install needed dependencies            |
+| Command          | Description                             |
+| ---------------- | --------------------------------------- |
+| `npm install`    | Install needed dependencies             |
 | `npm run start`  | Starts local dev server with hot reload |
-| `npm run build`  | Builds the site for production         |
-| `npm run serve`  | Serves the production build locally    |
-| `npm run deploy` | Deploys the site to GitHub Pages       |
+| `npm run build`  | Builds the site for production          |
+| `npm run serve`  | Serves the production build locally     |
+| `npm run deploy` | Deploys the site to GitHub Pages        |
 
 ---
 
@@ -112,6 +112,7 @@ npm run serve
 ```
 
 Then open:
+
 ```
 http://localhost:3000
 ```
@@ -121,9 +122,11 @@ http://localhost:3000
 # Deploy to GitHub Pages
 
 ### Before start
+
 ```
 Create a new branch "Deployment" from "main" then follow the steps.
 ```
+
 ---
 
 ### 1. Configure `docusaurus.config.js`
@@ -146,6 +149,7 @@ trailingSlash: false,
 ### One‑time setup
 
 1. Create the `gh-pages` branch:
+
    ```bash
    git checkout --orphan gh-pages
    git reset --hard
@@ -170,6 +174,7 @@ npm run deploy
 ```
 
 This will:
+
 - Build the site
 - Push the contents of `build/` to the `gh-pages` branch
 - Make it live at the URL below:
@@ -180,11 +185,11 @@ This will:
 
 ## ⚠️ Common Issues
 
-| Issue | Solution |
-|--------|-----------|
-| **404 Not Found** | Check `url` and `baseUrl` in `docusaurus.config.js` and GitHub Pages settings |
-| **Broken links** | Update or create missing `.md` files, or set `onBrokenLinks: 'warn'` |
-| **Empty gh-pages branch** | Add a placeholder file (`README.md`) before first deploy |
+| Issue                     | Solution                                                                      |
+| ------------------------- | ----------------------------------------------------------------------------- |
+| **404 Not Found**         | Check `url` and `baseUrl` in `docusaurus.config.js` and GitHub Pages settings |
+| **Broken links**          | Update or create missing `.md` files, or set `onBrokenLinks: 'warn'`          |
+| **Empty gh-pages branch** | Add a placeholder file (`README.md`) before first deploy                      |
 
 ---
 
@@ -197,11 +202,13 @@ This will:
    docs/my-new-guide.md
    ```
 2. Add frontmatter:
+
    ```markdown
    ---
    sidebar_label: "My New Guide"
    sidebar_position: 5
    ---
+
    # My New Guide
 
    This is my custom documentation page.
@@ -233,11 +240,11 @@ This will:
 
 ## Troubleshooting
 
-| Issue | Solution |
-|--------|-----------|
-| **Build fails with missing dependencies** | Run `npm install` again |
-| **GitHub Pages not updating** | Check if `gh-pages` branch is up to date |
-| **CSS not loading after deploy** | Verify `baseUrl` in `docusaurus.config.js` |
+| Issue                                     | Solution                                   |
+| ----------------------------------------- | ------------------------------------------ |
+| **Build fails with missing dependencies** | Run `npm install` again                    |
+| **GitHub Pages not updating**             | Check if `gh-pages` branch is up to date   |
+| **CSS not loading after deploy**          | Verify `baseUrl` in `docusaurus.config.js` |
 
 ---
 
