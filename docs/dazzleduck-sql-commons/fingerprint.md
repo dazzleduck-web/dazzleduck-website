@@ -5,51 +5,47 @@ sidebar_position: 4
 
 # Query Fingerprinting
 
-> Detects equivalent queries by removing literals and generating stable query hashes.
+> Detects semantically equivalent SQL queries by removing literals and hashing a canonical form.
 
 ---
 
 ## Overview
 
-Query fingerprinting transforms SQL queries into a **canonical form** by removing constants and normalizing structure.
-
-This allows grouping logically identical queries even if their values differ.
+Query fingerprinting converts SQL into a **stable, normalized representation** so that logically identical queries map to the same fingerprint.
 
 ---
 
-## Purpose
+## Why Fingerprinting Matters
 
-Fingerprinting helps detect:
+Fingerprinting enables:
 
-- Duplicate queries  
-- Slight query variations  
-- Query hotspots  
-- Retry patterns  
-- Inefficient patterns  
+- Query deduplication
+- Cache key generation
+- Hot query detection
+- Retry pattern analysis
+- Analytics aggregation
 
 ---
 
 ## Example
 
-Convert:
+Input:
 
 ```sql
 SELECT * FROM users WHERE id = 10
 ```
 
-Into:
+Normalized:
 
 ```sql
 SELECT * FROM users WHERE id = ?
 ```
 
-Then compute a **hash** from the normalized SQL.
+A hash is then generated from the normalized query.
 
 ---
 
-## Run the Tool
-
-Generate fingerprints using:
+## Tool Usage
 
 ```bash
 ./mvnw exec:java -Dexec.mainClass="io.github.tanejagagan.sql.commons.Fingerprint"
@@ -57,21 +53,26 @@ Generate fingerprints using:
 
 ---
 
-## Use Cases
+## Implementation Notes
 
-✅ Query deduplication  
-✅ Query cache labeling  
-✅ Hotspot detection  
-✅ Performance analytics  
-✅ Optimization hints  
+- Uses AST-based transformation
+- Ignores literal values
+- Preserves query structure
 
 ---
 
-## Read More
+## Production Use
 
-Deep dive article:
+Fingerprinting is used internally for:
 
-https://medium.com/@tanejagagan/ac5e00cb96b5
+- Metrics aggregation
+- Planning heuristics
+- Observability
+
+---
+
+### Read More:
+Deep dive article → [https://medium.com/@tanejagagan/detecting-similar-sql-queries-using-duckdb](https://medium.com/@tanejagagan/ac5e00cb96b5)
 
 ---
 

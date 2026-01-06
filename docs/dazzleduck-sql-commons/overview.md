@@ -5,90 +5,76 @@ sidebar_position: 1
 
 # DazzleDuck SQL Commons
 
-> Core SQL intelligence layer for DuckDB and analytical systems.
+> Core SQL intelligence and utility layer for the DazzleDuck SQL Server ecosystem.
 
 ---
 
 ## Overview
 
-**DazzleDuck SQL Commons** is a utility and processing library that powers query intelligence inside the DazzleDuck ecosystem.
+**DazzleDuck SQL Commons** is a foundational library that provides query intelligence, execution helpers, and optimization utilities on top of embedded **DuckDB**.
 
-It provides:
+This module is not a standalone server. Instead, it powers:
 
-- Query transformation and normalization
-- Partition pruning logic
-- SQL fingerprinting
-- Connection pooling
-- Query parsing utilities
-- File scanning helpers
-- Query planning helpers
-- Delta Lake and Hive optimizations
-
-This module is used internally by:
-
-- HTTP Server
-- Flight Server
-- Arrow ingestion APIs
-- Authorization logic
-- Planner and optimizer layers
+- `dazzleduck-sql-http`
+- `dazzleduck-sql-flight`
+- Ingestion pipelines
+- Query planning and split execution
+- Authorization and policy enforcement
 
 ---
 
-## What Problems Does It Solve?
+## What Problems It Solves
 
-SQL Commons is built to handle workloads that traditional JDBC utilities do not:
+Traditional JDBC utilities are insufficient for modern analytical workloads. SQL Commons adds:
 
-✅ Rewriting SQL safely  
-✅ Removing query literals for analytics  
-✅ Pruning data early  
-✅ Detecting similar queries  
-✅ Managing DuckDB connections  
-✅ Reading Arrow efficiently  
-✅ Partition-aware filters  
-✅ Advanced query fingerprints  
+- Safe SQL rewriting (AST-based)
+- Query fingerprinting and similarity detection
+- Partition pruning (Hive / Delta Lake)
+- Embedded DuckDB connection lifecycle management
+- Arrow-native result streaming
+- Ingestion helpers for Parquet and Arrow
 
 ---
 
 ## Key Capabilities
 
 ### Connection Management
-Efficient DuckDB pooling.
 
-### SQL Normalization
-Canonical SQL trees for consistent analysis.
+- Embedded DuckDB pooling via `ConnectionPool`
+- Arrow streaming enabled by default
+- Automatic resource cleanup
+
+### SQL Transformation
+
+- Parse SQL into an AST
+- Rewrite queries safely
+- Normalize and canonicalize queries
 
 ### Query Fingerprinting
-Detect duplicate and similar queries at scale.
+
+- Remove literals from predicates
+- Generate stable hashes for similar queries
+- Used for caching, analytics, and deduplication
 
 ### Partition Pruning
-Reduce I/O by skipping partitions at query time.
 
-### Ingestion Helpers
-Metadata + transformation support.
+- Hive-style partition pruning
+- Delta Lake pruning
+- Predicate-based directory elimination
 
-### Planner Utilities
-Used by split execution and federated planning.
+### Ingestion Utilities
 
----
-
-## When Should You Use It?
-
-Use SQL Commons if you need:
-
-✅ Analytical SQL processing  
-✅ Intelligent query routing  
-✅ Partition classification  
-✅ Optimization utilities  
-✅ Query similarity detection  
-✅ Embedded DuckDB helpers  
+- Arrow → Parquet helpers
+- Partitioned writes
+- Transformation-aware ingestion
 
 ---
 
-## Summary
+## Where It Is Used
 
-This module is the **query brain** of DazzleDuck.
+SQL Commons is the **query brain** of DazzleDuck.
 
-All planning, pruning, authorization, ingestion intelligence flows from here.
+All planning, pruning, transformation, and ingestion intelligence flows through this module.
 
 ---
 

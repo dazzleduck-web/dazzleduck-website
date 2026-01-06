@@ -3,79 +3,133 @@ sidebar_label: "Overview"
 sidebar_position: 1
 ---
 
-# Arrow JS UI — Overview
+# DazzleDuck Arrow JS UI
 
-> A blazing-fast, developer-friendly SQL UI built on Apache Arrow.
+The **DazzleDuck Arrow JS UI** is a modern, browser‑based frontend designed to interact with the **DazzleDuck SQL HTTP Server**. It provides an interactive environment for executing SQL queries, visualizing results, searching ingested data, and managing sessions — all powered by **Apache Arrow** for high‑performance data transfer.
 
----
-
-## ✨ What is Arrow JS UI?
-
-The **Arrow JS UI** is a modern web interface for querying and visualizing data from the **DazzleDuck SQL HTTP Server**.
-It allows you to execute SQL directly from your browser, inspect results in tables, and generate interactive charts — all with real-time Arrow rendering.
-
-It is purpose-built for the HTTP mode of DazzleDuck and leverages **Apache Arrow** for ultra-fast data transport and rendering in the browser.
+This UI is built for **developers, data engineers, and analysts** who want fast, transparent access to DuckDB‑powered analytics without installing heavyweight desktop tools.
 
 ---
 
-## 🚀 What you can do
+## Purpose
 
-* 🔐 Secure login (JWT-based authentication)
-* 🌐 Connect to any HTTP SQL endpoint
-* 🧠 Run SQL queries from your browser
-* 📋 View clean, paginated result tables
-* 📊 Visualize data using multiple chart types
-* 🔄 Switch chart types instantly (Line, Bar & Pie)
+The Arrow JS UI serves as:
 
----
+- A **developer console** for DazzleDuck SQL Server
+- A **visual analytics tool** for Arrow‑based result sets
+- A **reference frontend** demonstrating how to consume DazzleDuck’s HTTP APIs
 
-## 🏗 Architecture Overview
-
-| Layer             | Technology               |
-| ----------------- | ------------------------ |
-| **Backend**       | Java 21, Helidon, DuckDB |
-| **API**           | HTTP SQL                 |
-| **Serialization** | Apache Arrow             |
-| **Frontend**      | React + Vite             |
-| **Styling**       | Tailwind CSS             |
-| **Charting**      | D3.js                    |
-| **Testing**       | Vitest                   |
+It is intentionally designed to stay close to the underlying APIs, exposing real server behavior rather than abstracting it away.
 
 ---
 
-## 🎯 Why choose Arrow JS UI?
+## Core Capabilities
 
-Use Arrow JS UI if you want:
+### Secure Connection Management
 
-* A lightweight SQL dashboard
-* Query visualization without heavy BI tools
-* Fast iteration and testing
-* A DuckDB-powered analytics platform
-* A web interface for SQL over HTTP / Flight-style APIs
+- JWT‑based authentication via `/v1/login`
+- Persistent session handling (no repeated logins)
+- Advanced claim support (org, database, schema, path, function)
+- Automatic re‑authentication when connection context changes
+
+### SQL Analytics Workspace
+
+- Multi‑query execution with independent query rows
+- Parallel query execution (no blocking)
+- Cancel support for long‑running queries
+- Arrow‑native result handling for large datasets
+
+### Visualization & Exploration
+
+- Table rendering optimized for large Arrow batches
+- Built‑in charting support:
+
+  - Line charts
+  - Bar charts
+  - Pie charts
+
+- Instant re‑rendering on query re‑execution
+
+### Search & Log Exploration
+
+- Time‑range based filtering (24h / 7d / 30d)
+- Paginated result browsing
+- Expandable rows for raw JSON inspection
+- Field‑level visibility controls
+
+### Session Management
+
+- Save full sessions as JSON (queries + connection metadata)
+- Restore sessions across browsers or machines
+- No credentials stored (passwords are never persisted)
 
 ---
 
-## 🔁 How it works
+## High‑Level Architecture
 
-```text
-Browser UI   →   HTTP Server   →   DuckDB Engine
-(SQL Query)      (Query API)      (Execution)
-      ↑                 ↓
-   Arrow JS         Arrow IPC / JSON
-    Rendering       Result Stream
+```
+Browser (Arrow JS UI)
+        │
+        │ HTTP + Arrow IPC
+        ▼
+DazzleDuck SQL HTTP Server
+        │
+        │ DuckDB + Arrow
+        ▼
+Warehouse (Parquet / Arrow / Files)
 ```
 
-### Execution Flow
-
-1. You submit a SQL query from the browser
-2. The query is sent to the server over HTTP
-3. DuckDB executes the statement
-4. The result is streamed back as Arrow or JSON
-5. Arrow JS renders everything instantly
+- Queries are executed remotely on the server
+- Results are streamed back as **Arrow IPC**
+- The UI renders Arrow data directly in the browser
 
 ---
 
-## 🖼 Screenshots
+## Technology Stack
+
+### Frontend
+
+- **React 18**
+- **Vite** (fast dev + build)
+- **Tailwind CSS** (utility‑first styling)
+- **Arrow JS** (binary columnar data handling)
+- **Axios** (HTTP client)
+
+### Backend Integration
+
+- DazzleDuck SQL HTTP API (`/v1/*`)
+- JWT authentication
+- Arrow IPC streaming
+
+---
+
+## Typical Use Cases
+
+- Explore Parquet datasets stored in a DazzleDuck warehouse
+- Debug and validate SQL queries during development
+- Visualize analytical results without exporting data
+- Inspect ingestion results and transformations
+- Demonstrate DazzleDuck capabilities to users or stakeholders
+
+---
+
+## What This UI Is (and Isn’t)
+
+**It is:**
+
+- A fast, transparent analytics UI
+- A reference implementation for Arrow‑based clients
+- A production‑usable internal tool
+
+**It is not:**
+
+- A full BI replacement (Tableau / Superset)
+- A query abstraction layer
+- A data modeling tool
+
+---
+
+## Screenshots
 
 ### Home UI
 
@@ -95,16 +149,12 @@ Browser UI   →   HTTP Server   →   DuckDB Engine
 
 ---
 
-## ✅ Summary
+## Next Steps
 
-Arrow JS UI gives you:
-
-* Speed (via Apache Arrow)
-* Simplicity (browser-based SQL)
-* Power (DuckDB analytics)
-* Clarity (tables + charts)
-
-Build, query, and visualize — without leaving your browser.
+- Learn how the UI is structured → **Architecture**
+- Get it running locally → **Setup**
+- Execute queries & visualize data → **Usage**
+- Understand chart behavior → **Charts**
 
 ---
 

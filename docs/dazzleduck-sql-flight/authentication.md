@@ -5,38 +5,59 @@ sidebar_position: 3
 
 # Authentication & Authorization
 
-> Secure client connections using JWT, headers, and claims-based access control.
+DazzleDuck SQL Flight Server supports **JWT-based authentication** and fine-grained authorization for production workloads.
 
 ---
 
-## Authentication Modes
+## Authentication Model
 
-DazzleDuck SQL Flight supports multiple authentication mechanisms:
-
-- HTTP-based token login
-- Header-based JWT validation
-- Client credentials
-- Middleware enforcement
+- Clients authenticate using **JWT tokens**
+- Tokens are validated at the Flight SQL layer
+- Claims are propagated into query execution context
 
 ---
 
-## JWT Authentication Flow
+## JWT Claims Usage
 
-```text
-Client
-  ↓
-HTTP Login Service
-  ↓
-JWT Token Issued
-  ↓
-FlightSQL Request
-  ↓
-AdvanceServerCallHeaderAuthMiddleware
-  ↓
-AdvanceJWTTokenAuthenticator
-  ↓
-Access Policy Enforcement
-```
+JWT claims can be used to:
+
+- Restrict accessible paths
+- Enforce tenant / org isolation
+- Apply row-level filters
+- Control allowed functions
+
+Common claims:
+
+| Claim      | Purpose                         |
+| ---------- | ------------------------------- |
+| `org`      | Tenant / organization isolation |
+| `role`     | Authorization level             |
+| `path`     | Allowed warehouse paths         |
+| `database` | Catalog control                 |
+| `schema`   | Schema filtering                |
+| `table`    | Table-level access              |
+| `filter`   | Row-level filtering             |
+
+---
+
+## Header-Based Context
+
+Flight SQL supports passing execution context via headers:
+
+- Authorization tokens
+- Dataset paths
+- Execution hints
+
+This allows **stateless**, secure query execution.
+
+---
+
+## Access Modes
+
+| Mode         | Description                  |
+| ------------ | ---------------------------- |
+| `COMPLETE`   | No auth required (dev only)  |
+| `RESTRICTED` | JWT required for all queries |
 
 ---
 
@@ -45,27 +66,12 @@ Access Policy Enforcement
 ```java
 FlightClient.builder(allocator, location)
   .intercept(AuthUtils.createClientMiddlewareFactory(
-      "admin",
+      "username",
       "password",
       Map.of("cluster_id", "TEST_CLUSTER")
   ))
   .build();
 ```
-
----
-
-## Claims-Based Authorization
-
-Authorization is enforced using JWT claims and request headers.
-
-| Claim / Header | Purpose |
-|----------------|---------|
-| `database` | Catalog control |
-| `schema` | Schema filtering |
-| `table` | Table-level access |
-| `path` | Filesystem access |
-| `filter` | Row-level filtering |
-| Custom keys | Application logic |
 
 ---
 
@@ -88,31 +94,13 @@ Authorization is enforced using JWT claims and request headers.
 
 ---
 
-## Blocked Queries
+## Production Recommendations
 
-Unauthorized access raises:
-
-```text
-FlightRuntimeException: PERMISSION_DENIED
-```
-
----
-
-## Cluster Tokens via Headers
-
-Cluster-level identity enforcement:
-
-```http
-cluster_id: MY_CLUSTER
-```
-
-### Configuration
-
-```conf
-jwt_token.claims.generate.headers = ["cluster_id"]
-jwt_token.claims.validate.headers = ["cluster_id"]
-```
+- Always enable JWT in production
+- Rotate signing keys regularly
+- Validate claims strictly
+- Combine with TLS for secure transport
 
 ---
 
-Next : **[Ingestion & Data Flow →](ingestion.md)**
+ Next: **[Ingestion & Writes →](ingestion.md)**

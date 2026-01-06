@@ -1,135 +1,76 @@
 ---
 sidebar_label: "Usage"
-sidebar_position: 3
+sidebar_position: 4
 ---
 
-# Using Arrow JS UI
+# Usage
 
-> Learn how to query, explore, and visualize data once connected to DazzleDuck.
-
----
-
-## 🔐 Login & Connection
-
-To begin, connect the UI to your running DazzleDuck HTTP server. **[→ Setup Guide](setup.md)**
-
-### Steps
-
-1. Enter the **Server URL**
-2. Provide your **Username** and **Password**
-3. Click **Connect**
-
-### What happens under the hood?
-
-* A JWT token is issued after login
-* Token is stored securely in the browser session
-* All SQL requests automatically attach the JWT
-
-✅ You stay logged in without re-authenticating after every query.
+> This section explains how to use the Arrow JS UI effectively.
 
 ---
 
-## 🧠 SQL Editor
+## Login
 
-The built-in query editor supports standard **DuckDB SQL**.
+1. Enter server URL
+2. Provide username/password
+3. Submit to authenticate
 
-### ✅ Supported
+JWT is automatically attached to all requests.
 
-* `SELECT`
-* `INSERT`
-* `CREATE TABLE`
-* `JOIN`
-* Aggregations (`COUNT`, `SUM`, `AVG`, etc.)
-* Parquet / file reads
-* And many more
+---
+
+## Running Queries
+
+- Add a new query row
+- Enter SQL
+- Execute independently
+
+Supports:
+
+- Parallel execution
+- Cancellation
+- Large result sets
 
 ### Example
 
 ```sql
-SELECT gender, COUNT(*)
-FROM users
-GROUP BY gender;
+SELECT gender, COUNT(*) FROM users GROUP BY gender;
 ```
 
-Click **Run** to execute your query.
+---
+
+## Viewing Results
+
+Results can be toggled between:
+
+- Table view
+- Chart view
+- Raw Arrow inspection
 
 ---
 
-## 📋 Result Table
+## Search Mode
 
-After execution, results appear in the table panel with:
-
-* Scrollable for large datasets
-* Fast Arrow-based rendering
-* Support for large result sets
-
-✅ Designed for both speed and clarity.
+- Select time range
+- Apply filters
+- Browse paginated results
 
 ---
 
-## 📊 Chart Builder
+## Sessions
 
-Visualize the result set instantly.
-
-### Supported chart types
-
-* Line
-* Bar
-* Pie
+- Save session → JSON file
+- Restore session later
+- Queries + connection context restored
 
 ---
 
-### ⚡ Live Chart Updates
+## Cancel Queries
 
-Re-run any query and:
-
-* Tables update automatically
-* Charts re-render instantly
-
-✅ No refresh required.
+- Each query has an ID
+- Cancel sends `/v1/cancel`
+- Immediate server interruption
 
 ---
 
-## 🧪 Multi-Query Running 
-
-Run multiple queries in parallel:
-
-* Each query gets its own tab
-* Results appear one after another
-* No waiting for one query to finish
-
----
-
-## 🚨 Error Handling
-
-When things go wrong, Arrow JS UI surfaces clean, meaningful errors.
-
-| Error           | Cause              |
-| --------------- | ------------------ |
-| **401**         | JWT expired        |
-| **403**         | Unauthorized query |
-| **500**         | Server SQL error   |
-| **Empty table** | No rows returned   |
-
-### Common fixes
-
-* Re-login if token expires
-* Check user permissions
-* Validate SQL syntax
-* Inspect server logs for 500 errors
-
----
-
-## ✅ Summary
-
-You can now:
-
-* Connect securely
-* Execute SQL
-* Inspect large datasets
-* Visualize instantly
-* Handle failures cleanly
-
----
-
-Want to know more about **[Charts](charts.md)** or **[Architecture](architecture.md)**?.
+Next: **[Charts →](charts.md)**

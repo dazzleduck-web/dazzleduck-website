@@ -5,30 +5,34 @@ sidebar_position: 2
 
 # Connection Pool
 
-> High-performance embedded DuckDB pooling with Arrow support and automatic lifecycle management.
+> Embedded DuckDB connection management with Arrow-native streaming support.
 
 ---
 
 ## Overview
 
-SQL Commons provides a built-in **DuckDB connection pool** for efficient query execution and reuse.
+`ConnectionPool` provides a **high-performance, thread-safe** way to execute SQL against an embedded DuckDB instance.
 
-No external database setup is required — DuckDB runs embedded.
+Unlike traditional pools, this implementation:
 
----
-
-## Features
-
-- Auto-initialization
-- Thread-safe
-- Statement reuse
-- Arrow reader support
-- Arrow streaming
-- JDBC compatibility
+- Uses DuckDB's native connection duplication
+- Streams results via Apache Arrow
+- Avoids heavy JDBC object creation
 
 ---
 
-## Usage
+## Key Features
+
+- Singleton-managed DuckDB instance
+- Connection duplication per request
+- Arrow IPC streaming enabled by default
+- Automatic statement and reader cleanup
+- Batch execution helpers
+- Record mapping utilities
+
+---
+
+## Basic Usage
 
 ### Execute a Query
 
@@ -36,26 +40,38 @@ No external database setup is required — DuckDB runs embedded.
 ConnectionPool.execute("SELECT 1");
 ```
 
----
-
-### Print Results
+### Print Results (Debugging)
 
 ```java
 ConnectionPool.printResult("SELECT * FROM users");
 ```
 
----
-
-### Arrow Reader
+### Collect a Single Value
 
 ```java
-ArrowReader reader =
-    ConnectionPool.getReader("SELECT * FROM users");
+Long count = ConnectionPool.collectFirst("SELECT COUNT(*) FROM t", Long.class);
 ```
 
 ---
 
-### Batch Execution
+## Arrow Reader
+
+```java
+try (BufferAllocator allocator = new RootAllocator()) {
+    ArrowReader reader = ConnectionPool.getReader(
+        connection,
+        allocator,
+        "SELECT * FROM users",
+        1000
+    );
+}
+```
+
+Arrow readers stream data in batches and must always be closed.
+
+---
+
+## Batch Execution
 
 ```java
 ConnectionPool.executeBatch(new String[] {
@@ -63,6 +79,8 @@ ConnectionPool.executeBatch(new String[] {
     "INSERT INTO t VALUES (1)"
 });
 ```
+
+Transactional batch execution is also supported.
 
 ---
 
@@ -74,25 +92,22 @@ Properties are loaded from:
 src/main/resources/duckdb.properties
 ```
 
-Example configuration:
+Common options:
 
 ```properties
 duckdb.database=memory
-duckdb.config.enable_external_access=true
 duckdb.config.threads=4
+duckdb.config.enable_external_access=true
 ```
 
 ---
 
-## When to Use
+## Production Notes
 
-Use this connection pool when:
-
-- Running embedded DuckDB workloads
-- Reading Arrow data directly
-- Building ingestion pipelines
-- Executing batch jobs
-- Avoiding JDBC boilerplate
+- Designed for **embedded** DuckDB only
+- Not a network pool
+- Prefer Arrow readers over ResultSet
+- Always close readers and connections
 
 ---
 

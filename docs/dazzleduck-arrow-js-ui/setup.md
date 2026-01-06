@@ -1,80 +1,74 @@
 ---
-sidebar_label: "Setup Guide"
-sidebar_position: 2
+sidebar_label: "Setup"
+sidebar_position: 3
 ---
 
-# Arrow JS UI — Setup Guide
+# Setup
 
-> Run **DazzleDuck SQL HTTP Server** and **Arrow JS UI** locally in minutes.
-
----
-
-## 🧱 Prerequisites
-
-* Java 17+
-* Maven 3.8+
-* Node.js 18+
-* npm or pnpm
+> This guide explains how to run the **DazzleDuck Arrow JS UI** locally and in production.
 
 ---
 
-## Step 1 — Start the HTTP Server
+## Prerequisites
 
-Before starting Arrow JS UI, ensure that your **DazzleDuck SQL HTTP Server** is already running.
-
-If not, follow the server installation guide here:
-
-👉 **[Visit HTTP Server Setup →](../dazzleduck-sql-http/installation.md)**
+- Node.js **18+**
+- npm or pnpm
+- Running DazzleDuck SQL HTTP Server
 
 ---
 
-## Step 2 — Run Arrow JS Frontend
-
-### Navigate to frontend
+## Local Development
 
 ```bash
 cd ui/arrow-js-frontend
 ```
 
-### Install dependencies
-
 ```bash
 npm install
 ```
-
-### Start dev server
 
 ```bash
 npm run dev
 ```
 
-### Open UI
+The UI will be available at:
 
 ```
 http://localhost:5173
 ```
 
-✅ Arrow JS UI should now appear in browser.
+---
+
+## Backend Configuration
+
+The UI connects to the HTTP server using a base URL:
+
+```env
+VITE_DAZZLEDUCK_HTTP_URL=http://localhost:8081
+```
+
+This can be configured via:
+
+- `.env` file
+- Build‑time environment variables
+
 
 ---
 
-## Step 3 — Connect to the Server
+## Connect to the Server
 
-Inside the UI login panel, fill in:
+Connection settings panel, fill in:
 
-| Field          | Value                                          |
-| -------------- | ---------------------------------------------- |
-| **Server URL** | [http://localhost:8080](http://localhost:8080) |
-| **Username**   | Configured user                                |
-| **Password**   | Configured password                            |
-
-Click **Connect** to authenticate.
-
-✅ After successful login, you can execute SQL queries.
+| Field                 | Value                                          |
+| --------------------- | ---------------------------------------------- |
+| **Server URL**        | [http://localhost:8081](http://localhost:8081) |
+| **Username**          | Configured user                                |
+| **Password**          | Configured password                            |
+| **Advanced settings** | claims & split size                            |
 
 ---
 
-## Step 4 — Execute SQL
+## Execute SQL
 
 Try running your first query:
 
@@ -82,49 +76,28 @@ Try running your first query:
 SELECT 1 AS id;
 ```
 
-### Results will appear in:
-
-* 📋 Table View
-* 📊 Chart Builder Panel (atleast 3 columns needed for better view & 2 for pie chart)
-
 ---
 
-## 🛠 Troubleshooting
+## Production Build
 
-### ❌ CORS errors
+```bash
+npm run build
+```
 
-Ensure your server configuration allows frontend requests:
+Generates static assets in:
 
 ```
-allow-origin = "*"
+dist/
 ```
 
 ---
 
-### ❌ Login failed
+## Security Notes
 
-Check these settings:
-
-* `jwt_token.expiration`
-* `secret_key`
-* User credentials configuration
+- UI never stores passwords
+- JWT tokens live only in memory
+- HTTPS strongly recommended in production
 
 ---
 
-### ❌ No SQL results
-
-Verify connection by running:
-
-```sql
-SELECT 1;
-```
-
-If it works, database connection is fine.
-
----
-
-## ✅ You're ready!
-
-You’re all set! Start running queries and visualizing data using Arrow JS UI.
-
-Happy querying! 🚀
+Next: **[Usage →](usage.md)**

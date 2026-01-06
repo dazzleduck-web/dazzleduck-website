@@ -5,94 +5,92 @@ sidebar_position: 1
 
 # DazzleDuck SQL Flight Server
 
-> Expose DuckDB as a native Apache Arrow Flight SQL engine.
+> Production-grade Apache Arrow Flight SQL server for DuckDB
 
 ---
 
 ## Overview
 
-The **DazzleDuck SQL Flight Server** runs DuckDB as a remote, high-performance SQL engine using **Apache Arrow Flight SQL**.
+The **DazzleDuck SQL Flight Server** exposes DuckDB as a **remote, high-performance analytical database** using **Apache Arrow Flight SQL**. It transforms DuckDB from an embedded, single-process engine into a **multi-client, server-based analytics backend** while preserving DuckDB’s vectorized execution and Arrow-native data flow.
 
-It enables:
+This module is designed for **BI tools, data science workloads, and distributed query engines** that require:
 
-- Native FlightSQL clients (JDBC / Python / Go)
-- Remote DuckDB query execution
-- Arrow-native streaming
-- Secure authentication
-- Server-side authorization
-- Partitioned ingestion
-- Query cancellation
-- Query planning & split execution
+- JDBC / ADBC compatibility
+- High-throughput streaming results
+- Low-latency analytical queries
+- Secure authentication and authorization
+- Production-safe query lifecycle management
 
-Unlike HTTP mode, this server speaks **pure FlightSQL** and behaves like a real analytics backend.
+Unlike the HTTP module, this server speaks **pure Flight SQL (gRPC)** and behaves like a full-fledged analytical database service.
 
 ---
 
-## Core Capabilities
+## Key Capabilities
 
-### ✅ Native FlightSQL Execution
-- Prepared statements
-- Arrow streaming
-- Multi-batch results
-- Metadata endpoints
-- Arrow JDBC support
+### Native Flight SQL Execution
 
-### ✅ Server-Side Authorization
-- JWT authentication
-- Header-based auth validation
-- Table-level enforcement
-- Path-level enforcement
-- Row-level filters via claims
+- Full Apache Arrow Flight SQL compliance
+- Prepared statements and metadata APIs
+- Multi-batch Arrow streaming
+- Zero-copy columnar transfer
+- Compatible with JDBC, Python (ADBC), Go, and Rust clients
 
-### ✅ Data Ingestion
-- Arrow IPC upload
-- Parquet ingest
+### Security & Authorization
+
+- JWT-based authentication
+- Header-driven authorization context
+- Path-level and table-level access enforcement
+- Claim-aware query execution (org, tenant, role, etc.)
+
+### Data Ingestion
+
+- Arrow IPC ingestion
+- Parquet-backed persistence
 - Partitioned writes
-- Transform expressions
-- Concurrent ingestion
+- Transform expressions during ingest
+- Concurrent and idempotent ingestion support
 
-### ✅ Operational Features
-- Startup SQL scripts
-- Cancellation support
+### Operational Features
+
+- Query cancellation
 - Fetch-size control
-- Split execution
-- Warehouse persistence
+- Startup SQL initialization
+- Split planning for distributed execution
+- Warehouse-backed persistence
 
 ---
 
-## How it Works (Conceptually)
+## High-Level Architecture
 
 ```text
-Client (JDBC / FlightSQL)
+Client (JDBC / ADBC / FlightSQL)
         │
         ▼
-Arrow Flight Server
+Arrow Flight SQL Server
         │
-        ├── Auth Middleware
-        ├── Query Planner
-        ├── Access Control
+        ├── Authentication & Authorization
+        ├── Query Planner & Validator
+        ├── Split & Execution Engine
         ├── Ingestion Pipeline
         │
         ▼
 DuckDB Engine
 ```
 
-All execution flows through a single FlightSQL producer backed by DuckDB.
+All SQL execution flows through a single **FlightSQL producer**, ensuring consistent semantics, security, and performance.
 
 ---
 
-## When to Use Flight Mode
+## When to Use Flight SQL Mode
 
-Use FlightSQL when you need:
+Choose **Flight SQL** when you need:
 
-✅ High-throughput analytics  
-✅ Streaming results  
-✅ Multi-client compatibility  
-✅ JDBC support  
-✅ Production-safe SQL APIs  
-✅ Remote DuckDB  
-✅ Arrow-native workflows  
+- High-throughput analytical queries
+- JDBC or BI tool integration (DBeaver, Tableau, Superset)
+- Arrow-native streaming to Python / Spark
+- Secure multi-client access to DuckDB
+- Production-grade SQL APIs
 
 ---
 
-Want to go next? **[Installation & Configuration  →](installation.md)**
+Next: **[Installation & Setup →](installation.md)**

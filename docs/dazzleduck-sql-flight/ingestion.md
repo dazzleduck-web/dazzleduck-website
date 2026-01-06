@@ -3,106 +3,70 @@ sidebar_label: "Ingestion"
 sidebar_position: 4
 ---
 
-# Arrow Ingestion Pipeline
+# Data Ingestion (Flight SQL)
 
-> Upload Arrow and Parquet data into DuckDB with support for partitioning, transforms, and concurrent writes.
+The Flight SQL module supports **high-throughput Arrow-native ingestion** directly into the warehouse.
 
 ---
 
 ## Supported Formats
 
-The Flight server supports multiple ingestion formats:
-
-- Arrow IPC stream
-- Parquet
-- FlightSQL `ExecuteIngest`
-- HTTP ingestion (when HTTP server is enabled)
+- Apache Arrow IPC streams
+- Parquet output
 
 ---
 
-## Arrow IPC Example (FlightSQL)
-
-Java client example:
-
-```java
-FlightSqlClient.ExecuteIngestOptions opts =
- new FlightSqlClient.ExecuteIngestOptions(
-    "",
-    FlightSql.CommandStatementIngest
-        .TableDefinitionOptions.newBuilder().build(),
-    false,
-    "",
-    "",
-    Map.of("path", "users.parquet")
-);
-
-sqlClient.executeIngest(arrowStream, opts);
-```
-
----
-
-## HTTP Ingestion Headers
-
-When using HTTP ingestion, the following headers control behavior:
-
-```http
-Content-Type: application/arrow
-X-DATA-PARTITION: column
-X-DATA-TRANSFORMATION: expr
-X-SORT-ORDER: field desc
-```
-
----
-
-## Partition Example
-
-Arrow files are written in a partitioned layout:
+## Ingestion Flow
 
 ```text
-/path/orders
-  year=2025/
-    part-0001.parquet
+Client (Arrow IPC)
+        │
+        ▼
+Flight SQL Ingestion
+        │
+        ├── Validation
+        ├── Optional Transformations
+        ├── Partitioning
+        ▼
+Parquet Files in Warehouse
 ```
 
 ---
 
-## Transform Example
+## Features
 
-Add a computed column:
+### Partitioning
 
-### Header
+- Partition by one or more columns
+- Hive-style directory layout
 
-```http
-X-DATA-TRANSFORMATION: (a + 1) AS b
-```
+### Transformations
 
-### Result Query
+- Apply expressions during ingest
+- Compute derived columns
+
+### Concurrency
+
+- Fully concurrent ingestion
+- Safe for parallel writers
+
+---
+
+## Example (Conceptual)
 
 ```sql
-SELECT a, b FROM table;
+INSERT INTO table
+SELECT * FROM arrow_stream
 ```
 
 ---
 
-## Concurrency Model
+## Production Considerations
 
-Ingestion is production-safe and parallel:
-
-- ✅ Writers execute safely
-- ✅ Temp paths isolate sessions
-- ✅ Atomic commit to warehouse
-- ✅ Thread-safe ingest pipeline
+- Use partitioning for large datasets
+- Monitor disk usage
+- Prefer Arrow streams over row-based inserts
 
 ---
 
-## Consumption Example
-
-Read ingested data:
-
-```sql
-SELECT * FROM read_parquet('/warehouse/orders/*/*.parquet');
-```
-
----
-
-Want to visit **[JDBC](jdbc.md)** ?
+Next: **[JDBC →](jdbc.md)**
