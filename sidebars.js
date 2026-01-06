@@ -48,7 +48,7 @@ const sidebars = {
       items: [
         {
           type: 'category',
-          label: 'HTTP API',
+          label: 'DazzleDuck HTTP Server',
           items: [
             'dazzleduck-sql-http/overview',
             'dazzleduck-sql-http/architecture',
@@ -59,7 +59,7 @@ const sidebars = {
         },
         {
           type: 'category',
-          label: 'Arrow Flight SQL',
+          label: 'DazzleDuck Arrow Flight SQL',
           items: [
             'dazzleduck-sql-flight/overview',
             'dazzleduck-sql-flight/installation',
@@ -80,7 +80,7 @@ const sidebars = {
       items: [
         {
           type: 'category',
-          label: 'SQL Commons',
+          label: 'DazzleDuck SQL Commons',
           items: [
             'dazzleduck-sql-commons/overview',
             'dazzleduck-sql-commons/connectionPool',
@@ -92,7 +92,7 @@ const sidebars = {
         },
         {
           type: 'category',
-          label: 'SQL Logger (Log → Arrow)',
+          label: 'DazzleDuck SQL Logger',
           items: [
             'dazzleduck-sql-logger/overview',
             'dazzleduck-sql-logger/architecture',
@@ -113,7 +113,7 @@ const sidebars = {
       items: [
         {
           type: 'category',
-          label: 'Micrometer Integration',
+          label: 'DazzleDuck SQL Micrometer',
           items: [
             'dazzleduck-sql-micrometer/overview',
             'dazzleduck-sql-micrometer/setup',
@@ -133,7 +133,7 @@ const sidebars = {
       items: [
         {
           type: 'category',
-          label: 'Arrow JS UI',
+          label: 'DazzleDuck Arrow JS UI',
           items: [
             'dazzleduck-arrow-js-ui/overview',
             'dazzleduck-arrow-js-ui/architecture',
