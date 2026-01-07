@@ -5,82 +5,79 @@ sidebar_position: 5
 
 # Partition Pruning
 
-> Prunes Hive and Delta Lake partitions using query predicates before execution.
+> Predicate-driven pruning for Hive and Delta Lake datasets.
 
 ---
 
 ## Overview
 
-SQL Commons applies **partition pruning** before query execution for:
+Partition pruning analyzes SQL predicates and eliminates irrelevant partitions **before query execution**.
 
-- Delta Lake  
-- Hive  
-
-This avoids scanning irrelevant directories and dramatically reduces I/O.
+This dramatically reduces I/O and improves query latency.
 
 ---
 
-## Delta Lake
+## Supported Layouts
 
-Run the Delta pruning tool:
-
-```bash
-./mvnw exec:java \
-  -Dexec.mainClass="io.github.tanejagagan.sql.commons.delta.PartitionPruning"
-```
-
----
-
-## Hive
-
-Run the Hive pruning tool:
-
-```bash
-./mvnw exec:java \
-  -Dexec.mainClass="io.github.tanejagagan.sql.commons.hive.HivePartitionPruning"
-```
+- Hive-style partitions (`key=value/`)
+- Delta Lake directories
 
 ---
 
 ## How It Works
 
 ```text
-Read WHERE clause
+Parse SQL WHERE clause
         ↓
-Extract partition filters
+Extract partition predicates
         ↓
-Resolve valid directories
+Resolve matching directories
         ↓
-Prune unused partitions
+Exclude irrelevant partitions
         ↓
-Reduce scan volume
+Execute reduced scan
 ```
 
 ---
 
 ## Example
 
-SQL query:
+Query:
 
 ```sql
-SELECT * FROM sales WHERE year = 2024
+SELECT * FROM sales WHERE year = 2024 AND month = 1
 ```
 
-Only reads:
+Scans only:
 
 ```text
-/sales/year=2024/*
+/sales/year=2024/month=1/*
 ```
 
 ---
 
-## Benefits
+## Tools
 
-✅ Faster queries  
-✅ Lower I/O  
-✅ Reduced memory usage  
-✅ Smarter scans  
-✅ Scales to large datasets  
+### Hive
+
+```bash
+./mvnw exec:java -Dexec.mainClass="io.github.tanejagagan.sql.commons.hive.HivePartitionPruning"
+```
+
+### Delta Lake
+
+```bash
+./mvnw exec:java -Dexec.mainClass="io.github.tanejagagan.sql.commons.delta.PartitionPruning"
+```
+
+---
+
+## Production Benefits
+
+- Reduced disk I/O
+- Faster queries
+- Lower memory usage
+- Scales to very large datasets
 
 ---
 

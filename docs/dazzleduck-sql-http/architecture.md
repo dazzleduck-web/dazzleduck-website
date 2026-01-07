@@ -1,6 +1,6 @@
 ---
 sidebar_label: "Architecture"
-sidebar_position: 5
+sidebar_position: 4
 ---
 
 # Architecture
@@ -9,137 +9,82 @@ sidebar_position: 5
 
 ---
 
-## 🧩 High-Level Design
+## High‑Level Design
 
 ```text
 Client
-  │
-  ▼
-HTTPS / HTTP
-  │
-  ▼
+  ↓
+HTTP / HTTPS
+  ↓
 Helidon WebServer
-  │
-  ├── QueryService      → FlightProducer.getStream()
-  ├── PlanningService   → FlightProducer.getFlightInfo()
-  ├── IngestService     → Bulk ingestion pipeline
-  ├── CancelService     → Query interruption
-  ├── LoginService      → JWT token issuance
-  ▼
-DuckDB Flight SQL Engine
+  ↓
+QueryService        → FlightProducer.getStream()
+PlanningService     → FlightProducer.getFlightInfo()
+IngestionService    → Bulk Arrow ingestion
+CancelService       → Query interruption
+LoginService        → JWT issuance
+  ↓
+DuckDB execution engine
+(exposed via Arrow Flight SQL)
 ```
 
-The HTTP layer exposes DuckDB as a remote analytics engine using Apache Arrow Flight SQL.
+---
+
+## Startup Flow
+
+On startup, the server:
+
+1. Loads configuration
+2. Initializes logging
+3. Creates Arrow memory allocator
+4. Configures access mode
+5. Initializes DuckDB + Flight SQL producer
+6. Registers HTTP routes
+7. Applies JWT filters (if enabled)
+8. Starts Helidon server
 
 ---
 
-## 🚦 Startup Process (from `Main.java`)
+## Delegation Model
 
-When the server boots, it follows this sequence:
+The HTTP layer:
 
-1. Load configuration (CLI + file + defaults)
-2. Configure logging
-3. Enable CORS
-4. Initialize Arrow `RootAllocator`
-5. Resolve access mode (open / restricted)
-6. Create DuckDB Flight SQL producer
-7. Register all HTTP routes
-8. Apply JWT filters (if enabled)
-9. Start Helidon server
+- Does **not** execute SQL itself
+- Does **not** manage DuckDB state
+- Acts as a protocol bridge
+
+All query execution, planning, ingestion, and cancellation are delegated to a **single Flight SQL producer**.
 
 ---
 
-## 🏭 Producer Initialization
+## Streaming Model
 
-The DuckDB Flight SQL producer is initialized with:
-
-- Warehouse path
-- Access mode
-- Temporary directories
-- Ingestion factory
-- Flight endpoint binding
-- Base64 secret key
-
-This producer becomes the single execution engine behind:
-
-- Query execution
-- Planning
-- Ingestion
-- Cancellation
+- Results are streamed as Arrow IPC batches
+- Backpressure is honored end‑to‑end
+- Large results do not accumulate in memory
 
 ---
 
-## 🔐 Authentication Pipeline
-
-When JWT is enabled, every protected request flows through:
-
-```text
-Request
-  ↓
-JwtAuthenticationFilter
-  ↓
-SqlAuthorizer.JWT_AUTHORIZER
-  ↓
-Service Handler
-```
-
-Authorization is enforced _before_ query execution begins.
-
----
-
-## 🧨 Error Handling
+## Error Handling
 
 Custom exception hierarchy maps failures to HTTP responses:
 
-- `BadRequestException` → 400
-- `InternalErrorException` → 500
-- `HttpException` (base class)
-
-Runtime errors are surfaced to the client with proper status codes.
-
----
-
-## 📡 Streaming Model
-
-Query results are returned using:
-
-- Ticket-based execution
-- Apache Arrow Flight streams
-- `OutputStreamServerStreamListener` drains batches
-
-This allows:
-
-- Backpressure-aware streaming
-- Low-memory operation
-- Efficient large-result transfers
+| Exception              | HTTP Status |
+| ---------------------- | ----------- |
+| BadRequestException    | 400         |
+| UnauthorizedException  | 401         |
+| InternalErrorException | 500         |
 
 ---
 
-## 📦 Ingestion Model
+## Summary
 
-### Input
+The HTTP server provides a clean separation:
 
-- Arrow IPC streams
-- Header-driven transforms
-- Partitioning directives
-
-### Output
-
-- Files written into warehouse
-- Columnar storage
-- Optional sorting applied
+- Thin HTTP façade
+- Unified execution engine
+- Predictable data flow
 
 ---
 
-## ✅ Summary
-
-DazzleDuck SQL HTTP Server follows a clean split:
-
-- Thin HTTP layer
-- Strong Flight engine
-- Deterministic data flow
-- Unified execution core
-
----
-
-Go to : **[Installation →](installation.md)**
+Next: **[API Reference →](api-reference.md)**

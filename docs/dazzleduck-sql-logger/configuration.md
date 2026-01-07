@@ -5,7 +5,7 @@ sidebar_position: 3
 
 # Configuration
 
-> Configure the logger for your environment.
+> Configure the log ingestion pipeline.
 
 ---
 
@@ -24,60 +24,58 @@ Using **Typesafe Config**.
 ## Example Configuration
 
 ```conf
-dazzleduck_server {
-  id = "app-1"
-  name = "order-service"
-  host = "10.0.0.10"
-  destinationUrl = "grpc://log-server:32010"
+dazzleduck_logger {
+  logDirectory = "/var/log/my-app"
+
+  server {
+    endpoint = "http://localhost:8081/v1/ingest"
+    jwtToken  = "${DDAUTH_TOKEN}"
+  }
+
+  batching {
+    batchSize = 1000
+    flushIntervalMs = 2000
+    queueCapacity = 10000
+  }
 }
 ```
 
 ---
 
-## Field Descriptions
+## Key Settings
 
-| Field          | Purpose                |
-| -------------- | ---------------------- |
-| id             | Unique app instance ID |
-| name           | Service name           |
-| host           | Host identifier        |
-| destinationUrl | Log server target      |
+### Log Source
 
----
-
-## Queue Settings (Advanced)
-
-Configure in code when creating the sender manually:
-
-```java
-new AsyncArrowFlightSender(
-    "localhost",
-    32010,
-    10000,    // queue capacity
-    10,       // batch size
-    Duration.ofSeconds(2)
-);
-```
+| Field        | Description                        |
+| ------------ | ---------------------------------- |
+| logDirectory | Directory containing `*.log` files |
 
 ---
 
-## Batch Controls
+### HTTP Ingestion
 
-| Control        | Behavior              |
-| -------------- | --------------------- |
-| MAX_BATCH_SIZE | Logs per Arrow batch  |
-| Flush interval | Network push interval |
-| Queue size     | Backpressure control  |
+| Field    | Description                     |
+| -------- | ------------------------------- |
+| endpoint | DazzleDuck `/v1/ingest` URL     |
+| jwtToken | JWT for authenticated ingestion |
+
+---
+
+### Batching & Backpressure
+
+| Field           | Purpose                  |
+| --------------- | ------------------------ |
+| batchSize       | Logs per Arrow batch     |
+| flushIntervalMs | Max delay before sending |
+| queueCapacity   | Backpressure control     |
 
 ---
 
 ## Failure Handling
 
-When the queue is full:
-
-* Logs are dropped
-* Application is not blocked
-* Failure is printed to `stderr`
+- Logs are dropped when the queue is full
+- Application threads are never blocked
+- Failures are logged locally
 
 ---
 

@@ -3,187 +3,59 @@ sidebar_label: "JDBC"
 sidebar_position: 5
 ---
 
-# JDBC Access (Arrow Flight JDBC)
+# JDBC & Client Connectivity
 
-> Connect using the Arrow Flight JDBC driver to run SQL, manage schemas, and execute batch operations.
-
----
-
-## Overview
-
-DazzleDuck SQL Flight Server exposes DuckDB using the **Arrow Flight JDBC driver**.
-
-This allows:
-
-✅ Native JDBC clients  
-✅ Prepared statements  
-✅ Batch inserts  
-✅ Metadata discovery  
-✅ Authentication support  
-✅ Query cancellation  
-✅ Fetch size tuning
+DazzleDuck SQL Flight Server is fully compatible with **Apache Arrow Flight SQL JDBC and ADBC clients**.
 
 ---
 
-## JDBC URL
+## JDBC Connection
 
-Standard JDBC URL:
+### Driver
+
+Use the **Arrow Flight SQL JDBC Driver**.
+
+### Connection URL
 
 ```text
-jdbc:arrow-flight-sql://localhost:55556/?database=memory&useEncryption=0&user=admin&password=admin
+jdbc:arrow-flight-sql://localhost:59307?database=memory&useEncryption=0&user=admin&password=admin
 ```
 
-Example with custom path:
+### Authentication
 
 ```text
-jdbc:arrow-flight-sql://localhost:55556/?database=memory&user=admin&password=admin&path=s3://bucket/folder
+user=admin
+password=admin
+```
+
+JWT-based authentication can also be used when enabled.
+
+---
+
+## Python (ADBC)
+
+```python
+from adbc_driver_flightsql import dbapi
+conn = dbapi.connect("grpc+tcp://localhost:59307")
+cursor = conn.cursor()
+cursor.execute("SELECT * FROM my_table")
+print(cursor.fetchall())
 ```
 
 ---
 
-## Basic Connection
+## BI Tools
 
-```java
-Connection conn = DriverManager.getConnection(
-  "jdbc:arrow-flight-sql://localhost:55556/?database=memory&useEncryption=0&user=admin&password=admin"
-);
-```
+Verified compatibility:
 
----
-
-## Execute Queries
-
-```java
-try (Statement st = conn.createStatement()) {
-    ResultSet rs = st.executeQuery("SELECT 1");
-    while (rs.next()) {
-        System.out.println(rs.getInt(1));
-    }
-}
-```
+- DBeaver
+- Tableau (via JDBC)
+- Superset
 
 ---
 
-## DDL Support
+## Performance Tips
 
-```java
-Statement st = conn.createStatement();
-st.execute("CREATE SCHEMA analytics");
-st.execute("DROP SCHEMA analytics");
-```
-
----
-
-## Prepared Statements
-
-```java
-PreparedStatement ps =
-  conn.prepareStatement("INSERT INTO users VALUES (?)");
-
-ps.setInt(1, 42);
-ps.executeUpdate();
-```
-
----
-
-## Batch Inserts
-
-```java
-PreparedStatement ps =
-  conn.prepareStatement("INSERT INTO metrics VALUES (?)");
-
-for (int i = 0; i < 10; i++) {
-    ps.setInt(1, i);
-    ps.addBatch();
-}
-ps.executeBatch();
-```
-
----
-
-## Cancel Query
-
-```java
-Statement st = conn.createStatement();
-st.cancel();
-```
-
-Cancel while executing:
-
-```java
-Thread t = new Thread(() -> {
-    try {
-        Thread.sleep(500);
-        st.cancel();
-    } catch (Exception ignored) {}
-});
-t.start();
-
-st.execute(LONG_RUNNING_QUERY);
-```
-
----
-
-## Fetch Size Control
-
-```java
-Statement st = conn.createStatement();
-st.setFetchSize(10);
-ResultSet rs = st.executeQuery("SELECT * FROM generate_series(100)");
-```
-
----
-
-## Metadata Queries
-
-```java
-DatabaseMetaData meta = conn.getMetaData();
-
-meta.getSchemas();
-meta.getCatalogs();
-meta.getTableTypes();
-meta.getTables(null, null, null, null);
-```
-
----
-
-## Retain Authentication
-
-Keep auth headers for long sessions:
-
-```text
-?retainAuth=true
-```
-
----
-
-## Advanced Access (Internal Handler)
-
-Access internal Flight client:
-
-```java
-ArrowFlightConnection afc = (ArrowFlightConnection) conn;
-Field f = afc.getClass().getDeclaredField("clientHandler");
-f.setAccessible(true);
-ArrowFlightSqlClientHandler handler =
-  (ArrowFlightSqlClientHandler) f.get(afc);
-
-handler.getInfo("SELECT 1");
-```
-
----
-
-## Summary
-
-JDBC mode supports:
-
-✅ Query + DDL  
-✅ Batch inserts  
-✅ Prepared statements  
-✅ Metadata  
-✅ Cancellation  
-✅ TLS support  
-✅ Authorization headers  
-✅ External warehouses
-
----
+- Use fetch-size tuning
+- Prefer Arrow-native clients
+- Avoid row-based adapters

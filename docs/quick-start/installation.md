@@ -1,88 +1,67 @@
 ---
 sidebar_label: "Installation"
-sidebar_position: 3
+sidebar_position: 2
 ---
+
 # Installation
 
-## Installing Dazzle Duck SQL Server
+**Installation methods** for **DazzleDuck SQL Server**.
 
-Dazzle Duck can be installed globally or built from source — depending on your workflow.
-
----
-
-## Option 1 — Install via npm
-
-The easiest way to get started is through **npm**:
-
-```bash
-npm install -g dazzleduck
-```
-
-Verify the installation:
-
-```bash
-dazzleduck --version
-```
+DazzleDuck is distributed as a **Docker image** and can also be run directly from source for development.
 
 ---
 
-## Option 2 — Build from Source
+## Option 1 — Run with Docker (Recommended)
 
-Clone the repository:
-
-```bash
-git clone https://github.com/dazzleduck/sql-server
-cd sql-server
-```
-
-Build the project:
+Docker is the easiest and most reliable way to run DazzleDuck.
 
 ```bash
-make build
+docker run -ti -p 59307:59307 -p 8081:8081 dazzleduck/dazzleduck:latest --conf warehouse=/data
 ```
 
-Run the server:
+### Exposed Ports
 
-```bash
-./dazzleduck start
-```
+|  Port | Purpose                 |
+| ----: | ----------------------- |
+| 59307 | Arrow Flight SQL (gRPC) |
+|  8081 | HTTP API & UI           |
 
 ---
 
-## Configuration File (Optional)
+## Option 2 — Run from Source (Development)
 
-You can create a simple configuration file to customize Dazzle Duck behavior.
+### Requirements
 
-Create `duck.config.json`:
+- Java 21
+- Maven (or `./mvnw`)
 
-```json
-{
-  "port": 8080,
-  "storage": "memory",
-  "logLevel": "info"
-}
-```
-
-Start with config:
+### Build
 
 ```bash
-dazzleduck start --config duck.config.json
+./mvnw clean package -DskipTests
+```
+
+### Run
+
+```bash
+export MAVEN_OPTS="--add-opens=java.base/sun.nio.ch=ALL-UNNAMED --add-opens=java.base/java.nio=ALL-UNNAMED"
+```
+```bash
+./mvnw exec:java -pl dazzleduck-sql-runtime -Dexec.mainClass="io.dazzleduck.sql.runtime.Main" -Dexec.args="--conf warehouse=warehouse"
 ```
 
 ---
 
-## Supported Platforms
+## Verify Installation
 
-Dazzle Duck works seamlessly across:
-
-- macOS (Intel & Apple Silicon)
-- Linux (x64 / ARM)
-- Windows 10/11
+- **Health Check:** [http://localhost:8081/health](http://localhost:8081/health)
+- **UI Dashboard:** [http://localhost:8081/v1/ui](http://localhost:8081/v1/ui)
+- **Flight SQL:** grpc+tcp://localhost:59307
 
 ---
 
-## What’s Next?
+## Next Steps
 
-- [Quick Start Guide](./quickstart.md)  
-- [Configuration & Setup](./configuration.md)  
-- [Architecture Overview](/)
+- **[Quick Start](quickstart.md)** — Run your first queries
+- **[Configuration](configuration.md)** — Auth, TLS, warehouse, fetch size
+- **Clients** — JDBC, Python (ADBC), DuckDB

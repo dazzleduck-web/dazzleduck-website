@@ -1,182 +1,94 @@
 ---
-
 sidebar_label: "Overview"
 sidebar_position: 1
 ---
 
-# DazzleDuck SQL Arrow-Micrometer
+# DazzleDuck SQL Micrometer
 
-> From observability to analytics — query your Micrometer metrics with SQL using Apache Arrow.
-
----
-
-## ✨ Overview
-
-**Arrow-Micrometer** transforms Micrometer metrics into high-performance, columnar datasets using **Apache Arrow**.
-
-Instead of treating metrics as *monitoring-only signals*, DazzleDuck converts them into **analytics-ready datasets** that work seamlessly with:
-
-* DuckDB
-* Pandas / Python
-* Apache Spark
-* JavaScript Arrow engines
-
-This creates a direct bridge between **runtime observability** and **data analytics**.
+> Turn Micrometer metrics into SQL‑queryable datasets using Apache Arrow and DazzleDuck SQL Server.
 
 ---
 
-## 🔍 What is Arrow-Micrometer?
+## Overview
 
-Arrow-Micrometer is a custom `MeterRegistry` implementation that:
+**DazzleDuck SQL Micrometer** integrates **Micrometer** with **DazzleDuck SQL Server** by exporting runtime metrics as **Apache Arrow** records and ingesting them over HTTP for durable storage and analytics.
 
-* Captures Micrometer meters automatically
-* Normalizes them into a structured, queryable schema
-* Writes everything in Apache Arrow format
-* Exposes your metrics as analytical datasets
-
-It acts as a pipeline:
-
-```
-Micrometer  →  Apache Arrow  →  SQL Analytics
-```
+Instead of treating metrics as short‑lived monitoring signals only suitable for dashboards, this module makes metrics **first‑class analytical data** that can be queried with SQL, joined with other datasets, and analyzed over time.
 
 ---
 
-## 🎯 Why this matters
+## What This Module Does
 
-Micrometer is excellent for real-time dashboards — but it is not built for:
-
-* Dataset joins
-* Cross-metric analysis
-* Long-term historical queries
-* Regression comparisons
-* SQL investigation workflows
-
-Arrow-Micrometer elevates metrics from **signals** into **data assets**.
+- Implements a custom **Micrometer `MeterRegistry`**
+- Periodically snapshots all registered meters (step‑based publishing)
+- Normalizes metrics into a **stable Arrow schema**
+- Sends Arrow batches to **DazzleDuck SQL Server** via HTTP ingestion
+- Persists metrics as Parquet in the warehouse
 
 ---
 
-## ⚙️ What you get
+## High‑Level Pipeline
 
-### Metrics → Arrow Export
-
-Automatically exports all Micrometer meters:
-
-* Counters
-* Gauges
-* Timers
-* Distribution summaries
-* Long-task timers
-* Function meters
-* Custom meters
-
-✅ No re-wiring, no alternative pipelines.
-
----
-
-### SQL-Ready by Design
-
-Instant analytics using SQL:
-
-```sql
-SELECT name, value, mean
-FROM read_arrow('metrics.arrow')
-WHERE type = 'timer';
+```text
+Micrometer meters
+      ↓
+ArrowMicroMeterRegistry (StepMeterRegistry)
+      ↓
+Arrow rows (metrics snapshot)
+      ↓
+HttpProducer
+      ↓
+DazzleDuck SQL Server (/v1/ingest)
+      ↓
+Parquet metrics tables
 ```
 
-✅ Use with DuckDB, Pandas, Spark, or any Arrow-compatible engine.
+---
+
+## Why SQL‑First Metrics Matter
+
+Micrometer excels at **real‑time observability**, but it is not designed for:
+
+- Cross‑metric joins
+- Long‑term historical analysis
+- Regression detection in CI
+- Release‑to‑release performance comparisons
+- Ad‑hoc forensic queries
+
+By exporting metrics as Arrow and storing them in DazzleDuck, you unlock:
+
+- SQL analytics over metrics
+- Offline and batch analysis
+- Deterministic, reproducible snapshots
+- Integration with DuckDB, Pandas, Spark, and BI tools
 
 ---
 
-### Built for Time-Series Analysis
+## What This Is (and Is Not)
 
-Persist metric snapshots and:
+**This is:**
 
-* Track performance trends
-* Compare application versions
-* Validate regressions
-* Generate reports
+- An analytics‑oriented Micrometer registry
+- A bridge between observability and data analytics
+- A producer of Arrow‑native metric datasets
 
----
+**This is not:**
 
-### Analytics-First Architecture
-
-Designed as an analytics system — not a metrics UI:
-
-* Columnar format
-* Stable schema
-* Deterministic output
-* Diff-friendly design
-
-✅ No vendor lock-in.
+- A Prometheus replacement
+- A metrics visualization UI
+- A time‑series database
 
 ---
 
-## 🚀 What makes Arrow-Micrometer different?
+## When to Use This
 
-### Not a backend — an analytics layer
+Use **DazzleDuck SQL Micrometer** when you need:
 
-Arrow-Micrometer does **not** replace Prometheus, Grafana, or APM tools.
-
-It adds what they don’t provide:
-
-* SQL analytics on metrics
-* Structured exports
-* Offline analysis
-* CI regression validation
-* Dataset comparisons
-
----
-
-### Open by default
-
-* Apache Arrow format
-* Compatible with modern data stacks
-* Exportable to Parquet / CSV
-
-✅ You always own your data.
-
----
-
-## 🧭 Why choose DD Arrow-Micrometer?
-
-Use Arrow-Micrometer when you want:
-
-- Production performance analytics
-- CI validation
-- Benchmarking workflows
-- Root cause analysis
-- Metric history queries
 - SQL over metrics
-- Offline exploration
-
----
-
-## Get Started
-
-Enable this feature in your application to unlock powerful metrics analytics capabilities. Transform your monitoring data into actionable insights with the performance and flexibility of Apache Arrow.
-
----
-
-## Documentation & Support
-
-For more information about implementation details, configuration options, and advanced usage, please refer to our technical documentation or contact our support team.
-
----
-
-**Powered by Micrometer + Apache Arrow**  
-*Industry-standard observability meets high-performance analytics*
-
----
-
-### Version Information
-- **Feature Status**: Production Ready
-- **Micrometer Version**: 1.10+
-- **Apache Arrow Version**: 11.0+
-- **Java Version**: 21
-
-### License
-This feature is part of the DazzleDuck SQL platform.
+- Performance regression detection
+- CI or benchmark validation
+- Historical metric comparisons
+- Analytics‑ready observability data
 
 ---
 

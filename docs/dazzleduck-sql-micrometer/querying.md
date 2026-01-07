@@ -5,143 +5,81 @@ sidebar_position: 4
 
 # Querying Metrics with SQL
 
-> Once exported, your Micrometer metrics become a fully queryable analytics table.
+> Analyze Micrometer metrics using SQL after ingestion into DazzleDuck.
 
 ---
 
-## 📥 Load Arrow into DuckDB
+## Query Metrics Tables
 
-Read your exported Arrow file directly:
-
-```sql
-SELECT *
-FROM read_arrow('metrics.arrow');
-```
-
-✅ Your metrics now behave like a SQL table.
-
----
-
-## ⏱ Analyze Latency
-
-Inspect average and worst-case timings:
+Once ingested, metrics are stored as Parquet in the DazzleDuck warehouse and can be queried using DuckDB or DazzleDuck SQL Server.
 
 ```sql
-SELECT name, mean, max
-FROM read_arrow('metrics.arrow')
-WHERE type = 'timer';
-```
-
-✅ Perfect for performance tuning and bottleneck analysis.
-
----
-
-## 🔥 Find Error Hotspots
-
-Sort problem metrics to the top:
-
-```sql
-SELECT name, value
-FROM read_arrow('metrics.arrow')
-ORDER BY value DESC;
-```
-
-✅ Identify abnormal counters or spikes instantly.
-
----
-
-## 🏷 Group by Tag
-
-Aggregate by metadata such as environment, service, or endpoint:
-
-```sql
-SELECT
-  tags['env'] AS environment,
-  SUM(value) AS total
-FROM read_arrow('metrics.arrow')
-GROUP BY environment;
-```
-
-✅ Powerful filtering and grouping via tags.
-
----
-
-## 📊 Historical Comparisons
-
-Query multiple snapshots over time:
-
-```sql
-SELECT *
-FROM read_parquet('snapshots/*.parquet')
-WHERE ts > now() - interval '1 day';
-```
-
-✅ Ideal for trend analysis and regression detection.
-
----
-
-## 📤 Export Anywhere
-
-Convert Arrow files to other formats:
-
-```sql
-COPY read_arrow('metrics.arrow') TO 'metrics.parquet';
-COPY read_arrow('metrics.arrow') TO 'metrics.csv';
-```
-
-✅ Zero lock-in — use your data anywhere.
-
----
-
-## 🧠 Common Query Patterns
-
-### Latency by endpoint
-
-```sql
-SELECT
-  name,
-  tags['endpoint'] AS endpoint,
-  mean AS avg_latency
-FROM read_arrow('metrics.arrow')
-WHERE type = 'timer';
+SELECT * FROM metrics;
 ```
 
 ---
 
-### High-volume counters
+## Analyze Latency
+
+Inspect timer behavior:
 
 ```sql
-SELECT name, value
-FROM read_arrow('metrics.arrow')
-WHERE type = 'counter'
-ORDER BY value DESC;
+SELECT name, mean, max FROM metrics WHERE type = 'timer';
 ```
 
 ---
 
-### Environment comparison
+## Find High‑Volume Counters
 
 ```sql
-SELECT
-  tags['env'] AS environment,
-  AVG(mean) AS avg_latency
-FROM read_arrow('metrics.arrow')
-WHERE type = 'timer'
-GROUP BY environment;
+SELECT name, value FROM metrics WHERE type = 'counter' ORDER BY value DESC;
 ```
 
 ---
 
-## ✅ Summary
+## Group by Tag
 
-With Arrow-Micrometer you can:
-
-* Query metrics like tables
-* Join, group, and filter
-* Track regressions
-* Compare releases
-* Power dashboards
+```sql
+SELECT tags['endpoint'] AS endpoint, AVG(mean) AS avg_latency FROM metrics WHERE type = 'timer' GROUP BY endpoint;
+```
 
 ---
 
-Next: **Usage Examples →**
+## Application‑Level Filtering
+
+```sql
+SELECT * FROM metrics WHERE application_name = 'orders';
+```
+
+---
+
+## Historical Analysis
+
+If metrics are partitioned by time or application:
+
+```sql
+SELECT application_name, AVG(mean) AS avg_latency FROM metrics GROUP BY application_name;
+```
+
+---
+
+## Export Metrics
+
+```sql
+COPY metrics TO 'metrics_snapshot.parquet';
+```
+
+---
+
+## Summary
+
+With DazzleDuck SQL Micrometer you can:
+
+- Query metrics with SQL
+- Join metrics with other datasets
+- Track regressions
+- Perform offline analysis
+
+---
+
+Next: **Back to [Setup & Configuration →](setup.md)**

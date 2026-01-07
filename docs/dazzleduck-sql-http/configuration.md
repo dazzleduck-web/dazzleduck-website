@@ -5,75 +5,65 @@ sidebar_position: 3
 
 # Configuration Reference
 
-> Central configuration options for DazzleDuck SQL HTTP Server.
+> HTTP‑specific configuration for DazzleDuck SQL Server.
 
 ---
 
-## 🧩 Config Loading Order
+## Configuration Resolution
 
-Configuration is resolved using **Typesafe Config** with layered overrides:
+Configuration is loaded using **Typesafe Config**, with the following precedence:
 
-1. Command-line arguments
+1. Command‑line flags
 2. `application.conf`
-3. Built-in defaults
-
-All configuration is resolved from the configured `CONFIG_PATH` namespace.
+3. Built‑in defaults
 
 ---
 
-## 🌐 Core Settings
-
-### HTTP Binding
-
-Control where the server listens:
+## HTTP Binding
 
 ```conf
 http.host = "0.0.0.0"
-http.port = 8080
+http.port = 8081
 ```
 
 ---
 
-## 🔐 Authentication
+## Authentication
 
-Enable authentication with JWT:
+Enable JWT authentication:
 
 ```conf
 http.authentication = "jwt"
-secret_key = "<base64-secret>"
+secret_key = "<base64‑encoded‑secret>"
 jwt_token.expiration = 60m
 ```
 
-### Supported modes
+Supported modes:
 
-| Mode   | Description             |
-| ------ | ----------------------- |
-| `none` | No authentication       |
-| `jwt`  | JWT-protected endpoints |
+| Mode | Description             |
+| ---- | ----------------------- |
+| none | No authentication       |
+| jwt  | JWT‑protected endpoints |
 
 ---
 
-## 🌍 CORS
-
-Allow browser clients to access the server:
+## CORS
 
 ```conf
 allow-origin = "*"
 ```
 
-✅ Required for UI-based clients.
+Required for browser‑based clients and the UI.
 
 ---
 
-## 📂 Warehouse Path
+## Warehouse Path
 
-Define where DuckDB stores tables and ingestion files:
-
-```ini
+```conf
 warehouse.path = /var/dazzleduck/data
 ```
 
-Directory structure:
+Directory layout:
 
 ```text
 warehouse/
@@ -84,73 +74,46 @@ warehouse/
 
 ---
 
-## 🔒 Access Mode
-
-Control write access globally:
+## Access Mode
 
 ```conf
 mode = "restricted"
 ```
 
-### Options
-
-| Mode         | Behavior         |
-| ------------ | ---------------- |
-| `restricted` | SQL guarded      |
-| `open`       | No authorization |
+| Mode       | Behavior              |
+| ---------- | --------------------- |
+| restricted | Guarded SQL execution |
+| open       | No authorization      |
 
 ---
 
-## 🚀 Arrow & Flight SQL
+## Execution Engine (Delegated)
 
-Advanced Arrow configuration (optional):
+Advanced settings for the Arrow Flight SQL engine are passed through:
 
 ```conf
-flight_sql {
-   ...
-}
-
-dazzleduck_server {
-   ...
-}
+flight_sql { ... }
+dazzleduck_server { ... }
 ```
 
----
-
-## 🆔 Producer ID
-
-Each server instance uses a unique ID:
-
-```java
-UUID.randomUUID()
-```
-
-This ensures safe multi-producer execution.
+These settings are consumed by the execution core, not the HTTP layer itself.
 
 ---
 
-## 🔁 Configuration Merge Order
+## Producer Identity
 
-Final configuration resolution:
+Each server instance uses a unique producer ID to:
 
-```text
-1. CLI overrides
-2. application.conf
-3. Default values
-```
+- Isolate concurrent queries
+- Enable safe cancellation
+- Prevent cross‑client interference
 
 ---
 
-## ✅ Summary
+## Summary
 
-You control:
-
-- Network binding
-- Authentication
-- Storage layout
-- Access model
-- Arrow engine behavior
+HTTP configuration controls **networking, security, and access**, while execution behavior is delegated to the underlying Flight SQL engine.
 
 ---
 
-Wanna explore more? Must visit **[API Reference →](api-reference.md)**
+Next: **[Architecture →](architecture.md)**

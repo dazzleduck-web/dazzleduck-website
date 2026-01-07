@@ -3,58 +3,79 @@ sidebar_label: "Installation"
 sidebar_position: 2
 ---
 
-# Installation & Startup
+# Installation & Setup
 
-> Set up and start the DazzleDuck SQL Flight Server with configuration options for ports, TLS, and warehouse storage.
-
----
-
-## Requirements
-
-Before starting, ensure you have:
-
-- Java 21+
-- Maven
-- DuckDB extension support
-- Open gRPC port (default: `flight_sql.port`)
+This guide explains how to run **DazzleDuck SQL Flight Server** in production.
 
 ---
 
-## Build
+## Prerequisites
 
-From the project root, run:
+- **Java:** JDK 21+
+- **Maven**
+- **Docker:** Recommended for production deployments
+- **Ports:**
+  - `59307` — Arrow Flight SQL (gRPC)
+
+---
+
+## Run via Docker (Recommended)
 
 ```bash
-mvn clean install
+docker run -ti -p 59307:59307 -p 8081:8081 dazzleduck/dazzleduck:latest --conf warehouse=/data
 ```
+
+This will print the following on the console:
+
+```
+============================================================
+DazzleDuck SQL Server v0.0.13-SNAPSHOT
+============================================================
+Warehouse Path: /data
+HTTP Server started successfully
+Listening on: http://0.0.0.0:8081
+Health check: http://0.0.0.0:8081/health
+UI dashboard: http://0.0.0.0:8081/v1/ui
+Flight Server is up: Listening on URI: grpc+tcp://0.0.0.0:59307
+```
+
+- The server is running in both Arrow Flight SQL (gRPC) and HTTP REST API modes
+
+### Key Runtime Flags
+
+| Flag          | Description                      |
+| ------------- | -------------------------------- |
+| `warehouse`   | Path to Parquet / DuckDB storage |
+| `access_mode` | `OPEN` or `RESTRICTED`           |
+| `flight.port` | gRPC port (default: 59307)       |
 
 ---
 
-## Run Server
-
-Start the FlightSQL server:
+## Run Locally (via runtime)
 
 ```bash
-java -jar target/dazzleduck-sql-flight.jar
+./mvnw clean package -DskipTests
 ```
 
-### Expected Output
+```bash
+export MAVEN_OPTS="--add-opens=java.base/sun.nio.ch=ALL-UNNAMED --add-opens=java.base/java.nio=ALL-UNNAMED --add-opens=java.base/sun.util.calendar=ALL-UNNAMED"
+```
 
-```text
-Flight Server is up: Listening on URI: grpc://localhost:<port>
+```bash
+./mvnw exec:java -pl dazzleduck-sql-runtime -Dexec.mainClass="io.dazzleduck.sql.runtime.Main" -Dexec.args="--conf warehouse=warehouse"
 ```
 
 ---
 
-## Basic Configuration
+## Startup SQL
 
-### Set Host and Port
+You can configure startup SQL scripts (extensions, settings, secrets) to be executed automatically during server boot.
 
-Edit your config file:
+Example:
 
-```conf
-flight_sql.host = "0.0.0.0"
-flight_sql.port = 55556
+```sql
+INSTALL httpfs;
+LOAD httpfs;
 ```
 
 ---
@@ -79,7 +100,7 @@ Choose where DuckDB persists data:
 warehouse.path = /var/dazzleduck/warehouse
 ```
 
-Directory layout:
+Directory layout example:
 
 ```text
 warehouse/
@@ -92,21 +113,13 @@ Ensure this path is writable by the server process.
 
 ---
 
-## Startup SQL Script
+## Notes
 
-Execute SQL commands during boot:
-
-```conf
-startup.sql.location = "/opt/init.sql"
-```
-
-Example:
-
-```sql
-CREATE SCHEMA analytics;
-CREATE TABLE analytics.users(id INT, name TEXT);
-```
+- Always configure a persistent warehouse path
+- Enable JWT authentication in production
+- Use TLS for gRPC when exposed publicly
+- Monitor memory usage for large result sets
 
 ---
 
-Next : **[Authentication & Security →](authentication.md)**
+Next: **[Authentication & Security →](authentication.md)**

@@ -1,73 +1,90 @@
 ---
 sidebar_label: "About"
-# sidebar_position: 3
+sidebar_position: 2
 ---
 
-# About Dazzle Duck SQL Server
+# About DazzleDuck SQL Server
 
-Dazzle Duck SQL Server is a high-performance, developer-friendly SQL analytics engine designed to make data exploration fast, intuitive, and extensible.
+**DazzleDuck SQL Server** is an open‑source project focused on making **DuckDB accessible as a remote, multi‑client analytics service**.
 
----
-
-## What is Dazzle Duck?
-
-Dazzle Duck is built to combine **simplicity**, **speed**, and **extensibility** — giving developers and data engineers the power to query and analyze massive datasets efficiently.
-
-It bridges the gap between **traditional RDBMS** and **modern analytics systems** by offering a unified engine that supports local and distributed execution, external data connectors, and modern SQL extensions.
+The goal is simple: preserve DuckDB’s exceptional analytical performance while enabling modern data workflows that require **remote access, standard protocols, and operational tooling**.
 
 ---
 
-## Key Highlights
+## Why DazzleDuck Exists
 
-- **High-Speed Execution** — Vectorized query engine optimized for analytical workloads.
-- **Lightweight Design** — Minimal setup and memory footprint.
-- **SQL-First Approach** — Familiar syntax with analytical capabilities.
-- **Open Source** — Fully transparent and community-driven development.
-- **Pluggable Architecture** — Add new connectors, storage engines, and optimizers easily.
+DuckDB excels as an embedded analytical database, but many real‑world use cases need more:
 
----
+- Multiple users querying the same data
+- Standard drivers instead of embedded libraries
+- Integration with BI tools, notebooks, and services
+- Secure, observable, and container‑friendly deployment
 
-## Core Philosophy
+DazzleDuck SQL Server was created to solve these problems by wrapping DuckDB with:
 
-> “Data should be fast, flexible, and fun.”
-
-Dazzle Duck SQL Server was born out of the idea that modern analytics should not require complex setups, expensive infrastructure, or steep learning curves. Instead, it should focus on **developer experience**, **speed**, and **community**.
-
----
-
-## How It Works
-
-Dazzle Duck follows a **modular query processing pipeline**:
-
-1. **SQL Parsing** → Converts SQL queries into logical plans.  
-2. **Optimization** → Applies rule-based and cost-based optimizations.  
-3. **Execution** → Runs on a vectorized engine for high throughput.  
-4. **Storage & Connectors** → Integrates with CSV, Parquet, DuckDB, PostgreSQL, and more.
+- **Apache Arrow Flight SQL** for high‑performance connectivity
+- **HTTP APIs** for simplicity and flexibility
+- **Arrow‑native data exchange** for zero‑copy analytics
 
 ---
 
-## Community & Development
+## Design Principles
 
-Dazzle Duck is open source and welcomes contributions from developers, data scientists, and database enthusiasts. Our mission is to build the most **accessible** and **innovative** open SQL analytics engine.
+DazzleDuck is built around a few core principles:
 
-- GitHub: [dazzleduck/sql-server](https://github.com/dazzleduck/sql-server)
-- Discussions: [GitHub Discussions](https://github.com/dazzleduck/sql-server/discussions)
-- Twitter: [@dazzleduckdb](https://twitter.com/dazzleduckdb)
+- **Leverage proven engines**
+  DuckDB remains responsible for query execution, optimization, and storage access.
+
+- **Open standards first**
+  Arrow, Flight SQL, JDBC, ADBC, and HTTP ensure broad ecosystem compatibility.
+
+- **Minimal abstraction**
+  No unnecessary layers between clients and DuckDB.
+
+- **Developer‑friendly by default**
+  Simple setup, predictable APIs, and transparent behavior.
+
+---
+
+## What DazzleDuck Is (and Is Not)
+
+**DazzleDuck _is_:**
+
+- A remote server for DuckDB
+- A Flight SQL and HTTP gateway
+- A lightweight analytics service
+- An open‑source infrastructure component
+
+**DazzleDuck is _not_:**
+
+- A new SQL engine
+- A replacement for DuckDB
+- A proprietary data platform
+
+---
+
+## Community & Open Source
+
+DazzleDuck SQL Server is developed in the open and welcomes community participation.
+
+- **GitHub Repository**: [https://github.com/dazzleduck-web/dazzleduck-sql-server](https://github.com/dazzleduck-web/dazzleduck-sql-server)
+- **Issues & Discussions**: Feature requests, bugs, and design discussions happen on GitHub
+
+Whether you’re a data engineer, backend developer, or analytics enthusiast, contributions are welcome.
 
 ---
 
 ## Learn More
 
-- [Quickstart Guide](/docs/quick-start/quickstart)
-- [Installation](/docs/quick-start/installation)
-- [Configuration](/docs/quick-start/configuration)
-- [SQL Reference](/)
-- [Architecture Overview](/)
+- **Quick Start** — Launch your first server instance
+- **Architecture Overview** — Understand the server components
+- **HTTP API Reference** — Query and ingest data remotely
+- **Arrow Flight SQL** — Connect using JDBC and ADBC drivers
 
 ---
 
-## Built by the Community
+## Project Philosophy
 
-Dazzle Duck SQL Server is proudly developed and maintained by an open-source community that believes in **performance, transparency, and simplicity**.
+> _DuckDB provides the speed._ > _Arrow provides the format._ > _DazzleDuck provides the bridge._
 
-> “Fly fast, query faster.”
+Together, they enable fast, open, and portable analytics — without heavyweight infrastructure.

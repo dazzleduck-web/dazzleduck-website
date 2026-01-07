@@ -5,75 +5,69 @@ sidebar_position: 2
 
 # Installation & Setup
 
-> Get started with DazzleDuck SQL Logger.
+> Run the log ingestion pipeline as a standalone process.
 
 ---
 
 ## Requirements
 
-* Java 17+
-* Maven
-* Running Arrow Flight server
-* Open port (default: `32010`)
+- Java 21+
+- Maven (or `./mvnw`)
+- Running DazzleDuck SQL Server (HTTP mode)
 
 ---
 
-## Start Log Server
+## Entry Point
 
-Run the Flight log server:
+The logger runs as a **standalone ingestion process**.
+
+```
+LogProcessorMain
+```
+
+---
+
+## Configuration
+
+All settings are read from:
+
+```
+application.conf
+```
+
+---
+
+## Run the Log Processor
+
+From the project root:
 
 ```bash
-java -cp dazzleduck-sql-logger.jar io.dazzleduck.sql.logger.server.SimpleFlightLogServer
+./mvnw exec:java \
+  -pl dazzleduck-sql-logger \
+  -Dexec.mainClass="io.dazzleduck.sql.logger.tailing.LogProcessorMain"
 ```
 
-Expected output:
+The processor will:
 
-```text
-Flight log server listening on: grpc://0.0.0.0:32010
-```
+- Start directory monitoring
+- Tail log files continuously
+- Convert logs to Arrow batches
+- Send data to DazzleDuck SQL Server over HTTP
 
 ---
 
-## Add Logger to Your App
+## Verify Ingestion
 
-Include the logger dependency and SLF4J binding.
-
-Ensure the following service provider exists:
-
-```bash
-META-INF/services/org.slf4j.spi.SLF4JServiceProvider
-```
-
-With:
-
-```text
-io.dazzleduck.sql.logger.ArrowSLF4JServiceProvider
-```
+- Check Parquet files in the warehouse
+- Query ingested logs using DuckDB or DazzleDuck SQL Server
 
 ---
 
-## Enable Arrow Logger
+## Logging Behavior
 
-Once on the classpath, logging happens automatically.
-
-Use as you normally would:
-
-```java
-Logger log = LoggerFactory.getLogger(MyApp.class);
-
-log.info("Hello Arrow Log");
-log.warn("User {} failed", userId);
-```
-
----
-
-## Verify Output
-
-Server prints logs:
-
-```text
-[LOG RECEIVED] 2025-01-10 21:01:33 | INFO | MyService | main | Hello Arrow Log | ...
-```
+- Pipeline failures never crash the application
+- Logs may be dropped under backpressure
+- Errors are printed locally for visibility
 
 ---
 

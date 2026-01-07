@@ -1,76 +1,84 @@
 ---
 sidebar_label: "Configuration"
-sidebar_position: 4
----
-# Configuration Basics
-
-## Customize Your Dazzle Duck Setup
-
-Once Dazzle Duck is installed, you can control its behavior with a simple JSON config file or command-line flags.
-
+sidebar_position: 3
 ---
 
-## Basic Configuration
+# Configuration
 
-Create a file named `duck.config.json`:
+DazzleDuck SQL Server is configured using **command-line flags** or an `application.conf` file. The configuration focuses on **operational concerns**, not SQL semantics.
 
-```json
-{
-  "port": 8080,
-  "storage": "memory",
-  "logLevel": "info"
-}
-```
+---
 
-Start Dazzle Duck with your config:
+## Core Configuration Options
+
+### Warehouse Path
+
+The warehouse is where DuckDB files and ingested Parquet data are stored:
 
 ```bash
-dazzleduck start --config duck.config.json
+--conf warehouse=/data
 ```
 
-> Default values will be used if no config file is provided.
+This is the **most important setting** for persistent deployments.
 
 ---
 
-## Connecting to External Data
+### Authentication (JWT)
 
-Dazzle Duck supports native connectors for multiple formats and databases.
+Enable JWT authentication for HTTP endpoints:
 
-### Supported Connectors
-
-- CSV files  
-- Parquet datasets  
-- PostgreSQL  
-- MySQL  
-- DuckDB and SQLite  
-
-### Example: Load CSV Data
-
-```sql
-CREATE TABLE sales FROM 'data/sales.csv' WITH (format = 'csv');
+```bash
+--conf http.authentication=jwt
 ```
 
-### Example: Query External Database
+Authenticate using:
 
-```sql
-ATTACH 'postgres://user:pass@localhost:5432/mydb' AS postgres;
-SELECT * FROM postgres.orders LIMIT 10;
+```bash
+curl -X POST http://localhost:8081/v1/login \
+  -H "Content-Type: application/json" \
+  -d '{"username":"admin","password":"admin"}'
 ```
+
+Use the returned token for subsequent requests.
 
 ---
 
-## Advanced Options
+### Fetch Size
 
-| Setting | Description | Default |
-|----------|--------------|----------|
-| `port` | Port for the Dazzle Duck server | `8080` |
-| `storage` | Storage backend (`memory`, `disk`, or custom) | `memory` |
-| `logLevel` | Logging verbosity (`error`, `info`, `debug`) | `info` |
+Control how many rows are sent per batch:
+
+```bash
+-H "fetch_size: 10000"
+```
+
+This helps tune memory usage for large result sets.
+
+---
+
+### TLS / Encryption
+
+DazzleDuck can run with or without TLS depending on your environment:
+
+```bash
+--conf useEncryption=false
+```
+
+For production deployments, TLS is strongly recommended.
+
+---
+
+## Configuration Sources
+
+Configuration can be provided via:
+
+1. Command-line flags (`--conf key=value`)
+2. `application.conf` file
+3. Environment variables (for secrets)
 
 ---
 
 ## Next Steps
 
--  [Installation Guide](./installation.md)  
--  [SQL Reference](/)  
--  [Extending Dazzle Duck](/)
+- **Security** — JWT, TLS, headers
+- **Ingestion** — Bulk Arrow uploads
+- **Monitoring** — Micrometer metrics

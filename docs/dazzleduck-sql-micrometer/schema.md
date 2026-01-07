@@ -3,116 +3,91 @@ sidebar_label: "Metric & Arrow Schema"
 sidebar_position: 3
 ---
 
-# Metric Types & Arrow Schema
+# Metric & Arrow Schema
 
-> Learn how Micrometer metrics are transformed into structured, queryable Arrow datasets.
-
----
-
-## 📚 Supported Meter Types
-
-Arrow-Micrometer supports **all core Micrometer meters** and preserves their semantics in Arrow form:
-
-| Meter Type          |
-| ------------------- |
-| Counter             |
-| Gauge               |
-| Timer               |
-| DistributionSummary |
-| LongTaskTimer       |
-| FunctionCounter     |
-| FunctionTimer       |
-
-✅ No data loss. No down-sampling.
+> Exact schema used when exporting Micrometer metrics as Apache Arrow.
 
 ---
 
-## 🧱 Row Representation
+## Supported Meter Types
 
-Each metric snapshot is written as a **row** in the Arrow dataset.
+All core Micrometer meters are supported:
 
-### Fields per row
-
-| Field   | Description                        |
-| ------- | ---------------------------------- |
-| `name`  | Metric name                        |
-| `type`  | Meter classification               |
-| `tags`  | Key-value metadata                 |
-| `value` | Current value                      |
-| `count` | Event count                        |
-| `total` | Total duration / accumulated value |
-| `mean`  | Average                            |
-| `max`   | Maximum                            |
-| `ts`    | Timestamp                          |
+- Counter
+- Gauge
+- Timer
+- DistributionSummary
+- LongTaskTimer
+- FunctionCounter
+- FunctionTimer
 
 ---
 
-## 🧬 Example Arrow Schema
+## Arrow Schema (Authoritative)
 
-```java
-name    STRING
-type    STRING
-tags    MAP<STRING, STRING>
-value   DOUBLE
-count   DOUBLE
-total   DOUBLE
-mean    DOUBLE
-max     DOUBLE
-ts      TIMESTAMP
+Each published metric is written as **one Arrow row** using the following schema:
+
+```text
+name               STRING   NOT NULL
+type               STRING   NOT NULL
+application_id     STRING
+application_name   STRING
+application_host   STRING
+tags               MAP<STRING, STRING> NOT NULL
+value              DOUBLE
+min                DOUBLE
+max                DOUBLE
+mean               DOUBLE
 ```
 
-✅ The schema is designed for fast SQL and DataFrame usage.
+This schema is defined in `ArrowMetricSchema` and is **stable across releases**.
 
 ---
 
-## 🔄 Type Mapping
+## Field Semantics
 
-How Micrometer meters translate into Arrow fields:
-
-| Micrometer Type     | Arrow Columns           |
-| ------------------- | ----------------------- |
-| Counter             | `value`                 |
-| Gauge               | `value`                 |
-| Timer               | `count`, `mean`, `max`  |
-| DistributionSummary | `min`, `max`, `total`   |
-| LongTaskTimer       | active task information |
-| Function meters     | computed on read        |
-
----
-
-## 🎯 Deterministic Output
-
-Arrow-Micrometer guarantees **deterministic output** for reproducibility and auditing.
-
-### Guarantees
-
-* Metrics are sorted by name
-* Schema is stable across runs
-* Order is deterministic
-* Output is diff-friendly
+| Field            | Description                                             |
+| ---------------- | ------------------------------------------------------- |
+| name             | Metric name                                             |
+| type             | Meter type (counter, timer, gauge, ...)                 |
+| application_id   | Logical application identifier                          |
+| application_name | Human‑readable service name                             |
+| application_host | Hostname or node id                                     |
+| tags             | Micrometer tags as key‑value map                        |
+| value            | Primary metric value (count, gauge value, active tasks) |
+| min              | Minimum observed value (when applicable)                |
+| max              | Maximum observed value                                  |
+| mean             | Mean / average value                                    |
 
 ---
 
-## ✅ Why determinism matters
+## Type‑Specific Mapping
 
-Deterministic output makes Arrow-Micrometer perfect for:
-
-✅ CI regression detection
-✅ Release comparisons
-✅ Diff-based validation
-✅ Forensic debugging
-
----
-
-## ✅ Summary
-
-Arrow-Micrometer gives you:
-
-* A stable schema
-* Clean SQL access
-* Consistent output
-* Cross-tool compatibility
+| Meter Type          | value        | min | max        | mean      |
+| ------------------- | ------------ | --- | ---------- | --------- |
+| Counter             | count        | 0   | 0          | 0         |
+| Gauge               | value        | 0   | 0          | 0         |
+| Timer               | count        | 0   | max(sec)   | mean(sec) |
+| DistributionSummary | count        | 0   | max        | mean      |
+| LongTaskTimer       | active tasks | 0   | total(sec) | avg(sec)  |
+| Function meters     | computed     | 0   | computed   | computed  |
 
 ---
 
-Next: **[Usage & Querying →](querying.md)**
+## Deterministic Output
+
+The registry guarantees:
+
+- Stable schema
+- Deterministic ordering (sorted by type and name)
+- Repeatable snapshots
+
+This enables:
+
+- CI regression checks
+- Release comparisons
+- Diff‑based validation
+
+---
+
+Next: **[Querying Metrics →](querying.md)**

@@ -5,116 +5,110 @@ sidebar_position: 2
 
 # Setup & Configuration
 
-> Configure Arrow-Micrometer in your Java application and start exporting metrics as SQL-queryable Arrow data.
+> Enable Arrow‑based metric ingestion using Micrometer and DazzleDuck SQL Server.
 
 ---
 
-## 🧩 1. Add Arrow Registry
+## Requirements
 
-Create the registry using `ArrowMicroMeterRegistry`:
+- Java 21+
+- Micrometer 1.10+
+- Running DazzleDuck SQL Server (HTTP ingestion enabled)
+
+---
+
+## How It Works
+
+This module provides a **Micrometer `MeterRegistry`** that periodically publishes metric snapshots as **Apache Arrow** rows and ingests them into DazzleDuck SQL Server over HTTP.
+
+Registry creation and wiring is **configuration‑driven**.
+
+---
+
+## Registry Creation
+
+Create and register the Arrow‑backed registry using the factory:
 
 ```java
-ArrowMicroMeterRegistry registry = new ArrowMicroMeterRegistry.Builder()
-    .config(config)
-    .endpoint("http://localhost:8080/arrow")
-    .httpTimeout(Duration.ofSeconds(5))
-    .clock(Clock.SYSTEM)
-    .build();
+MeterRegistry registry = MetricsRegistryFactory.create();
+
+Metrics.addRegistry(registry);
 ```
 
-This initializes the Arrow-based Micrometer registry that will capture metrics and export them in Arrow format.
+This returns a `CompositeMeterRegistry` that contains an `ArrowMicroMeterRegistry` instance.
 
 ---
 
-## ⚙ 2. Configuration Options
+## Configuration Source
 
-Arrow-Micrometer uses `ArrowRegistryConfig` for runtime configuration.
+All settings are loaded from **Typesafe Config**:
 
-### Required Properties
-
-| Property           | Description            |
-| ------------------ | ---------------------- |
-| `arrow.enabled`    | Enable the registry    |
-| `arrow.outputFile` | Output Arrow file path |
-
----
-
-### Example Configuration
-
-```java
-ArrowRegistryConfig config = new ArrowRegistryConfig() {
-
-    @Override
-    public String get(String key) {
-        if ("arrow.outputFile".equals(key))
-            return "metrics.arrow";
-        return null;
-    }
-
-    @Override
-    public boolean enabled() {
-        return true;
-    }
-
-    @Override
-    public Duration step() {
-        return Duration.ofSeconds(10);
-    }
-};
+```conf
+dazzleduck_micrometer { ... }
 ```
 
+Configuration can be provided via:
+
+- `application.conf`
+- Environment variables
+- JVM system properties
+
 ---
 
-## ⏱ 3. Publishing Frequency
+## Example Configuration
 
-Control how often metrics are flushed into Arrow files using `step()`:
+```conf
+dazzleduck_micrometer {
+  application_id   = "orders-service"
+  application_name = "orders"
+  application_host = "host-1"
 
-```java
-@Override
-public Duration step() {
-    return Duration.ofSeconds(10);
+  http {
+    base_url = "http://localhost:8081"
+    target_path = "/v1/ingest"
+    username = "admin"
+    password = "admin"
+    http_client_timeout_ms = 5000
+  }
+
+  max_in_memory_bytes = 10485760   # 10 MB
+  max_on_disk_bytes   = 1073741824 # 1 GB
+
+  min_batch_size = 1048576 # 1 MB
+  max_batch_size = 16777216 # 16 MB
+  max_send_interval_ms = 1000
+
+  retry_count = 3
+  retry_interval_ms = 1000
+  transformations = []
+  partition_by = []
 }
 ```
 
-✅ This publishes metric snapshots every **10 seconds**.
+---
+
+## Publishing Model
+
+- Metrics are published on a **fixed step interval** (default: 10s)
+- Each publish cycle sends a **snapshot** of all meters
+- Publishing is non‑blocking and failure‑tolerant
 
 ---
 
-## 📦 4. Output Modes
+## Graceful Shutdown
 
-Arrow-Micrometer supports multiple output strategies:
-
-### ✅ Supported
-
-* File-based Arrow dataset
-
-### 🔜 Planned (Future)
-
-* HTTP upload
-* Memory-based streaming
-
----
-
-## 🛑 5. Graceful Shutdown
-
-Ensure all metrics are flushed on application shutdown:
+Always close the registry on application shutdown:
 
 ```java
-Runtime.getRuntime().addShutdownHook(new Thread(() -> registry.close()));
+registry.close();
 ```
 
-✅ This guarantees safe persistence before exit.
+This ensures:
+
+- Final metric flush
+- Sender shutdown
+- Resource cleanup
 
 ---
 
-## ✅ Summary
-
-You're now configured to:
-
-* Capture Micrometer metrics
-* Export Arrow datasets
-* Analyze via SQL
-
----
-
-Next: **[Schema →](schema.md)**
+Next: **[Metric Schema →](schema.md)**

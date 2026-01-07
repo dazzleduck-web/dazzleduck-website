@@ -6,16 +6,17 @@ import { FaGithub, FaTwitter, FaEnvelope } from 'react-icons/fa';
 export default function about() {
     return (
         <Layout
-            title="About Dazzle Duck SQL Server"
-            description="Learn about Dazzle Duck SQL Server — the next-generation SQL query engine optimized for analytics."
+            title="About DazzleDuck SQL Server"
+            description="Learn about DazzleDuck SQL Server — a high-performance, Arrow-native SQL server built on DuckDB."
         >
             <main className="about-page">
                 <section className="intro-section">
-                    <h1>About <span className="highlight">Dazzle Duck SQL Server</span></h1>
+                    <h1>About <span className="highlight">DazzleDuck SQL Server</span></h1>
                     <p className="intro-text">
-                        Dazzle Duck SQL Server is a modern, high-performance SQL engine designed for fast,
-                        scalable, and developer-friendly analytics. Built with simplicity and extensibility
-                        in mind, it enables teams to query, analyze, and visualize large datasets efficiently.
+                        DazzleDuck SQL Server is a high-performance, remote SQL server built on top of
+                        DuckDB and Apache Arrow. It transforms DuckDB from an embedded database into a
+                        scalable analytics service that supports remote clients, streaming results,
+                        and modern data workflows.
                     </p>
 
                     <div className="intro-links">
@@ -26,23 +27,25 @@ export default function about() {
                 <section className="details-section">
                     <h2>Our Vision</h2>
                     <p>
-                        We aim to make SQL analytics lightning-fast, simple to use, and accessible to everyone.
-                        Dazzle Duck bridges the gap between traditional databases and modern analytical systems,
-                        offering a single engine that’s both powerful and developer-friendly.
+                        Our goal is to make analytical SQL fast, simple, and accessible without the
+                        operational complexity of traditional database servers. DazzleDuck bridges
+                        the gap between embedded analytics and distributed systems by combining
+                        DuckDB’s performance with Arrow-native data transport.
                     </p>
                     <ul className="key-points">
-                        <li><strong>Speed:</strong> Vectorized execution for faster analytical queries.</li>
-                        <li><strong>Simplicity:</strong> Minimal configuration and intuitive SQL syntax.</li>
-                        <li><strong>Extensibility:</strong> Easily plug in connectors, optimizers, or custom functions.</li>
-                        <li><strong>Open Source:</strong> Community-driven development with transparent governance.</li>
+                        <li><strong>Performance:</strong> Vectorized execution and Arrow-based streaming for large analytical workloads.</li>
+                        <li><strong>Simplicity:</strong> Minimal setup with familiar SQL and standard protocols.</li>
+                        <li><strong>Interoperability:</strong> Works with HTTP, Arrow Flight SQL, JDBC, ADBC, and BI tools.</li>
+                        <li><strong>Open Source:</strong> Transparent, community-driven development built in the open.</li>
                     </ul>
                 </section>
 
                 <section className="team-section">
-                    <h2>Meet the Team</h2>
+                    <h2>Community & Contributors</h2>
                     <p>
-                        Dazzle Duck is built and maintained by a passionate open-source community of developers
-                        and data engineers who believe in open, high-performance analytics for all.
+                        DazzleDuck SQL Server is developed and maintained by an open-source community
+                        of engineers and data practitioners focused on building practical, high-performance
+                        analytics infrastructure.
                     </p>
 
                     <div className="team-grid">
@@ -52,9 +55,9 @@ export default function about() {
                             <p>Founder & Lead Developer</p>
                         </div>
                         <div className="team-member">
-                            <img src="https://placehold.co/600x400" alt="Community" />
+                            <img src="https://placehold.co/600x400" alt="Open Source Community" />
                             <h4>Open Source Contributors</h4>
-                            <p>Community Developers</p>
+                            <p>Community Developers & Maintainers</p>
                         </div>
                     </div>
                 </section>
@@ -62,16 +65,26 @@ export default function about() {
                 <section className="contact-section">
                     <h2>Get in Touch</h2>
                     <p>
-                        Have feedback, ideas, or questions? We’d love to hear from you!
-                        Join the community or reach out directly using the links below.
+                        Have questions, feedback, or ideas? We welcome contributions, discussions,
+                        and collaboration from the community.
                     </p>
 
                     <div className="contact-links">
-                        <a href="mailto:contact@dazzleduck.io"><FaEnvelope /> contact@dazzleduck.io</a>
-                        <a href="https://github.com/dazzleduck-web/dazzleduck-sql-server" target="_blank" rel="noopener noreferrer">
+                        <a href="mailto:contact@dazzleduck.io">
+                            <FaEnvelope /> contact@dazzleduck.io
+                        </a>
+                        <a
+                            href="https://github.com/dazzleduck-web/dazzleduck-sql-server"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        >
                             <FaGithub /> GitHub Repository
                         </a>
-                        <a href="https://twitter.com/dazzleduckdb" target="_blank" rel="noopener noreferrer">
+                        <a
+                            href="https://twitter.com/dazzleduckdb"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        >
                             <FaTwitter /> @dazzleduckdb
                         </a>
                     </div>

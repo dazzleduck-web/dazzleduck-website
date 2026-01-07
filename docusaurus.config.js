@@ -1,32 +1,28 @@
 import { themes as prismThemes } from 'prism-react-renderer';
 
-// This runs in Node.js - Don't use client-side code here (browser APIs, JSX...)
-
 /** @type {import('@docusaurus/types').Config} */
 const config = {
-  title: 'Dazzle Duck',
-  tagline: 'Dazzleduck faster and flexible',
+  title: 'DazzleDuck SQL Server',
+  tagline: 'A high-performance DuckDB server powered by Apache Arrow & Flight SQL',
   favicon: 'img/favicon.ico',
 
   // Set the production url of your site here
-  url: 'https://dazzleduck-web.github.io', // Your GitHub Pages URL
-  baseUrl: '/dazzleduck-website/', // The repository name, preceded by a slash
-  deploymentBranch: "gh-pages", // Deployment branch for GitHub Pages
-  onBrokenMarkdownLinks: 'warn',
+  url: 'https://dazzleduck-web.github.io',  // Your GitHub Pages URL
+  baseUrl: '/dazzleduck-website/',          // The repository name, preceded by a slash
+  deploymentBranch: "gh-pages",             // Deployment branch for GitHub Pages
+  onBrokenMarkdownLinks: 'throw',
 
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
-  organizationName: 'dazzleduck-web', // Usually your GitHub org/user name.
-  projectName: 'dazzleduck-website', // Usually your repo name.
+  organizationName: 'dazzleduck-web',   // Usually your GitHub org/user name.
+  projectName: 'dazzleduck-website',    // Usually your repo name.
 
   onBrokenLinks: 'throw',
 
-  // Even if you don't use internationalization, you can use this field to set
-  // useful metadata like html lang. For example, if your site is Chinese, you
-  // may want to replace "en" with "zh-Hans".
+  // translation settings
   i18n: {
     defaultLocale: 'en',
-    locales: ['en', 'fr'],
+    locales: ['en'],
   },
 
   presets: [
@@ -36,7 +32,6 @@ const config = {
       ({
         docs: {
           sidebarPath: './sidebars.js',
-          // Please change this to your repo.
         },
         blog: {
           showReadingTime: true,
@@ -44,7 +39,6 @@ const config = {
             type: ['rss', 'atom'],
             xslt: true,
           },
-          // Please change this to your repo.
           // Useful options to enforce blogging best practices
           onInlineTags: 'warn',
           onInlineAuthors: 'warn',
@@ -60,7 +54,7 @@ const config = {
   themeConfig:
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
-      // Replace with your project's social card
+      // project's social card
       image: 'img/logo.png',
       colorMode: {
         respectPrefersColorScheme: true,

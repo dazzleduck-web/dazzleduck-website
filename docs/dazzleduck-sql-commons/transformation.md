@@ -5,92 +5,74 @@ sidebar_position: 3
 
 # SQL Transformation
 
-> AST-based SQL rewriting, normalization, and structural query manipulation engine.
+> AST-based SQL rewriting, normalization, and structural query manipulation.
 
 ---
 
 ## Overview
 
-SQL Commons provides an **AST-based SQL transformation engine**.
+SQL Commons includes a **parser-driven transformation engine** that converts SQL strings into an Abstract Syntax Tree (AST).
 
-Instead of doing string replacements, queries are parsed into a structured tree that can be safely modified, rewritten, and normalized.
+This allows safe, semantic-aware query rewriting instead of fragile string replacements.
 
 ---
 
-## Parsing SQL into a Tree
+## Parsing SQL
 
 ```java
 SqlTree tree = Transformations.parseToTree(sql);
 ```
 
-Once parsed, the query becomes a navigable structure instead of text.
+Once parsed, the query can be inspected and modified programmatically.
 
 ---
 
 ## Capabilities
 
-The transformation engine can:
+The transformation engine supports:
 
-- Normalize queries
-- Remove literals
-- Modify filters
-- Remap columns
-- Rewrite functions
-- Apply canonical formatting
-
----
-
-## Example Rewrite
-
-Convert:
-
-```sql
-SELECT * FROM users WHERE age > 25
-```
-
-Into:
-
-```sql
-SELECT * FROM users WHERE age > ?
-```
+- Literal removal
+- Predicate normalization
+- Column remapping
+- Function rewriting
+- Canonical formatting
+- Structural equality checks
 
 ---
 
-Convert:
+## Example
+
+Input:
 
 ```sql
-WHERE id = 100 OR id = 200
+SELECT * FROM users WHERE id = 100 OR id = 200
 ```
 
-Into:
+Transformed:
 
 ```sql
-WHERE id IN (?, ?)
+SELECT * FROM users WHERE id IN (?, ?)
 ```
 
 ---
 
-## Applications
+## Usage in DazzleDuck
 
 This engine is used for:
 
-- Fingerprinting
+- Query fingerprinting
 - Authorization rewriting
-- Predicate pushdown
-- Optimization
+- Partition pruning
 - Policy enforcement
-- Safety checks
+- Planner optimization
 
 ---
 
-## Summary
+## Production Considerations
 
-SQL Transformation is the foundation for:
-
-✅ SQL rewriting  
-✅ Security  
-✅ Performance  
-✅ Fingerprinting  
+- Always transform before hashing
+- Avoid transforming raw user SQL directly
+- Use canonical form for comparisons
 
 ---
 

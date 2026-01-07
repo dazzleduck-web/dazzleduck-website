@@ -5,98 +5,94 @@ sidebar_position: 4
 
 # Architecture
 
-> How the logger works under the hood.
+> How the log tail → Arrow → HTTP ingestion pipeline works.
 
 ---
 
 ## High-Level Design
 
 ```text
-SLF4J
-  ↓
-ArrowSimpleLogger
-  ↓
-Batch Buffer
-  ↓
-Arrow IPC Writer
-  ↓
-AsyncArrowFlightSender
-  ↓
-Apache Arrow Flight
-  ↓
-SimpleFlightLogServer
+Log files (*.log)
+      ↓
+LogFileTailReader
+      ↓
+LogTailToArrowProcessor
+      ↓
+JsonToArrowConverter
+      ↓
+Arrow IPC batches
+      ↓
+HttpProducer
+      ↓
+DazzleDuck SQL Server (/v1/ingest)
+      ↓
+Parquet in warehouse
 ```
 
 ---
 
-## Logger Pipeline
+## Pipeline Stages
 
-### Capture
+### 1. File Tailing
 
-Log events are intercepted via **SLF4J SPI** using a custom service provider.
-
-### Batch
-
-Log events are accumulated in memory in batches of **10 records** by default.
-
-### Serialize
-
-Each batch is written as an **Apache Arrow IPC stream** into in-memory buffers.
-
-### Send
-
-The batch is enqueued for asynchronous network transfer using a scheduled sender.
+- Monitors a directory for new and existing log files
+- Tails appended content only (no rereads)
+- Handles file rotation and multiple files safely
 
 ---
 
-## Server Processing
+### 2. JSON Parsing
 
-The Flight log server accepts:
-
-```text
-PUT (Arrow IPC streams)
-```
-
-And prints logs row-wise:
-
-```text
-[LOG RECEIVED] ts | level | logger | thread | message | app | host
-```
+- Each log line must be a single JSON object
+- Invalid JSON lines are skipped safely
+- Parsing errors do not crash the pipeline
 
 ---
 
-## Flight Producer Design
+### 3. Arrow Conversion
 
-The server implements a minimal `FlightProducer`:
+- Parsed records are converted into Arrow vectors
+- Uses a fixed, schema-driven layout
+- Data is batched to control memory and throughput
 
-* `acceptPut` → receives Arrow IPC streams
-* `getFlightInfo` → no-op
-  generates empty schema
-* `getStream` → unsupported
-* `doAction` → disabled
+---
 
-This is a **log sink**, not a query engine.
+### 4. HTTP Ingestion
+
+- Arrow IPC batches are sent via HTTP to DazzleDuck SQL Server
+- Uses `/v1/ingest` endpoint
+- Supports JWT authentication and retries
+- Backpressure is enforced via bounded queues
 
 ---
 
 ## Threading Model
 
-| Component       | Threading Model     |
-| --------------- | ------------------- |
-| Logger call     | Application thread  |
-| Batch flush     | Scheduled executor  |
-| Sender transmit | Single async thread |
-| Queue handling  | Non-blocking        |
+| Component      | Threading                 |
+| -------------- | ------------------------- |
+| File tailing   | Background watcher thread |
+| JSON parsing   | Worker thread             |
+| Arrow batching | Processor thread          |
+| HTTP sending   | Async sender thread       |
+| Backpressure   | Bounded queues            |
+
+---
+
+## Failure & Safety Guarantees
+
+- Application never blocks on log ingestion
+- Logs may be dropped under sustained pressure
+- Failures are isolated and logged locally
+- Pipeline continues running on partial failures
 
 ---
 
 ## Performance Characteristics
 
-* Zero-copy Arrow buffers
-* No filesystem writes
-* Network streaming only
-* Bounded memory queue
-* Background flushing
+- Streaming-friendly
+- Low memory overhead
+- No disk writes during processing
+- Arrow-native columnar transport
 
 ---
 
