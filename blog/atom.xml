@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?><?xml-stylesheet type="text/xsl" href="atom.xsl"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <id>https://dazzleduck-web.github.io/dazzleduck-website/blog</id>
+    <title>DazzleDuck SQL Server Blog</title>
+    <updated>2025-10-28T21:00:39.000Z</updated>
+    <generator>https://github.com/jpmonette/feed</generator>
+    <link rel="alternate" href="https://dazzleduck-web.github.io/dazzleduck-website/blog"/>
+    <subtitle>DazzleDuck SQL Server Blog</subtitle>
+    <icon>https://dazzleduck-web.github.io/dazzleduck-website/img/favicon.ico</icon>
+    <entry>
+        <title type="html"><![CDATA[Dazzle Duck Blog]]></title>
+        <id>https://dazzleduck-web.github.io/dazzleduck-website/blog/</id>
+        <link href="https://dazzleduck-web.github.io/dazzleduck-website/blog/"/>
+        <updated>2025-10-28T21:00:39.000Z</updated>
+        <summary type="html"><![CDATA[Latest updates, tutorials, and engineering deep dives from the Dazzle Duck SQL Server team.]]></summary>
+        <author>
+            <name>John Whilliams</name>
+            <uri>https://github.com/jhon-whilliams</uri>
+        </author>
+        <category label="blog" term="blog"/>
+        <category label="updates" term="updates"/>
+        <category label="dazzle-duck" term="dazzle-duck"/>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Dazzle Duck Community Roadmap — 2025]]></title>
+        <id>https://dazzleduck-web.github.io/dazzleduck-website/blog/community-roadmap</id>
+        <link href="https://dazzleduck-web.github.io/dazzleduck-website/blog/community-roadmap"/>
+        <updated>2025-07-15T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[We’re thrilled to share the 2025 roadmap for Dazzle Duck!]]></summary>
+        <content type="html"><![CDATA[<p>We’re thrilled to share the <strong>2025 roadmap</strong> for Dazzle Duck!<br>
+<!-- -->Expect better analytics, more integrations, and an expanding open-source community.</p>]]></content>
+        <author>
+            <name>Dazzle Duck Community</name>
+            <uri>https://github.com/dazzleduck</uri>
+        </author>
+        <category label="Roadmap" term="Roadmap"/>
+        <category label="Community" term="Community"/>
+        <category label="Announcements" term="Announcements"/>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Extending Dazzle Duck with Custom Functions]]></title>
+        <id>https://dazzleduck-web.github.io/dazzleduck-website/blog/extending-dazzle-duck</id>
+        <link href="https://dazzleduck-web.github.io/dazzleduck-website/blog/extending-dazzle-duck"/>
+        <updated>2025-04-20T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Dazzle Duck was designed to be modular and hackable.]]></summary>
+        <content type="html"><![CDATA[<p>Dazzle Duck was designed to be <strong>modular and hackable</strong>.<br>
+<!-- -->In this article, we’ll walk through writing your own extension to add custom SQL functions.</p>]]></content>
+        <author>
+            <name>Dazzle Duck Community</name>
+            <uri>https://github.com/dazzleduck</uri>
+        </author>
+        <category label="Extensions" term="Extensions"/>
+        <category label="SQL" term="SQL"/>
+        <category label="plugins" term="plugins"/>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Inside Dazzle Duck: Architecture Overview]]></title>
+        <id>https://dazzleduck-web.github.io/dazzleduck-website/blog/architecture-inside-duck</id>
+        <link href="https://dazzleduck-web.github.io/dazzleduck-website/blog/architecture-inside-duck"/>
+        <updated>2025-02-05T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[In this post, we’ll dive deep into Dazzle Duck’s internal architecture —]]></summary>
+        <content type="html"><![CDATA[<p>In this post, we’ll dive deep into Dazzle Duck’s internal architecture —<br>
+<!-- -->how the parser, optimizer, and execution engine come together for blazing-fast queries.</p>
+<p>We’ll cover:</p>
+<ul>
+<li class="">The query planner</li>
+<li class="">Vectorized execution</li>
+<li class="">Plugin system for extensions</li>
+</ul>]]></content>
+        <author>
+            <name>John Whilliams</name>
+            <uri>https://github.com/jhon-whilliams</uri>
+        </author>
+        <category label="Architecture" term="Architecture"/>
+        <category label="SQL" term="SQL"/>
+        <category label="dazzle-duck" term="dazzle-duck"/>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Introducing Dazzle Duck — A Smarter SQL Engine]]></title>
+        <id>https://dazzleduck-web.github.io/dazzleduck-website/blog/introducing-dazzle-duck</id>
+        <link href="https://dazzleduck-web.github.io/dazzleduck-website/blog/introducing-dazzle-duck"/>
+        <updated>2025-01-10T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Welcome to the very first post of Dazzle Duck —]]></summary>
+        <content type="html"><![CDATA[<p>Welcome to the very first post of <strong>Dazzle Duck</strong> —<br>
+<!-- -->an open-source analytical SQL server built for performance, extensibility, and fun.</p>
+<p>In this post, we’ll explore what Dazzle Duck is, why it matters, and how you can start contributing.</p>
+<p><strong>Learn more in our <a class="" href="https://dazzleduck-web.github.io/dazzleduck-website/docs/intro">Docs</a></strong>.</p>]]></content>
+        <author>
+            <name>John Whilliams</name>
+            <uri>https://github.com/jhon-whilliams</uri>
+        </author>
+        <category label="Announcements" term="Announcements"/>
+        <category label="dazzle-duck" term="dazzle-duck"/>
+        <category label="SQL" term="SQL"/>
+    </entry>
+</feed>

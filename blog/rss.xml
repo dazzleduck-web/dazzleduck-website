@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?><?xml-stylesheet type="text/xsl" href="rss.xsl"?>
+<rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+    <channel>
+        <title>DazzleDuck SQL Server Blog</title>
+        <link>https://dazzleduck-web.github.io/dazzleduck-website/blog</link>
+        <description>DazzleDuck SQL Server Blog</description>
+        <lastBuildDate>Tue, 28 Oct 2025 21:00:39 GMT</lastBuildDate>
+        <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
+        <generator>https://github.com/jpmonette/feed</generator>
+        <language>en</language>
+        <item>
+            <title><![CDATA[Dazzle Duck Blog]]></title>
+            <link>https://dazzleduck-web.github.io/dazzleduck-website/blog/</link>
+            <guid>https://dazzleduck-web.github.io/dazzleduck-website/blog/</guid>
+            <pubDate>Tue, 28 Oct 2025 21:00:39 GMT</pubDate>
+            <description><![CDATA[Latest updates, tutorials, and engineering deep dives from the Dazzle Duck SQL Server team.]]></description>
+            <category>blog</category>
+            <category>updates</category>
+            <category>dazzle-duck</category>
+        </item>
+        <item>
+            <title><![CDATA[Dazzle Duck Community Roadmap — 2025]]></title>
+            <link>https://dazzleduck-web.github.io/dazzleduck-website/blog/community-roadmap</link>
+            <guid>https://dazzleduck-web.github.io/dazzleduck-website/blog/community-roadmap</guid>
+            <pubDate>Tue, 15 Jul 2025 00:00:00 GMT</pubDate>
+            <description><![CDATA[We’re thrilled to share the 2025 roadmap for Dazzle Duck!]]></description>
+            <content:encoded><![CDATA[<p>We’re thrilled to share the <strong>2025 roadmap</strong> for Dazzle Duck!<br>
+<!-- -->Expect better analytics, more integrations, and an expanding open-source community.</p>]]></content:encoded>
+            <category>Roadmap</category>
+            <category>Community</category>
+            <category>Announcements</category>
+        </item>
+        <item>
+            <title><![CDATA[Extending Dazzle Duck with Custom Functions]]></title>
+            <link>https://dazzleduck-web.github.io/dazzleduck-website/blog/extending-dazzle-duck</link>
+            <guid>https://dazzleduck-web.github.io/dazzleduck-website/blog/extending-dazzle-duck</guid>
+            <pubDate>Sun, 20 Apr 2025 00:00:00 GMT</pubDate>
+            <description><![CDATA[Dazzle Duck was designed to be modular and hackable.]]></description>
+            <content:encoded><![CDATA[<p>Dazzle Duck was designed to be <strong>modular and hackable</strong>.<br>
+<!-- -->In this article, we’ll walk through writing your own extension to add custom SQL functions.</p>]]></content:encoded>
+            <category>Extensions</category>
+            <category>SQL</category>
+            <category>plugins</category>
+        </item>
+        <item>
+            <title><![CDATA[Inside Dazzle Duck: Architecture Overview]]></title>
+            <link>https://dazzleduck-web.github.io/dazzleduck-website/blog/architecture-inside-duck</link>
+            <guid>https://dazzleduck-web.github.io/dazzleduck-website/blog/architecture-inside-duck</guid>
+            <pubDate>Wed, 05 Feb 2025 00:00:00 GMT</pubDate>
+            <description><![CDATA[In this post, we’ll dive deep into Dazzle Duck’s internal architecture —]]></description>
+            <content:encoded><![CDATA[<p>In this post, we’ll dive deep into Dazzle Duck’s internal architecture —<br>
+<!-- -->how the parser, optimizer, and execution engine come together for blazing-fast queries.</p>
+<p>We’ll cover:</p>
+<ul>
+<li class="">The query planner</li>
+<li class="">Vectorized execution</li>
+<li class="">Plugin system for extensions</li>
+</ul>]]></content:encoded>
+            <category>Architecture</category>
+            <category>SQL</category>
+            <category>dazzle-duck</category>
+        </item>
+        <item>
+            <title><![CDATA[Introducing Dazzle Duck — A Smarter SQL Engine]]></title>
+            <link>https://dazzleduck-web.github.io/dazzleduck-website/blog/introducing-dazzle-duck</link>
+            <guid>https://dazzleduck-web.github.io/dazzleduck-website/blog/introducing-dazzle-duck</guid>
+            <pubDate>Fri, 10 Jan 2025 00:00:00 GMT</pubDate>
+            <description><![CDATA[Welcome to the very first post of Dazzle Duck —]]></description>
+            <content:encoded><![CDATA[<p>Welcome to the very first post of <strong>Dazzle Duck</strong> —<br>
+<!-- -->an open-source analytical SQL server built for performance, extensibility, and fun.</p>
+<p>In this post, we’ll explore what Dazzle Duck is, why it matters, and how you can start contributing.</p>
+<p><strong>Learn more in our <a class="" href="https://dazzleduck-web.github.io/dazzleduck-website/docs/intro">Docs</a></strong>.</p>]]></content:encoded>
+            <category>Announcements</category>
+            <category>dazzle-duck</category>
+            <category>SQL</category>
+        </item>
+    </channel>
+</rss>

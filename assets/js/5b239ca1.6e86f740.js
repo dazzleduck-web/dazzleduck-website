@@ -1,0 +1,1 @@
+"use strict";(globalThis.webpackChunkdazzleduck_website=globalThis.webpackChunkdazzleduck_website||[]).push([[1645],{8036:e=>{e.exports=JSON.parse('{"metadata":{"permalink":"/dazzleduck-website/blog","page":1,"postsPerPage":10,"totalPages":1,"totalCount":5,"blogDescription":"Blog","blogTitle":"Blog"}}')}}]);

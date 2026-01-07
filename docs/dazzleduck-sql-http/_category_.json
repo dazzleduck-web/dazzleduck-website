@@ -1,8 +1,0 @@
-{
-  "label": "DazzleDuck SQL HTTP",
-  "position": 4,
-  "link": {
-    "type": "generated-index",
-    "description": "Getting started with DazzleDuck SQL HTTP Server,a clean, production-grade HTTP layer for DuckDB. Easily expose DuckDB databases over HTTP with RESTful endpoints."
-  }
-}
