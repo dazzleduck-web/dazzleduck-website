@@ -61,7 +61,7 @@ const sidebars = {
           type: 'category',
           label: 'DazzleDuck Arrow Flight SQL',
           items: [
-            'dazzleduck-sql-flight/overview',
+            'dazzleduck-sql-flight/Overview',
             'dazzleduck-sql-flight/installation',
             'dazzleduck-sql-flight/authentication',
             'dazzleduck-sql-flight/jdbc',
