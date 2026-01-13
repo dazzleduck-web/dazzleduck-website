@@ -49,11 +49,9 @@ for (const f of files) {
 
     const content = execSync(`curl -s ${f.url}`, { encoding: "utf8" });
 
-    // 🔒 Validate before overwriting
+    // Validate before overwriting
     if (!isMdxSafe(content)) {
-        console.warn(
-            `⚠️ Skipping update for ${f.out} (MDX-unsafe content detected). Keeping existing file.`
-        );
+        console.warn(`⚠️ Skipping update for ${f.out} (MDX-unsafe content detected). Keeping existing file.`);
         continue;
     }
 
