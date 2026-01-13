@@ -7,6 +7,8 @@ sidebar_position: 1
 
 ## Welcome to **DazzleDuck SQL Server**
 
+[![GitHub Repo](https://img.shields.io/badge/GitHub-dazzleduck--sql--server-blue?logo=github)](https://github.com/dazzleduck-web/dazzleduck-sql-server)
+
 **DazzleDuck SQL Server** is a high‑performance **remote server for DuckDB** that enables clients to execute analytical SQL queries over the network using modern, columnar data protocols.
 
 Instead of embedding DuckDB directly inside every application, DazzleDuck exposes DuckDB as a **shared, multi‑client service**, supporting both:
