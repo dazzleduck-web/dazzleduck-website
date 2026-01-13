@@ -30,10 +30,32 @@ const files = [
     },
 ];
 
+/**
+ * Very simple MDX safety check.
+ * Detects JSX-like generics such as:
+ *   Map<String, String>
+ *   <T, R>
+ *   <K, V>
+ *
+ * These are known to break Docusaurus MDX, we can add more patterns we needed.
+ */
+function isMdxSafe(markdown) {
+    const unsafeJsxPattern = /<[^>\n]+,\s*[^>\n]+>/;
+    return !unsafeJsxPattern.test(markdown);
+}
+
 for (const f of files) {
     console.log(`Syncing ${f.out}`);
 
     const content = execSync(`curl -s ${f.url}`, { encoding: "utf8" });
+
+    // 🔒 Validate before overwriting
+    if (!isMdxSafe(content)) {
+        console.warn(
+            `⚠️ Skipping update for ${f.out} (MDX-unsafe content detected). Keeping existing file.`
+        );
+        continue;
+    }
 
     const header = `---
 sidebar_label: "${f.lable}"
