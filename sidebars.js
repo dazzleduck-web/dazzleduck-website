@@ -146,6 +146,33 @@ const sidebars = {
         },
       ],
     },
+
+    // ------------------------------------------------------------------
+    // Connectors
+    // ------------------------------------------------------------------
+    {
+      type: 'category',
+      label: 'Connectors',
+      items: [
+        {
+          type: 'category',
+          label: 'DazzleDuck SQL Spark',
+          items: [
+            'connector/dazzleduck-sql-spark/overview',
+            'connector/dazzleduck-sql-spark/installation',
+            'connector/dazzleduck-sql-spark/architecture',
+            'connector/dazzleduck-sql-spark/usage',
+          ],
+        },
+        {
+          type: 'category',
+          label: 'DazzleDuck SQL DuckDB',
+          items: [
+            'connector/dazzleduck-sql-duckdb/overview',
+          ],
+        },
+      ],
+    },
   ],
 };
 
