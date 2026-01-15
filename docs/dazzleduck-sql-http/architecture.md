@@ -30,21 +30,6 @@ DuckDB execution engine
 
 ---
 
-## Startup Flow
-
-On startup, the server:
-
-1. Loads configuration
-2. Initializes logging
-3. Creates Arrow memory allocator
-4. Configures access mode
-5. Initializes DuckDB + Flight SQL producer
-6. Registers HTTP routes
-7. Applies JWT filters (if enabled)
-8. Starts Helidon server
-
----
-
 ## Delegation Model
 
 The HTTP layer:
@@ -84,7 +69,3 @@ The HTTP server provides a clean separation:
 - Thin HTTP façade
 - Unified execution engine
 - Predictable data flow
-
----
-
-Next: **[API Reference →](api-reference.md)**

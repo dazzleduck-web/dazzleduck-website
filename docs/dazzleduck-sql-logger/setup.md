@@ -68,7 +68,3 @@ The processor will:
 - Pipeline failures never crash the application
 - Logs may be dropped under backpressure
 - Errors are printed locally for visibility
-
----
-
-Next: **[Configuration →](configuration.md)**

@@ -66,7 +66,3 @@ SELECT * FROM arrow_stream
 - Use partitioning for large datasets
 - Monitor disk usage
 - Prefer Arrow streams over row-based inserts
-
----
-
-Next: **[JDBC →](jdbc.md)**

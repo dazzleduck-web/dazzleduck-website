@@ -100,7 +100,3 @@ FlightClient.builder(allocator, location)
 - Rotate signing keys regularly
 - Validate claims strictly
 - Combine with TLS for secure transport
-
----
-
- Next: **[Ingestion & Writes →](ingestion.md)**

@@ -93,7 +93,3 @@ Parquet in warehouse
 - Low memory overhead
 - No disk writes during processing
 - Arrow-native columnar transport
-
----
-
-Next: **[Internals →](internals.md)**

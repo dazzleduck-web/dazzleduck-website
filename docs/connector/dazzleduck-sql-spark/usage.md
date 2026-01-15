@@ -86,5 +86,3 @@ OPTIONS (
 | TLS errors         | Disable verification (dev only) |
 | Timeout            | Increase `connection_timeout`   |
 
----
- You are ready to use Spark with DazzleDuck

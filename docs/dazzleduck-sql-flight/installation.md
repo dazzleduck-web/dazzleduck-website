@@ -119,7 +119,3 @@ Ensure this path is writable by the server process.
 - Enable JWT authentication in production
 - Use TLS for gRPC when exposed publicly
 - Monitor memory usage for large result sets
-
----
-
-Next: **[Authentication & Security →](authentication.md)**

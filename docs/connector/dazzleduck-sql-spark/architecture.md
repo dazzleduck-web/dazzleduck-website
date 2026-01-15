@@ -81,6 +81,3 @@ This allows Spark to scale reads efficiently.
 * Authentication handled via Arrow Flight SQL
 * Username/password passed via JDBC-style URL
 * TLS supported when enabled on server
-
----
- Next: **Installation & Setup**

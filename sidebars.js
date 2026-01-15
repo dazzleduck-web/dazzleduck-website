@@ -52,9 +52,6 @@ const sidebars = {
           items: [
             'dazzleduck-sql-http/overview',
             'dazzleduck-sql-http/architecture',
-            'dazzleduck-sql-http/installation',
-            'dazzleduck-sql-http/configuration',
-            'dazzleduck-sql-http/api-reference',
           ],
         },
         {
@@ -89,7 +86,17 @@ const sidebars = {
             'dazzleduck-sql-commons/partition-pruning',
             'dazzleduck-sql-commons/ingestion-utils',
           ],
-        },
+        }
+      ],
+    },
+
+    // ------------------------------------------------------------------
+    // Observability
+    // ------------------------------------------------------------------
+    {
+      type: 'category',
+      label: 'Observability',
+      items: [
         {
           type: 'category',
           label: 'DazzleDuck SQL Logger',
@@ -102,16 +109,6 @@ const sidebars = {
             'dazzleduck-sql-logger/README',
           ],
         },
-      ],
-    },
-
-    // ------------------------------------------------------------------
-    // Observability
-    // ------------------------------------------------------------------
-    {
-      type: 'category',
-      label: 'Observability',
-      items: [
         {
           type: 'category',
           label: 'DazzleDuck SQL Micrometer',

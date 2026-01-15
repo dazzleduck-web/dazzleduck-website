@@ -72,7 +72,3 @@ This module is ideal when you need:
 ## Summary
 
 DazzleDuck SQL HTTP Server turns DuckDB into a **remote analytics engine accessible over HTTP**, without sacrificing performance or Arrow-native efficiency.
-
----
-
-Next: **[Installation →](installation.md)**

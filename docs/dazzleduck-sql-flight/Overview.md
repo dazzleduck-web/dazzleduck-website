@@ -90,7 +90,3 @@ Choose **Flight SQL** when you need:
 - Arrow-native streaming to Python / Spark
 - Secure multi-client access to DuckDB
 - Production-grade SQL APIs
-
----
-
-Next: **[Installation & Setup →](installation.md)**
