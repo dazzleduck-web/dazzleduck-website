@@ -188,3 +188,31 @@
     max-width: 330px;
   }
 }
+
+/* Tabs container */
+.tabs {
+  border-bottom: 1px solid var(--ifm-color-emphasis-300);
+  margin-bottom: 1rem;
+}
+
+/* Individual tab */
+.tabs__item {
+  font-weight: 600;
+  padding: 0.6rem 1.2rem;
+  border: 0.5px solid var(--ifm-color-emphasis-200);
+  margin: 0 0.2rem;
+  border-radius: 8px 8px 0 0;
+  transition: all 0.2s ease;
+}
+
+/* Hover */
+.tabs__item:hover {
+  background-color: var(--ifm-color-emphasis-100);
+}
+
+/* Active tab */
+.tabs__item--active {
+  border-bottom: 2px solid var(--ifm-color-primary);
+  color: var(--ifm-color-primary);
+  background-color: var(--ifm-color-emphasis-200);
+}

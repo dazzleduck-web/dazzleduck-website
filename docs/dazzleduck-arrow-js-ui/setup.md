@@ -39,6 +39,22 @@ http://localhost:5173
 
 ---
 
+## Arrow-js Frontend Docker Image
+
+### Build the Docker Image
+From the project root (where the `Dockerfile` is located) - (*dazzleduck-sql-server\ui\arrow-js-frontend*)
+
+Run:
+```bash
+docker build -t dazzleduck-frontend .
+```
+
+### Start the container
+```bash
+docker run -p 5174:5174 dazzleduck-frontend
+```
+---
+
 ## Backend Configuration
 
 The UI connects to the HTTP server using a base URL:
@@ -97,7 +113,3 @@ dist/
 - UI never stores passwords
 - JWT tokens live only in memory
 - HTTPS strongly recommended in production
-
----
-
-Next: **[Usage →](usage.md)**

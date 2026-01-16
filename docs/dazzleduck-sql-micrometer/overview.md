@@ -89,7 +89,3 @@ Use **DazzleDuck SQL Micrometer** when you need:
 - CI or benchmark validation
 - Historical metric comparisons
 - Analytics‑ready observability data
-
----
-
-Next: **[Setup & Configuration →](setup.md)**

@@ -73,7 +73,3 @@ This engine is used for:
 - Always transform before hashing
 - Avoid transforming raw user SQL directly
 - Use canonical form for comparisons
-
----
-
-Next: **[Fingerprinting →](fingerprint.md)**

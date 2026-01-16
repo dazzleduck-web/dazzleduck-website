@@ -87,7 +87,3 @@ This enables:
 - CI regression checks
 - Release comparisons
 - Diff‑based validation
-
----
-
-Next: **[Querying Metrics →](querying.md)**

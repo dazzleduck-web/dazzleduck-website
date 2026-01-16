@@ -70,7 +70,3 @@ Results can be toggled between:
 - Each query has an ID
 - Cancel sends `/v1/cancel`
 - Immediate server interruption
-
----
-
-Next: **[Charts →](charts.md)**

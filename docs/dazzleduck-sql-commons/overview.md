@@ -75,7 +75,3 @@ Traditional JDBC utilities are insufficient for modern analytical workloads. SQL
 SQL Commons is the **query brain** of DazzleDuck.
 
 All planning, pruning, transformation, and ingestion intelligence flows through this module.
-
----
-
-Next: **[Connection Pool →](connectionPool.md)**

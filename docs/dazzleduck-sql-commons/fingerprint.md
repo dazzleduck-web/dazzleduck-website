@@ -73,7 +73,3 @@ Fingerprinting is used internally for:
 
 ### Read More:
 Deep dive article → [https://medium.com/@tanejagagan/detecting-similar-sql-queries-using-duckdb](https://medium.com/@tanejagagan/ac5e00cb96b5)
-
----
-
-Next: **[Partition Pruning →](partition-pruning.md)**

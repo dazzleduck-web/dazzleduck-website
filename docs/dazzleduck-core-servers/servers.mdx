@@ -1,0 +1,588 @@
+---
+title: "Core Dazzleduck Servers"
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# DazzleDuck SQL Servers
+
+DazzleDuck can run as either an **HTTP-based SQL service** or a **high-performance
+Arrow Flight SQL (gRPC) server**. Both servers share the same execution core but
+expose different protocols and client experiences.
+
+Use the tabs below to explore each server in detail.
+
+<Tabs groupId="transport">
+  <TabItem value="http" label="HTTP" default>
+
+# DazzleDuck SQL HTTP Server
+
+> HTTP layer that exposes DuckDB as a remote, Arrow-native analytics service.
+
+<div>
+
+---
+
+## Overview
+
+The **DazzleDuck SQL HTTP Server** provides a **RESTful HTTP interface** on top of the DazzleDuck SQL execution engine. It allows clients to execute analytical SQL queries, ingest Arrow data, and manage query lifecycles using simple HTTP requests, while internally delegating all execution to a **single Arrow Flight SQL producer backed by DuckDB**.
+
+This module is intentionally designed as a **thin HTTP façade** — it does not re-implement query planning or execution logic. Instead, it focuses on:
+
+- HTTP request handling
+- Authentication and authorization
+- Streaming Arrow results over HTTP
+- Coordinating ingestion and query lifecycle APIs
+
+---
+
+## What This Server Provides
+
+### API Reference (HTTP)
+
+All API endpoints are prefixed with `/v1`.
+
+| Method     | Endpoint     | Description                                                 |
+| :--------- | :----------- | :---------------------------------------------------------- |
+| `POST`     | `/v1/login`  | Authenticate and retrieve a JWT token.                      |
+| `GET/POST` | `/v1/query`  | Execute a SQL query. Params: `q` (query string).            |
+| `POST`     | `/v1/plan`   | Generate a query plan (splits) for distributed execution.   |
+| `POST`     | `/v1/ingest` | Upload Arrow stream to a Parquet file. Query param: `path`. |
+| `POST`     | `/v1/cancel` | Cancel a currently running query.                           |
+| `GET`      | `/v1/ui`     | Open the web dashboard.                                     |
+| `GET`      | `/health`    | Server health check (Unversioned).                          |
+
+---
+
+## Key Design Principles
+
+- **Arrow-first**: All data transfer uses Apache Arrow formats
+- **Single execution core**: One DuckDB + Flight SQL producer handles all work
+- **Streaming by default**: Large results are streamed with backpressure awareness
+- **Minimal abstraction**: HTTP layer stays thin and predictable
+
+---
+
+## When to Use the HTTP Server
+
+This module is ideal when you need:
+
+- SQL-over-HTTP access to DuckDB
+- A backend for web-based analytics
+- Lightweight data APIs returning Arrow data
+- A bridge between Arrow pipelines and SQL analytics
+
+---
+
+## Relationship to Other Modules
+
+- **Execution**: Delegates to `dazzleduck-sql-flight`
+- **Security**: Integrates with `dazzleduck-sql-login`
+- **Metrics**: Exposes telemetry via `dazzleduck-sql-micrometer`
+- **UI**: Serves the Arrow JS frontend
+
+---
+
+## Architecture
+
+> Internal design of the DazzleDuck SQL HTTP Server.
+
+### High-Level Design
+
+```text
+Client
+  ↓
+HTTP / HTTPS
+  ↓
+Helidon WebServer
+  ↓
+QueryService        → FlightProducer.getStream()
+PlanningService     → FlightProducer.getFlightInfo()
+IngestionService    → Bulk Arrow ingestion
+CancelService       → Query interruption
+LoginService        → JWT issuance
+  ↓
+DuckDB execution engine
+(exposed via Arrow Flight SQL)
+```
+
+---
+
+### Delegation Model
+
+The HTTP layer:
+
+- Does **not** execute SQL itself
+- Does **not** manage DuckDB state
+- Acts as a protocol bridge
+
+All query execution, planning, ingestion, and cancellation are delegated to a **single Flight SQL producer**.
+
+---
+
+### Streaming Model
+
+- Results are streamed as Arrow IPC batches
+- Backpressure is honored end-to-end
+- Large results do not accumulate in memory
+
+---
+
+### Error Handling
+
+Custom exception hierarchy maps failures to HTTP responses:
+
+| Exception              | HTTP Status |
+| ---------------------- | ----------- |
+| BadRequestException    | 400         |
+| UnauthorizedException  | 401         |
+| InternalErrorException | 500         |
+
+---
+
+### Summary
+
+The HTTP server provides a clean separation:
+
+- Thin HTTP façade
+- Unified execution engine
+- Predictable data flow
+
+</div>
+
+  </TabItem>
+
+  <TabItem value="grpc" label="gRPC (Flight SQL)">
+
+# DazzleDuck SQL Flight Server
+
+> Production-grade Apache Arrow Flight SQL server for DuckDB
+
+<div>
+
+---
+
+## Overview
+
+The **DazzleDuck SQL Flight Server** exposes DuckDB as a **remote, high-performance analytical database** using **Apache Arrow Flight SQL**. It transforms DuckDB from an embedded, single-process engine into a **multi-client, server-based analytics backend** while preserving DuckDB's vectorized execution and Arrow-native data flow.
+
+This module is designed for **BI tools, data science workloads, and distributed query engines** that require:
+
+- JDBC / ADBC compatibility
+- High-throughput streaming results
+- Low-latency analytical queries
+- Secure authentication and authorization
+- Production-safe query lifecycle management
+
+Unlike the HTTP module, this server speaks **pure Flight SQL (gRPC)** and behaves like a full-fledged analytical database service.
+
+---
+
+## Key Capabilities
+
+### Native Flight SQL Execution
+
+- Full Apache Arrow Flight SQL compliance
+- Prepared statements and metadata APIs
+- Multi-batch Arrow streaming
+- Zero-copy columnar transfer
+- Compatible with JDBC, Python (ADBC), Go, and Rust clients
+
+### Security & Authorization
+
+- JWT-based authentication
+- Header-driven authorization context
+- Path-level and table-level access enforcement
+- Claim-aware query execution (org, tenant, role, etc.)
+
+### Data Ingestion
+
+- Arrow IPC ingestion
+- Parquet-backed persistence
+- Partitioned writes
+- Transform expressions during ingest
+- Concurrent and idempotent ingestion support
+
+### Operational Features
+
+- Query cancellation
+- Fetch-size control
+- Startup SQL initialization
+- Split planning for distributed execution
+- Warehouse-backed persistence
+
+---
+
+## High-Level Architecture
+
+```text
+Client (JDBC / ADBC / FlightSQL)
+        │
+        ▼
+Arrow Flight SQL Server
+        │
+        ├── Authentication & Authorization
+        ├── Query Planner & Validator
+        ├── Split & Execution Engine
+        ├── Ingestion Pipeline
+        │
+        ▼
+DuckDB Engine
+```
+
+All SQL execution flows through a single **FlightSQL producer**, ensuring consistent semantics, security, and performance.
+
+---
+
+## When to Use Flight SQL Mode
+
+Choose **Flight SQL** when you need:
+
+- High-throughput analytical queries
+- JDBC or BI tool integration (DBeaver, Tableau, Superset)
+- Arrow-native streaming to Python / Spark
+- Secure multi-client access to DuckDB
+- Production-grade SQL APIs
+
+---
+
+## Installation & Setup
+
+This guide explains how to run **DazzleDuck SQL Flight Server** in production.
+
+### Prerequisites
+
+- **Java:** JDK 21+
+- **Maven**
+- **Docker:** Recommended for production deployments
+- **Ports:**
+
+  - `59307` — Arrow Flight SQL (gRPC)
+
+---
+
+### Run via Docker (Recommended)
+
+```bash
+docker run -ti -p 59307:59307 -p 8081:8081 dazzleduck/dazzleduck:latest --conf warehouse=/data
+```
+
+This will print the following on the console:
+
+```text
+============================================================
+DazzleDuck SQL Server v0.0.13-SNAPSHOT
+============================================================
+Warehouse Path: /data
+HTTP Server started successfully
+Listening on: http://0.0.0.0:8081
+Health check: http://0.0.0.0:8081/health
+UI dashboard: http://0.0.0.0:8081/v1/ui
+Flight Server is up: Listening on URI: grpc+tcp://0.0.0.0:59307
+```
+
+- The server is running in both Arrow Flight SQL (gRPC) and HTTP REST API modes
+
+#### Key Runtime Flags
+
+| Flag          | Description                      |
+| ------------- | -------------------------------- |
+| `warehouse`   | Path to Parquet / DuckDB storage |
+| `access_mode` | `OPEN` or `RESTRICTED`           |
+| `flight.port` | gRPC port (default: 59307)       |
+
+---
+
+### Run Locally (via runtime)
+
+```bash
+./mvnw clean package -DskipTests
+```
+
+```bash
+export MAVEN_OPTS="--add-opens=java.base/sun.nio.ch=ALL-UNNAMED --add-opens=java.base/java.nio=ALL-UNNAMED --add-opens=java.base/sun.util.calendar=ALL-UNNAMED"
+```
+
+```bash
+./mvnw exec:java -pl dazzleduck-sql-runtime -Dexec.mainClass="io.dazzleduck.sql.runtime.Main" -Dexec.args="--conf warehouse=warehouse"
+```
+
+---
+
+### Startup SQL
+
+You can configure startup SQL scripts (extensions, settings, secrets) to be executed automatically during server boot.
+
+Example:
+
+```sql
+INSTALL httpfs;
+LOAD httpfs;
+```
+
+---
+
+### Enable TLS (Optional)
+
+Use encryption for production:
+
+```conf
+use_encryption = true
+keystore = "server.key"
+server_cert = "server.crt"
+```
+
+---
+
+### Warehouse Directory
+
+Choose where DuckDB persists data:
+
+```conf
+warehouse.path = /var/dazzleduck/warehouse
+```
+
+Directory layout example:
+
+```text
+warehouse/
+ ├── tables/
+ ├── ingest/
+ └── temp/
+```
+
+Ensure this path is writable by the server process.
+
+---
+
+### Notes
+
+- Always configure a persistent warehouse path
+- Enable JWT authentication in production
+- Use TLS for gRPC when exposed publicly
+- Monitor memory usage for large result sets
+
+---
+
+## Authentication & Authorization
+
+DazzleDuck SQL Flight Server supports **JWT-based authentication** and fine-grained authorization for production workloads.
+
+### Authentication Model
+
+- Clients authenticate using **JWT tokens**
+- Tokens are validated at the Flight SQL layer
+- Claims are propagated into query execution context
+
+---
+
+### JWT Claims Usage
+
+JWT claims can be used to:
+
+- Restrict accessible paths
+- Enforce tenant / org isolation
+- Apply row-level filters
+- Control allowed functions
+
+Common claims:
+
+| Claim      | Purpose                         |
+| ---------- | ------------------------------- |
+| `org`      | Tenant / organization isolation |
+| `role`     | Authorization level             |
+| `path`     | Allowed warehouse paths         |
+| `database` | Catalog control                 |
+| `schema`   | Schema filtering                |
+| `table`    | Table-level access              |
+| `filter`   | Row-level filtering             |
+
+---
+
+### Header-Based Context
+
+Flight SQL supports passing execution context via headers:
+
+- Authorization tokens
+- Dataset paths
+- Execution hints
+
+This allows **stateless**, secure query execution.
+
+---
+
+### Access Modes
+
+| Mode         | Description                  |
+| ------------ | ---------------------------- |
+| `COMPLETE`   | No auth required (dev only)  |
+| `RESTRICTED` | JWT required for all queries |
+
+---
+
+### Client Example (Java)
+
+```java
+FlightClient.builder(allocator, location)
+  .intercept(AuthUtils.createClientMiddlewareFactory(
+      "username",
+      "password",
+      Map.of("cluster_id", "TEST_CLUSTER")
+  ))
+  .build();
+```
+
+---
+
+### Example: Restrict Access to One Table
+
+#### JWT Payload
+
+```json
+{
+  "table": "users",
+  "filter": "key = 'k2'"
+}
+```
+
+#### Result
+
+- Only table `users` visible
+- Only filtered rows returned
+- Other tables throw authorization error
+
+---
+
+### Production Recommendations
+
+- Always enable JWT in production
+- Rotate signing keys regularly
+- Validate claims strictly
+- Combine with TLS for secure transport
+
+---
+
+## Data Ingestion (Flight SQL)
+
+The Flight SQL module supports **high-throughput Arrow-native ingestion** directly into the warehouse.
+
+### Supported Formats
+
+- Apache Arrow IPC streams
+- Parquet output
+
+---
+
+### Ingestion Flow
+
+```text
+Client (Arrow IPC)
+        │
+        ▼
+Flight SQL Ingestion
+        │
+        ├── Validation
+        ├── Optional Transformations
+        ├── Partitioning
+        ▼
+Parquet Files in Warehouse
+```
+
+---
+
+### Features
+
+#### Partitioning
+
+- Partition by one or more columns
+- Hive-style directory layout
+
+#### Transformations
+
+- Apply expressions during ingest
+- Compute derived columns
+
+#### Concurrency
+
+- Fully concurrent ingestion
+- Safe for parallel writers
+
+---
+
+### Example (Conceptual)
+
+```sql
+INSERT INTO table
+SELECT * FROM arrow_stream
+```
+
+---
+
+### Production Considerations
+
+- Use partitioning for large datasets
+- Monitor disk usage
+- Prefer Arrow streams over row-based inserts
+
+---
+
+## JDBC & Client Connectivity
+
+DazzleDuck SQL Flight Server is fully compatible with **Apache Arrow Flight SQL JDBC and ADBC clients**.
+
+### JDBC Connection
+
+#### Driver
+
+Use the **Arrow Flight SQL JDBC Driver**.
+
+#### Connection URL
+
+```text
+jdbc:arrow-flight-sql://localhost:59307?database=memory&useEncryption=0&user=admin&password=admin
+```
+
+#### Authentication
+
+```text
+user=admin
+password=admin
+```
+
+JWT-based authentication can also be used when enabled.
+
+---
+
+### Python (ADBC)
+
+```python
+from adbc_driver_flightsql import dbapi
+conn = dbapi.connect("grpc+tcp://localhost:59307")
+cursor = conn.cursor()
+cursor.execute("SELECT * FROM my_table")
+print(cursor.fetchall())
+```
+
+---
+
+### BI Tools
+
+Verified compatibility:
+
+- DBeaver
+- Tableau (via JDBC)
+- Superset
+
+---
+
+### Performance Tips
+
+- Use fetch-size tuning
+- Prefer Arrow-native clients
+- Avoid row-based adapters
+
+</div>
+
+  </TabItem>
+</Tabs>
