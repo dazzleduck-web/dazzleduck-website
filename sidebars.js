@@ -43,27 +43,13 @@ const sidebars = {
     // ------------------------------------------------------------------
     {
       type: 'category',
-      label: 'Core Server',
+      label: 'Core Servers',
       collapsed: false,
       items: [
         {
-          type: 'category',
-          label: 'DazzleDuck HTTP Server',
-          items: [
-            'dazzleduck-sql-http/overview',
-            'dazzleduck-sql-http/architecture',
-          ],
-        },
-        {
-          type: 'category',
-          label: 'DazzleDuck Arrow Flight SQL',
-          items: [
-            'dazzleduck-sql-flight/overview',
-            'dazzleduck-sql-flight/installation',
-            'dazzleduck-sql-flight/authentication',
-            'dazzleduck-sql-flight/jdbc',
-            'dazzleduck-sql-flight/ingestion',
-          ],
+          type: 'doc',
+          id: 'dazzleduck-core-servers/servers',
+          label: 'DazzleDuck Servers',
         },
       ],
     },
