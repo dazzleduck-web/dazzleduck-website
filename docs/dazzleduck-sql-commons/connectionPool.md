@@ -108,7 +108,3 @@ duckdb.config.enable_external_access=true
 - Not a network pool
 - Prefer Arrow readers over ResultSet
 - Always close readers and connections
-
----
-
-Next: **[Query Transformation →](transformation.md)**

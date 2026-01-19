@@ -78,7 +78,3 @@ Scans only:
 - Faster queries
 - Lower memory usage
 - Scales to very large datasets
-
----
-
-Next: **[Ingestion Utilities →](ingestion-utils.md)**

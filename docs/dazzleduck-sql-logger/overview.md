@@ -86,7 +86,3 @@ Use **DazzleDuck SQL Logger** when you need:
 - Arrow-native transport
 - Reliable end-to-end validation
 - Logs stored as Parquet for SQL analytics
-
----
-
-Next: **[Installation & Setup →](setup.md)**

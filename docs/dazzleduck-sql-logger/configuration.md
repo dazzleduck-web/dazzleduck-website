@@ -76,7 +76,3 @@ dazzleduck_logger {
 - Logs are dropped when the queue is full
 - Application threads are never blocked
 - Failures are logged locally
-
----
-
-Next: **[Architecture →](architecture.md)**

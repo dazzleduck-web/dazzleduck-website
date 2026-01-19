@@ -108,7 +108,3 @@ This ensures:
 - Final metric flush
 - Sender shutdown
 - Resource cleanup
-
----
-
-Next: **[Metric Schema →](schema.md)**

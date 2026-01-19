@@ -102,7 +102,3 @@ All correctness, authorization, planning, and execution remain server‑side.
 - Arrow end‑to‑end
 - Same behavior as real clients (curl, DuckDB, JDBC)
 - Production‑safe by default
-
----
-
-Next: **[Setup →](setup.md)**

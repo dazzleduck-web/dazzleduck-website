@@ -149,13 +149,15 @@ Warehouse (Parquet / Arrow / Files)
 
 ---
 
+### Search Tab
+
+![Arrow JS UI Search Tab, data display in table](../../static/arrow-js-imgs/search-tab.png)
+
+---
+
 ## Next Steps
 
 - Learn how the UI is structured → **Architecture**
 - Get it running locally → **Setup**
 - Execute queries & visualize data → **Usage**
 - Understand chart behavior → **Charts**
-
----
-
-Ready to get started? Proceed to the **[Setup Guide →](setup.md)**

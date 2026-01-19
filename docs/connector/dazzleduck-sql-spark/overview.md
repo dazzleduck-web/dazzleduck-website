@@ -99,6 +99,3 @@ This project is **not part of** `dazzleduck-sql-server`, but depends on it at ru
 * Writing data back to DazzleDuck from Spark
 * Replacing Spark’s execution engine
 * Acting as a Spark catalog
-
----
- Next: **Architecture**

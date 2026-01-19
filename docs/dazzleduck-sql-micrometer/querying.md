@@ -79,7 +79,3 @@ With DazzleDuck SQL Micrometer you can:
 - Join metrics with other datasets
 - Track regressions
 - Perform offline analysis
-
----
-
-Next: **Back to [Setup & Configuration →](setup.md)**

@@ -63,6 +63,3 @@ SHOW TABLES;
 ```
 
 If no errors occur, the connector is loaded correctly.
-
----
- Next: **Usage (Spark SQL)**
