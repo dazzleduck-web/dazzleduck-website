@@ -1,10 +1,15 @@
+/* Load Tailwind's core layers */
+@import "tailwindcss";
+
+/* Sync Dark Mode with Docusaurus attribute */
+@custom-variant dark (&:is([data-theme="dark"] *));
+
 /**
- * Any CSS included here will be global. The classic template
- * bundles Infima by default. Infima is a CSS framework designed to
- * work well for content-centric websites.
+ * Global DazzleDuck Styles
+ * Only global + Docusaurus overrides
  */
 
-/* You can override the default Infima variables here. */
+/* Infima / Docusaurus variables */
 :root {
   --ifm-color-primary: #2e8555;
   --ifm-color-primary-dark: #29784c;
@@ -13,13 +18,14 @@
   --ifm-color-primary-light: #33925d;
   --ifm-color-primary-lighter: #359962;
   --ifm-color-primary-lightest: #3cad6e;
+
   --ifm-code-font-size: 95%;
-  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
   --ifm-navbar-height: 5rem;
+  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
 }
 
-/* For readability concerns, you should choose a lighter palette in dark mode. */
-[data-theme='dark'] {
+/* Dark mode Infima overrides */
+[data-theme="dark"] {
   --ifm-color-primary: #25c2a0;
   --ifm-color-primary-dark: #21af90;
   --ifm-color-primary-darker: #1fa588;
@@ -27,9 +33,25 @@
   --ifm-color-primary-light: #29d5b0;
   --ifm-color-primary-lighter: #32d8b4;
   --ifm-color-primary-lightest: #4fddbf;
+
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
 }
 
+.hero-reset h1,
+.hero-reset h2,
+.hero-reset h3 {
+  font-size: revert;
+  font-weight: revert;
+  line-height: revert;
+  margin: 0;
+}
+
+
+/* =========================
+   Docusaurus Navbar (global)
+========================= */
+
+/* Navbar logo */
 .navbar__logo {
   height: 60px;
   width: 60px;
@@ -37,165 +59,75 @@
   overflow: hidden;
 }
 
-/* ===== Hero Section ===== */
-.hero-section {
-  background: linear-gradient(135deg, #0b132b, #1c2541, #3a506b);
-  color: #fff;
-  text-align: center;
-  padding: 6rem 2rem;
-  animation: fadeIn 1.5s ease-in-out;
+.navbar__brand {
+  margin-left: 1rem;
 }
 
-.hero-content h1 {
-  font-size: 3.2rem;
-  font-weight: 700;
-  margin-bottom: 1rem;
+.navbar__items--left {
+  margin-left: 1.25rem;
 }
 
-.hero-subtitle {
-  font-size: 1.3rem;
-  max-width: 700px;
-  margin: 0 auto 2.5rem;
-  line-height: 1.6;
-  color: #dbe9ff;
+.navbar__title {
+  font-size: 1.5rem;
+  font-weight: 500;
 }
 
-.hero-buttons {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 1rem;
+.navbar__brand {
+  gap: 0.5rem;
+  margin-right: 4rem;
 }
 
-/* ===== Buttons ===== */
-.button-primary,
-.button-secondary {
-  padding: 0.9rem 1.8rem;
-  border-radius: 8px;
-  font-size: 1.1rem;
-  font-weight: 600;
-  text-decoration: none;
-  transition: all 0.3s ease;
-}
-
-.button-primary {
-  background-color: #00aaff;
+.navbar__title:hover,
+.navbar__brand:hover {
   color: white;
 }
 
-.button-primary:hover {
-  background-color: #0088cc;
-  transform: translateY(-3px);
+.navbar__title {
+  letter-spacing: -0.01em;
 }
 
-.button-secondary {
-  background-color: transparent;
-  border: 2px solid #00aaff;
-  color: #00aaff;
+.navbar__items--right {
+  gap: 1rem;
 }
 
-.button-secondary:hover {
-  background-color: #00aaff;
-  color: #fff;
-  transform: translateY(-3px);
+/* Fix external-link navbar items (GitHub) */
+.navbar__items--right .navbar__link {
+  display: inline-flex;
+  align-items: center;
+  white-space: nowrap;
 }
 
-/* ===== Features Section ===== */
-.features-section {
-  text-align: center;
-  padding: 4rem 2rem;
-  background: #f9fafc;
+/* Navbar background */
+html[data-theme='dark'] .navbar {
+  background-color: #0e0d0d;
+  border-bottom: 1px solid #2a2a2a;
+  backdrop-filter: blur(6px);
 }
 
-.features-section h2 {
-  font-size: 2.2rem;
-  margin-bottom: 3rem;
-  color: #1c2541;
+/* Whole website background and font color in dark mode */
+html[data-theme='dark'] {
+  --ifm-background-color: #121212;
+  --ifm-font-color-base: #e5e7eb;
 }
 
-.features-grid {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 2rem;
+/* Footer colors in dark mode */
+html[data-theme='dark'] .footer {
+  background: linear-gradient(240deg,
+      #232323 0%,
+      #050505 100%);
+  border-top: 1px solid #313131;
+  backdrop-filter: blur(6px);
 }
 
-.feature-card {
-  background: #fff;
-  border-radius: 12px;
-  padding: 2rem;
-  width: 270px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-  transition: all 0.3s ease;
-}
+/* =========================
+   Docusaurus Tabs (global)
+========================= */
 
-.feature-card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
-}
-
-.feature-icon {
-  font-size: 2.4rem;
-  margin-bottom: 1rem;
-}
-
-.feature-card h3 {
-  font-size: 1.3rem;
-  color: #0b132b;
-  margin-bottom: 0.5rem;
-}
-
-.feature-card p {
-  color: #555;
-  font-size: 1rem;
-  line-height: 1.5;
-}
-
-/* ===== Footer ===== */
-.home-footer {
-  background: #1c2541;
-  color: #dbe9ff;
-  text-align: center;
-  padding: 1.5rem;
-  font-size: 0.95rem;
-  margin-top: 2rem;
-}
-
-/* ===== Animations ===== */
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(15px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* ===== Responsive Design ===== */
-@media (max-width: 768px) {
-  .hero-content h1 {
-    font-size: 2.4rem;
-  }
-
-  .hero-subtitle {
-    font-size: 1.1rem;
-  }
-
-  .feature-card {
-    width: 100%;
-    max-width: 330px;
-  }
-}
-
-/* Tabs container */
 .tabs {
   border-bottom: 1px solid var(--ifm-color-emphasis-300);
   margin-bottom: 1rem;
 }
 
-/* Individual tab */
 .tabs__item {
   font-weight: 600;
   padding: 0.6rem 1.2rem;
@@ -205,14 +137,31 @@
   transition: all 0.2s ease;
 }
 
-/* Hover */
 .tabs__item:hover {
   background-color: var(--ifm-color-emphasis-100);
 }
 
-/* Active tab */
 .tabs__item--active {
   border-bottom: 2px solid var(--ifm-color-primary);
   color: var(--ifm-color-primary);
   background-color: var(--ifm-color-emphasis-200);
+}
+
+/* =========================
+   Custom Buttons
+========================= */
+.dd-button {
+  @apply text-white transition duration-200 ease-in-out;
+}
+
+.dd-button:hover {
+  @apply shadow-lg text-white no-underline;
+}
+
+.dd-ul {
+  @apply p-0;
+}
+
+.dd-line-thin {
+  @apply border-t border-gray-300 dark:border-gray-600 my-2;
 }

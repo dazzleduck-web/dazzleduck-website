@@ -6,6 +6,7 @@ sidebar_position: 1
 # DazzleDuck SQL Spark Integration
 
 [![GitHub Repo](https://img.shields.io/badge/GitHub-dazzleduck--sql--spark-blue?logo=github)](https://github.com/dazzleduck-web/dazzleduck-sql-spark)
+
 [![Medium Blog](https://img.shields.io/badge/Medium-Supercharge%20Spark%20Cluster-green?logo=medium)](https://medium.com/@tanejagagan/supercharge-spark-cluster-with-arrow-flight-server-d3854972dab0)
 
 The **DazzleDuck SQL Spark Integration** enables **Apache Spark SQL** to query data stored in **DazzleDuck SQL Server** using **Apache Arrow Flight SQL**. It allows Spark to treat remote DuckDB-backed datasets as native Spark tables, without copying data into Spark-managed storage.
