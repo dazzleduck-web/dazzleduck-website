@@ -47,43 +47,52 @@ export default function Home() {
     <Layout
       title="DazzleDuck SQL Server"
       description="High-performance DuckDB SQL server with Arrow Flight, HTTP, logs, and metrics.">
-      <main className="min-h-screen flex items-center justify-center px-8 py-12 bg-linear-to-br from-white to-gray-300 dark:from-black dark:to-neutral-800">
-        <div className="flex justify-around max-w-[80vw] w-full lg:grid-cols-2 sm:grid-cols-1 sm:gap-15">
+      <main className="min-h-screen flex items-center justify-center px-4 sm:px-6 md:px-8 py-12 bg-linear-to-br from-white to-gray-300 dark:from-black dark:to-neutral-800">
+        <div className="flex flex-col lg:flex-row justify-around gap-12 lg:gap-16 w-full max-w-7xl xl:max-w-[80vw]">
           {/* LEFT HERO */}
-          <div className="flex flex-col gap-10">
+          <div className="flex flex-col gap-10 items-center lg:items-start text-center lg:text-left">
             {/* TYPEWRITER */}
             <div className="">
-              <div className="text-4xl font-semibold text-gray-900 dark:text-gray-100">
+              <div className="text-3xl sm:text-4xl font-semibold text-gray-900 dark:text-gray-100">
                 DazzleDuck is a{" "}
                 <div className="font-bold text-green-700 dark:text-emerald-400">
                   {text}
                   <span className="ml-1 animate-pulse">|</span>
                 </div>
-                <div className="mt-1">SQL server built on DuckDB.</div>
+                <div className="mt-1">SQL Ecosystem built on DuckDB.</div>
               </div>
             </div>
 
             {/* IMAGE */}
-            <div className="w-3xl flex items-center justify-center overflow-visible">
+            <div className="w-full max-w-xl lg:max-w-3xl lg:w-3xl flex items-center justify-center overflow-visible">
+              {/* Light mode image */}
               <img
-                src={useBaseUrl("/img/dazzleduck-architecture.png")}
+                src={useBaseUrl("/img/dazzleduck-architecture-light.png")}
                 alt="DazzleDuck architecture overview"
-                className="w-full h-auto rounded-xl block shadow-xl shadow-black/20 dark:shadow-white/10 transition-all duration-300 ease-out hover:scale-105 hover:shadow-2xl hover:shadow-black/30 dark:hover:shadow-white/30"
+                className="block dark:hidden w-full h-auto rounded-xl shadow-xl shadow-black/20 transition-all duration-300 ease-out hover:scale-105 hover:shadow-2xl"
+              />
+
+              {/* Dark mode image */}
+              <img
+                src={useBaseUrl("/img/dazzleduck-architecture-dark.png")}
+                alt="DazzleDuck architecture overview (dark)"
+                className="hidden dark:block w-full h-auto rounded-xl shadow-xl shadow-white/10 transition-all duration-300 ease-out hover:scale-105 hover:shadow-2xl"
               />
             </div>
+
           </div>
 
           {/* RIGHT STACK */}
-          <div className="flex flex-col gap-7 max-w-5xl w-5xl justify-center">
+          <div className="flex flex-col gap-7 w-full max-w-5xl justify-center">
             {/* CARD 1 */}
-            <section className="bg-white dark:bg-neutral-900 border border-gray-200 dark:border-neutral-700 rounded-2xl overflow-hidden shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:border-green-700">
+            <section className="bg-white dark:bg-neutral-900 border border-gray-200 dark:border-neutral-700 rounded-2xl overflow-hidden shadow-md transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
               <div className="text-center bg-gray-100 dark:bg-neutral-800 p-1 px-3 border-b border-gray-200 dark:border-neutral-700">
                 <span className="text-lg font-bold tracking-tight text-gray-900 dark:text-gray-100">
                   Dazzle Duck Server
                 </span>
               </div>
 
-              <div className="px-6 py-4">
+              <div className="px-4 sm:px-6 py-4">
                 <p className="text-sm leading-relaxed text-gray-600 dark:text-gray-400 mb-4">
                   A high-performance Arrow-native SQL server built on DuckDB,
                   enabling scalable remote analytics with industry-standard
@@ -97,22 +106,22 @@ export default function Home() {
                     </Link>
                   </li>
                   <li className="relative text-sm font-medium text-gray-900 dark:text-gray-100 ">
-                    <Link to="/docs/security/access-control">
+                    <Link to="/docs/dazzleduck-core-servers/servers">
                       → Access Mode Control (Completed & Restricted)
                     </Link>
                   </li>
                 </ul>
 
-                <div className="mt-6 flex gap-5">
+                <div className="mt-6 flex flex-col sm:flex-row gap-4 sm:gap-5">
                   <Link
                     to="/docs/intro"
-                    className="dd-button inline-block bg-green-700 hover:bg-green-800 px-6 py-2.5 rounded-xl font-semibold text-sm">
+                    className="dd-button inline-block bg-green-700 hover:bg-green-800 dark:bg-neutral-800 dark:hover:bg-neutral-700 px-6 py-2.5 rounded-xl font-semibold text-sm text-center">
                     Documentation
                   </Link>
 
                   <Link
                     to="/docs/quick-start/installation"
-                    className="dd-button inline-block bg-neutral-700 hover:bg-neutral-800 px-6 py-2.5 rounded-xl font-semibold text-sm">
+                    className="dd-button inline-block bg-green-700 hover:bg-green-800 dark:bg-neutral-800 dark:hover:bg-neutral-700 px-6 py-2.5 rounded-xl font-semibold text-sm text-center">
                     Installation
                   </Link>
                 </div>
@@ -120,40 +129,52 @@ export default function Home() {
             </section>
 
             {/* CARD 2 */}
-            <section className="bg-white dark:bg-neutral-900 border border-gray-200 dark:border-neutral-700 rounded-2xl shadow-sm px-6 py-4 transition-all duration-300 hover:-translate-y-1">
-              <span className="text-lg font-bold mb-3 text-gray-900 dark:text-gray-100">
-                Producers
-              </span>
+            <section className="bg-white dark:bg-neutral-900 border border-gray-200 dark:border-neutral-700 rounded-2xl shadow-md hover:shadow-xl px-4 sm:px-6 py-2 transition-all duration-300 hover:-translate-y-1">
+              <div className="text-center">
+                <span className="text-lg font-bold text-gray-900 dark:text-gray-100">
+                  Producers
+                </span>
+              </div>
               <div className="dd-line-thin"></div>
               <p className="text-sm text-gray-600 dark:text-gray-400 mb-5">
                 Produce Arrow data streams consumed by DazzleDuck for real-time
                 analytics and observability.
               </p>
-              <div className="flex gap-2 flex-wrap">
-                <Link
-                  className="dd-button px-4 py-1.5 rounded-full font-semibold text-sm bg-neutral-500 hover:bg-neutral-600 dark:bg-neutral-800 dark:hover:bg-neutral-700"
-                  to="/docs/dazzleduck-sql-logger/overview">
-                  Logger
-                </Link>
-                <Link
-                  className="dd-button px-4 py-1.5 rounded-full font-semibold text-sm bg-neutral-500 hover:bg-neutral-600 dark:bg-neutral-800 dark:hover:bg-neutral-700"
-                  to="/docs/dazzleduck-sql-micrometer/overview">
-                  Micrometer
-                </Link>
-              </div>
+              <ul className="dd-ul grid grid-cols-1 sm:grid-cols-2 gap-3">
+                {[
+                  [
+                    "Logger",
+                    "/docs/dazzleduck-sql-logger/overview",
+                  ],
+                  [
+                    "Metrics",
+                    "/docs/dazzleduck-sql-micrometer/overview",
+                  ]
+                ].map(([label, href]) => (
+                  <li key={label}>
+                    <Link
+                      to={href}
+                      className="dd-button block text-center py-1.5 rounded-xl font-semibold text-sm bg-green-700 hover:bg-green-800 dark:bg-neutral-800 dark:hover:bg-neutral-700 hover:text-white transition-colors">
+                      {label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
             </section>
 
             {/* CARD 3 */}
-            <section className="bg-white dark:bg-neutral-900 border border-gray-200 dark:border-neutral-700 rounded-2xl shadow-sm px-6 py-2 transition-all duration-300 hover:-translate-y-1">
-              <span className="text-lg font-bold mb-4 text-gray-900 dark:text-gray-100">
-                Connectors
-              </span>
+            <section className="bg-white dark:bg-neutral-900 border border-gray-200 dark:border-neutral-700 rounded-2xl shadow-md hover:shadow-xl px-4 sm:px-6 py-2 transition-all duration-300 hover:-translate-y-1">
+              <div className="text-center">
+                <span className="text-lg font-bold mb-4 text-gray-900 dark:text-gray-100">
+                  Connectors
+                </span>
+              </div>
               <div className="dd-line-thin"></div>
               <p className="text-sm text-gray-600 dark:text-gray-400 mb-5">
                 Connect your applications to DazzleDuck using these supported
                 connectors.
               </p>
-              <ul className="grid grid-cols-1 md:grid-cols-2 gap-3">
+              <ul className="dd-ul grid grid-cols-1 sm:grid-cols-2 gap-3">
                 {[
                   [
                     "Python (ADBC)",
@@ -172,7 +193,7 @@ export default function Home() {
                   <li key={label}>
                     <Link
                       to={href}
-                      className="dd-button block text-center py-2.5 rounded-xl font-semibold text-sm  bg-green-700 hover:bg-green-800 dark:bg-neutral-800 dark:hover:bg-neutral-700 hover:text-white transition-colors">
+                      className="dd-button block text-center py-1.5 rounded-xl font-semibold text-sm bg-green-700 hover:bg-green-800 dark:bg-neutral-800 dark:hover:bg-neutral-700 hover:text-white transition-colors">
                       {label}
                     </Link>
                   </li>

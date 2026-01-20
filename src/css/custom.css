@@ -79,7 +79,7 @@
 
 .navbar__title:hover,
 .navbar__brand:hover {
-  color: white;
+  @apply dark:text-white text-black
 }
 
 .navbar__title {
@@ -97,11 +97,20 @@
   white-space: nowrap;
 }
 
-/* Navbar background */
+/* Navbar background (SAFE blur) */
 html[data-theme='dark'] .navbar {
-  background-color: #0e0d0d;
+  @apply bg-linear-to-br dark:from-black dark:to-neutral-800;
   border-bottom: 1px solid #2a2a2a;
+}
+
+/* Blur layer */
+html[data-theme='dark'] .navbar::before {
+  content: '';
+  position: absolute;
+  inset: 0;
   backdrop-filter: blur(6px);
+  background: rgba(14, 13, 13, 0.7);
+  z-index: -1;
 }
 
 /* Whole website background and font color in dark mode */
@@ -112,11 +121,57 @@ html[data-theme='dark'] {
 
 /* Footer colors in dark mode */
 html[data-theme='dark'] .footer {
-  background: linear-gradient(240deg,
-      #232323 0%,
-      #050505 100%);
+  @apply bg-linear-to-tr dark:from-black dark:to-neutral-800;
   border-top: 1px solid #313131;
   backdrop-filter: blur(6px);
+  color: #e5e7eb;
+  /* base text */
+}
+
+/* Footer links in dark mode */
+html[data-theme='dark'] .footer a {
+  color: #e5e7eb;
+}
+
+html[data-theme='dark'] .footer a:hover {
+  color: #34d399;
+  /* emerald accent */
+}
+
+/* Footer headings in dark mode */
+html[data-theme='dark'] .footer__title {
+  color: #ffffff;
+}
+
+/* Footer colors in light mode */
+html[data-theme='light'] .footer {
+  @apply bg-linear-to-tr from-white to-gray-300;
+  border-top: 1px solid #cacaca;
+  backdrop-filter: blur(6px);
+  color: #000000;
+  /* base text */
+}
+
+/* Footer links in light mode */
+html[data-theme='light'] .footer a {
+  color: #000000;
+}
+
+html[data-theme='light'] .footer a:hover {
+  color: #047857;
+  /* dark green */
+}
+
+/* Footer headings in light mode */
+html[data-theme='light'] .footer__title {
+  color: #000000;
+}
+
+/* Fix external-link footer items (GitHub) */
+.footer__link-item {
+  display: inline-flex;
+  align-items: center;
+  white-space: nowrap;
 }
 
 /* =========================
@@ -164,4 +219,12 @@ html[data-theme='dark'] .footer {
 
 .dd-line-thin {
   @apply border-t border-gray-300 dark:border-gray-600 my-2;
+}
+
+.dd-link-blue {
+  @apply text-blue-600 dark:text-blue-400;
+}
+
+.dd-link-gray {
+  @apply text-black dark:text-gray-400 bg-white dark:bg-neutral-900;
 }
