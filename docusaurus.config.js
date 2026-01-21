@@ -57,7 +57,9 @@ const config = {
       // project's social card
       image: 'img/logo.png',
       colorMode: {
-        respectPrefersColorScheme: true,
+        defaultMode: 'light',         
+        respectPrefersColorScheme: false, 
+        disableSwitch: false, 
       },
       navbar: {
         title: 'Dazzle Duck',
@@ -132,7 +134,7 @@ const config = {
             ],
           },
         ],
-        copyright: `Copyright © ${new Date().getFullYear()} DazzleDuck Web, Built with ❤️.`,
+        copyright: `Copyright © ${new Date().getFullYear()} DazzleDuck Web, Built with ❤️`,
       },
       prism: {
         theme: prismThemes.github,
