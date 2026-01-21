@@ -11,7 +11,6 @@ export default function Home() {
     "high-performance",
     "portable",
     "open-source",
-    "Arrow-native",
     "secure",
   ];
 
@@ -59,7 +58,7 @@ export default function Home() {
                   {text}
                   <span className="ml-1 animate-pulse">|</span>
                 </div>
-                <div className="mt-1">SQL Ecosystem built on DuckDB.</div>
+                <div className="mt-1">DuckDB based Arrow-native ecosystem.</div>
               </div>
             </div>
 

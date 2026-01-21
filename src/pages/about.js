@@ -125,7 +125,7 @@ export default function About() {
                             {[
                                 {
                                     name: "Gagan Taneja",
-                                    role: "Founder & CEO",
+                                    role: "Architect & Lead Developer",
                                     img: useBaseUrl("/img/team/gagan.jpg"),
                                     linkedinLink: "https://www.linkedin.com/in/tanejagagan/",
                                     mediumLink: "https://medium.com/@tanejagagan",
@@ -227,8 +227,7 @@ export default function About() {
                             </Link>
 
                             <Link
-                                href="https://twitter.com/dazzleduckdb"
-                                target="_blank"
+                                href="#"
                                 rel="noopener noreferrer"
                                 className="dd-button inline-flex items-center justify-center gap-2 bg-green-700 hover:bg-green-800 dark:bg-neutral-800 dark:hover:bg-neutral-700 px-6 py-2.5 rounded-xl font-semibold text-sm">
                                 <FaTwitter /> Twitter
