@@ -15,6 +15,85 @@ import { GrLinkedin } from "react-icons/gr";
 import useBaseUrl from "@docusaurus/useBaseUrl";
 
 export default function About() {
+
+    /* =========================
+   ABOUT PAGE DATA
+========================= */
+
+    const visionItems = [
+        {
+            title: "Simple",
+            desc:
+                "Run DazzleDuck with minimal configuration and familiar SQL. No heavy cluster setup or complex orchestration.",
+            icon: <SiTicktick />,
+        },
+        {
+            title: "Portable",
+            desc:
+                "Deploy anywhere DuckDB runs — laptops, servers, containers, or cloud — with consistent behavior.",
+            icon: <PiHandbagDuotone />,
+        },
+        {
+            title: "Arrow-Native",
+            desc:
+                "Built on Apache Arrow and Flight SQL for zero-copy data transport and efficient streaming.",
+            icon: <MdOutlineDoubleArrow />,
+        },
+        {
+            title: "Fast",
+            desc:
+                "Leverages DuckDB’s vectorized execution for high-performance analytical workloads.",
+            icon: <GiHorseHead />,
+        },
+        {
+            title: "Extensible",
+            desc:
+                "Easily integrate logging, metrics, connectors, and custom extensions as your system grows.",
+            icon: <IoExtensionPuzzleOutline />,
+        },
+        {
+            title: "Open Source",
+            desc:
+                "Fully open-source and community-driven, designed to evolve transparently in the open.",
+            icon: <PiGlobeHemisphereWestDuotone />,
+        },
+    ];
+
+    const contributors = [
+        {
+            name: "Gagan Taneja",
+            role: "Architect & Lead Developer",
+            img: useBaseUrl("/img/team/gagan.jpg"),
+            linkedinLink: "https://www.linkedin.com/in/tanejagagan/",
+            mediumLink: "https://medium.com/@tanejagagan",
+            githubLink: "https://github.com/tanejagagan",
+        },
+        {
+            name: "Shrikant Suryawanshi",
+            role: "Software Developer",
+            img: useBaseUrl("/img/team/shrikant.jpg"),
+            linkedinLink:
+                "https://www.linkedin.com/in/shrikant-suryawanshi/",
+            githubLink: "https://github.com/shrikantsuryawanshi39",
+        },
+        {
+            name: "Piyush Mahore",
+            role: "Software Developer",
+            img: useBaseUrl("/img/team/piyush.jpg"),
+            linkedinLink:
+                "https://www.linkedin.com/in/piyush-mahore/",
+            githubLink: "https://github.com/PiyushMahore",
+        },
+        {
+            name: "Ekant Yadav",
+            role: "Software Developer",
+            img: useBaseUrl("/img/team/ekant.jpeg"),
+            linkedinLink:
+                "https://www.linkedin.com/in/ekant-yadav-53a337231/",
+            githubLink: "https://github.com/Ekant2008",
+        },
+    ];
+
     return (
         <Layout
             title="About DazzleDuck SQL Server"
@@ -34,13 +113,11 @@ export default function About() {
                             DuckDB from an embedded engine into a scalable, remote analytics
                             platform — without sacrificing performance or simplicity.
                         </p>
-                        <button>
-                            <Link
-                                to="/docs/about"
-                                className="dd-button inline-block bg-green-700 hover:bg-green-800 dark:bg-neutral-800 dark:hover:bg-neutral-700 px-6 py-2.5 rounded-xl font-semibold text-sm text-center">
-                                Learn More
-                            </Link>
-                        </button>
+                        <Link
+                            to="/docs/about"
+                            className="dd-button inline-block bg-green-700 hover:bg-green-800 dark:bg-neutral-800 dark:hover:bg-neutral-700 px-6 py-2.5 rounded-xl font-semibold text-sm text-center">
+                            Learn More
+                        </Link>
                     </section>
 
                     <div className="dd-line-thin"></div>
@@ -59,41 +136,11 @@ export default function About() {
                         </div>
 
                         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
-                            {[
-                                {
-                                    title: "Simple",
-                                    desc: "Run DazzleDuck with minimal configuration and familiar SQL. No heavy cluster setup or complex orchestration.",
-                                    icon: <SiTicktick />,
-                                },
-                                {
-                                    title: "Portable",
-                                    desc: "Deploy anywhere DuckDB runs — laptops, servers, containers, or cloud — with consistent behavior.",
-                                    icon: <PiHandbagDuotone />,
-                                },
-                                {
-                                    title: "Arrow-Native",
-                                    desc: "Built on Apache Arrow and Flight SQL for zero-copy data transport and efficient streaming.",
-                                    icon: <MdOutlineDoubleArrow />,
-                                },
-                                {
-                                    title: "Fast",
-                                    desc: "Leverages DuckDB’s vectorized execution for high-performance analytical workloads.",
-                                    icon: <GiHorseHead />,
-                                },
-                                {
-                                    title: "Extensible",
-                                    desc: "Easily integrate logging, metrics, connectors, and custom extensions as your system grows.",
-                                    icon: <IoExtensionPuzzleOutline />,
-                                },
-                                {
-                                    title: "Open Source",
-                                    desc: "Fully open-source and community-driven, designed to evolve transparently in the open.",
-                                    icon: <PiGlobeHemisphereWestDuotone />,
-                                },
-                            ].map(({ title, desc, icon }) => (
+                            {visionItems.map(({ title, desc, icon }) => (
                                 <div
                                     key={title}
-                                    className="bg-white dark:bg-neutral-900 border border-gray-200 dark:border-neutral-700 rounded-2xl p-6 shadow-md transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl hover:shadow-black/20 dark:hover:shadow-white/10">
+                                    className="bg-white dark:bg-neutral-900 border border-gray-200 dark:border-neutral-700 rounded-2xl p-6 shadow-md transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl hover:shadow-black/20 dark:hover:shadow-white/10"
+                                >
                                     <div className="text-3xl mb-4 text-green-700 dark:text-emerald-400">
                                         {icon}
                                     </div>
@@ -122,80 +169,59 @@ export default function About() {
                         </div>
 
                         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
-                            {[
-                                {
-                                    name: "Gagan Taneja",
-                                    role: "Architect & Lead Developer",
-                                    img: useBaseUrl("/img/team/gagan.jpg"),
-                                    linkedinLink: "https://www.linkedin.com/in/tanejagagan/",
-                                    mediumLink: "https://medium.com/@tanejagagan",
-                                    githubLink: "https://github.com/tanejagagan"
-                                },
-                                {
-                                    name: "Shrikant Suryawanshi",
-                                    role: "Software Developer",
-                                    img: useBaseUrl("/img/team/shrikant.jpg"),
-                                    linkedinLink: "https://www.linkedin.com/in/shrikant-suryawanshi/",
-                                    githubLink: "https://github.com/shrikantsuryawanshi39"
-                                },
-                                {
-                                    name: "Piyush Mahore",
-                                    role: "Software Developer",
-                                    img: useBaseUrl("/img/team/piyush.jpg"),
-                                    linkedinLink: "https://www.linkedin.com/in/piyush-mahore/",
-                                    githubLink: "https://github.com/PiyushMahore"
-                                },
-                                {
-                                    name: "Ekant Yadav",
-                                    role: "Software Developer",
-                                    img: useBaseUrl("/img/team/ekant.jpeg"),
-                                    linkedinLink: "https://www.linkedin.com/in/ekant-yadav-53a337231/",
-                                    githubLink: "https://github.com/Ekant2008"
-                                },
-                            ].map(({ name, role, img, linkedinLink, mediumLink, githubLink }) => (
-                                <div
-                                    key={name}
-                                    className="bg-white dark:bg-neutral-900 border border-gray-200 dark:border-neutral-700 rounded-2xl p-6 text-center shadow-md transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl hover:shadow-black/20 dark:hover:shadow-white/10">
-                                    {/* Avatar */}
-                                    <div className="flex justify-center mb-4">
-                                        <img
-                                            src={img}
-                                            alt={name}
-                                            className="w-24 h-24 rounded-full object-cover border-2 border-green-700 dark:border-emerald-400 shadow-md transition-all duration-300"
-                                        />
-                                    </div>
+                            {contributors.map(
+                                ({ name, role, img, linkedinLink, mediumLink, githubLink }) => (
+                                    <div
+                                        key={name}
+                                        className="bg-white dark:bg-neutral-900 border border-gray-200 dark:border-neutral-700 rounded-2xl p-6 text-center shadow-md transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl hover:shadow-black/20 dark:hover:shadow-white/10"
+                                    >
+                                        {/* Avatar */}
+                                        <div className="flex justify-center mb-4">
+                                            <img
+                                                src={img}
+                                                alt={name}
+                                                className="w-24 h-24 rounded-full object-cover border-2 border-green-700 dark:border-emerald-400 shadow-md transition-all duration-300"
+                                            />
+                                        </div>
 
-                                    <h4 className="font-bold text-gray-900 dark:text-gray-100">
-                                        {name}
-                                    </h4>
-                                    <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
-                                        {role}
-                                    </p>
-                                    <div className="flex gap-4 justify-center items-center">
-                                        {linkedinLink && (
-                                            <Link href={linkedinLink}
-                                                className="dd-link-blue text-lg text-blue-600 dark:text-blue-400 mt-2 flex justify-center"
-                                            >
-                                                <GrLinkedin />
-                                            </Link>
-                                        )}
-                                        {mediumLink && (
-                                            <Link href={mediumLink}
-                                                className="dd-link-gray text-lg rounded-lg text-blue-600 dark:text-blue-400 mt-2 flex justify-center"
-                                            >
-                                                <SiMedium />
-                                            </Link>
-                                        )}
-                                        {githubLink && (
-                                            <Link href={githubLink}
-                                                className="dd-link-gray text-xl text-blue-600 dark:text-blue-400 mt-2 flex justify-center rounded-xl"
-                                            >
-                                                <FaGithub />
-                                            </Link>
-                                        )}
+                                        <h4 className="font-bold text-gray-900 dark:text-gray-100">
+                                            {name}
+                                        </h4>
+                                        <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                                            {role}
+                                        </p>
+
+                                        <div className="flex gap-4 justify-center items-center">
+                                            {linkedinLink && (
+                                                <Link
+                                                    href={linkedinLink}
+                                                    className="dd-link-blue text-lg text-blue-600 dark:text-blue-400 mt-2 flex justify-center"
+                                                >
+                                                    <GrLinkedin />
+                                                </Link>
+                                            )}
+
+                                            {mediumLink && (
+                                                <Link
+                                                    href={mediumLink}
+                                                    className="dd-link-gray text-lg rounded-lg text-blue-600 dark:text-blue-400 mt-2 flex justify-center"
+                                                >
+                                                    <SiMedium />
+                                                </Link>
+                                            )}
+
+                                            {githubLink && (
+                                                <Link
+                                                    href={githubLink}
+                                                    className="dd-link-gray text-xl text-blue-600 dark:text-blue-400 mt-2 flex justify-center rounded-xl"
+                                                >
+                                                    <FaGithub />
+                                                </Link>
+                                            )}
+                                        </div>
                                     </div>
-                                </div>
-                            ))}
+                                )
+                            )}
                         </div>
                     </section>
 

@@ -6,5 +6,7 @@ tags: [roadmap, community, announcement]
 date: 2025-07-15
 ---
 
-We’re thrilled to share the **2025 roadmap** for Dazzle Duck!  
-Expect better analytics, more integrations, and an expanding open-source community.
+> **Status: Under Progress**
+>
+> The roadmap is being finalized with community input.
+> Milestones and priorities will be published shortly.
