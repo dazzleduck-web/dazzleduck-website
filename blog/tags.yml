@@ -27,3 +27,19 @@ sql:
   label: SQL
   permalink: /blog/tags/sql
   description: Query optimization, analytics, and data best practices.
+
+spark:
+  label: Spark
+  permalink: /blog/tags/spark
+
+arrow-flight:
+  label: Arrow Flight SQL
+  permalink: /blog/tags/arrow-flight
+
+duckdb:
+  label: DuckDB
+  permalink: /blog/tags/duckdb
+
+distributed-sql:
+  label: Distributed SQL
+  permalink: /blog/tags/distributed-sql

@@ -203,7 +203,7 @@ html[data-theme='light'] .footer__title {
 }
 
 /* =========================
-   Custom Buttons
+   Custom CSS Classes
 ========================= */
 .dd-button {
   @apply text-white transition duration-200 ease-in-out;
@@ -227,4 +227,20 @@ html[data-theme='light'] .footer__title {
 
 .dd-link-gray {
   @apply text-black dark:text-gray-400 bg-white dark:bg-neutral-900;
+}
+.dd-scrollbar-hidden {
+  scrollbar-width: none;
+  /* scrollbar-width: thin;  */
+  /* scrollbar-color: #424242 transparent; */
+}
+
+/* Remove blog sidebar entirely */
+.blog-sidebar {
+  display: none;
+}
+
+/* Make blog content full width */
+.blog-main {
+  max-width: 900px;
+  margin: 0 auto;
 }
