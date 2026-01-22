@@ -3,10 +3,12 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
+    "sync-medium": "node ./scripts/sync-medium-blogs.js",
     "sync-docs": "node ./scripts/sync-docs.js",
-    "start": "npm run sync-docs && docusaurus start",
-    "build": "npm run sync-docs && docusaurus build",
-    "deploy": "npm run sync-docs && docusaurus deploy",
+    "sync-all": "npm run sync-medium && npm run sync-docs",
+    "start": "npm run sync-all && docusaurus start",
+    "build": "npm run sync-all && docusaurus build",
+    "deploy": "npm run sync-all && docusaurus deploy",
     "swizzle": "docusaurus swizzle",
     "clear": "docusaurus clear",
     "serve": "docusaurus serve",
@@ -21,7 +23,9 @@
     "prism-react-renderer": "^2.3.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "react-icons": "^5.5.0"
+    "react-icons": "^5.5.0",
+    "rss-parser": "^3.13.0",
+    "turndown": "^7.2.2"
   },
   "devDependencies": {
     "@docusaurus/module-type-aliases": "3.9.2",
