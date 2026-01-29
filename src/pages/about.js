@@ -139,7 +139,7 @@ export default function About() {
                             {visionItems.map(({ title, desc, icon }) => (
                                 <div
                                     key={title}
-                                    className="bg-white dark:bg-neutral-900 border border-gray-200 dark:border-neutral-700 rounded-2xl p-6 shadow-md transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl hover:shadow-black/20 dark:hover:shadow-white/10"
+                                    className="bg-white dark:bg-neutral-900 border border-gray-200 dark:border-neutral-700 rounded-2xl p-6 shadow-md transition-all duration-300"
                                 >
                                     <div className="text-3xl mb-4 text-green-700 dark:text-emerald-400">
                                         {icon}
