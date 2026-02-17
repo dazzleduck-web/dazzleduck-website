@@ -114,7 +114,7 @@ export default function About() {
                             platform — without sacrificing performance or simplicity.
                         </p>
                         <Link
-                            to="/docs/about"
+                            to=""
                             className="dd-button inline-block bg-green-700 hover:bg-green-800 dark:bg-neutral-800 dark:hover:bg-neutral-700 px-6 py-2.5 rounded-xl font-semibold text-sm text-center">
                             Learn More
                         </Link>

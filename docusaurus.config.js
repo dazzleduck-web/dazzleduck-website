@@ -7,15 +7,15 @@ const config = {
   favicon: 'img/favicon.ico',
 
   // Set the production url of your site here
-  url: 'https://dazzleduck-web.github.io',  // Your GitHub Pages URL
-  baseUrl: '/dazzleduck-website/',          // The repository name, preceded by a slash
-  deploymentBranch: "gh-pages",             // Deployment branch for GitHub Pages
+  url: 'https://dazzleduck-website-review.netlify.app',  // Your Netlify URL
+  baseUrl: '/',                              // Root path for Netlify deployment
+  // Note: Remove GitHub Pages config below if not using GitHub Pages
   onBrokenMarkdownLinks: 'throw',
 
-  // GitHub pages deployment config.
+  // GitHub pages deployment config (commented out for Netlify)
   // If you aren't using GitHub pages, you don't need these.
-  organizationName: 'dazzleduck-web',   // Usually your GitHub org/user name.
-  projectName: 'dazzleduck-website',    // Usually your repo name.
+  // organizationName: 'dazzleduck-web',   // Usually your GitHub org/user name.
+  // projectName: 'dazzleduck-website',    // Usually your repo name.
 
   onBrokenLinks: 'throw',
 
@@ -68,11 +68,19 @@ const config = {
           src: 'img/logo.png',
         },
         items: [
+          // Uncomment the following block to enable the Docs sidebar in the navbar
+          // {
+          //   type: 'docSidebar',
+          //   sidebarId: 'docSidebar',
+          //   position: 'left',
+          //   label: 'Docs',
+          // },
+
+          // Custom HTML item to disable the "Docs" link in the navbar
           {
-            type: 'docSidebar',
-            sidebarId: 'docSidebar',
+            type: 'html',
+            value: '<a style="cursor: not-allowed; text-decoration: none; color: inherit;" href="#">Docs</a>',
             position: 'left',
-            label: 'Docs',
           },
           { to: '/blog', label: 'Blog', position: 'left' },
           { to: 'about', label: 'About', position: 'left' },
@@ -91,15 +99,15 @@ const config = {
             items: [
               {
                 label: 'Introduction',
-                to: '/docs/intro',
+                to: '#',
               },
               {
                 label: 'About',
-                to: '/docs/about',
+                to: '#',
               },
               {
                 label: 'Quick Start',
-                to: '/docs/quick-start/quickstart',
+                to: '#',
               },
             ],
           },

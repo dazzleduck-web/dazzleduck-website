@@ -71,9 +71,9 @@ Reference Architecture
 *   **Very Large Queries:** DuckDB doesn’t natively distribute a single query across multiple nodes.
 *   **Mitigation:** This limitation is often mitigated by pre-aggregating large datasets, a common practice regardless of the underlying system. For scenarios requiring analysis of massive data volumes, a large query can be decomposed into smaller, independent queries executed on different nodes, with the results then unioned together.
 
-**Reference Implementation:**
+**Open source Implementation:**
 
-You can get the reference implementation over [here](https://github.com/tanejagagan/duckdb-performance/blob/main/README.md) with JDBC implementation and load balancing
+You can get the implementation over [here](https://dazzleduck-web.github.io/dazzleduck-website/) with JDBC implementation and load balancing
 
 **Final Thoughts: A Call to Innovation**
 
