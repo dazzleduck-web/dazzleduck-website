@@ -35,30 +35,30 @@ export default function Home() {
   const producers = [
     {
       label: "Logger",
-      link: "/docs/dazzleduck-sql-logger/overview",
+      link: "",
     },
     {
       label: "Metrics",
-      link: "/docs/dazzleduck-sql-micrometer/overview",
+      link: "",
     },
   ];
 
   const connectors = [
     {
-      label: "Python (ADBC)",
-      link: "/docs/quick-start/quickstart#connecting-via-new-adbc-python-flight-sql-driver",
-    },
-    {
-      label: "JDBC",
-      link: "/docs/quick-start/quickstart#connect-via-arrow-flight-sql-jdbc",
-    },
-    {
       label: "DuckDB",
-      link: "/docs/quick-start/quickstart#query-from-local-duckdb",
+      link: "https://github.com/dazzleduck-web/dazzleduck-sql-duckdb",
     },
     {
       label: "Spark",
-      link: "/docs/connector/dazzleduck-sql-spark/overview",
+      link: "https://github.com/dazzleduck-web/dazzleduck-sql-spark",
+    },
+    {
+      label: "Python (ADBC)",
+      link: "",
+    },
+    {
+      label: "JDBC",
+      link: "",
     },
   ];
 
@@ -133,7 +133,7 @@ export default function Home() {
                 DazzleDuck is a{" "}
                 <div className="font-bold text-green-700 dark:text-emerald-400">
                   {text}
-                  <span className="ml-1 animate-pulse">|</span>
+                  <span className="invisible ml-1">|</span>
                 </div>
                 <div className="mt-1">DuckDB based Arrow-native ecosystem.</div>
               </div>
@@ -202,13 +202,13 @@ export default function Home() {
                 {/* Footer */}
                 <div className="mt-4 flex justify-center gap-3">
                   <Link
-                    to="/docs/intro"
+                    to=""
                     className="dd-button px-5 py-2 rounded-xl font-semibold text-sm bg-green-700 hover:bg-green-800 dark:bg-neutral-800 dark:hover:bg-neutral-700 text-white">
                     Introduction
                   </Link>
 
                   <Link
-                    to="/docs/quick-start/installation"
+                    to=""
                     className="dd-button px-5 py-2 rounded-xl font-semibold text-sm bg-green-700 hover:bg-green-800 dark:bg-neutral-800 dark:hover:bg-neutral-700 text-white">
                     Full Installation Guide
                   </Link>
@@ -239,20 +239,20 @@ export default function Home() {
                     <li
                       key={label}
                       className="relative text-sm font-medium text-gray-900 dark:text-gray-100">
-                      <Link to={link}>{label}</Link>
+                      <Link to="">{label}</Link>
                     </li>
                   ))}
                 </ul>
 
                 <div className="mt-6 flex flex-col sm:flex-row gap-4 sm:gap-5">
                   <Link
-                    to="/docs/intro"
+                    to=""
                     className="dd-button inline-block bg-green-700 hover:bg-green-800 dark:bg-neutral-800 dark:hover:bg-neutral-700 px-6 py-2.5 rounded-xl font-semibold text-sm text-center">
                     Documentation
                   </Link>
 
                   <Link
-                    to="/docs/quick-start/installation"
+                    to=""
                     className="dd-button inline-block bg-green-700 hover:bg-green-800 dark:bg-neutral-800 dark:hover:bg-neutral-700 px-6 py-2.5 rounded-xl font-semibold text-sm text-center">
                     Installation
                   </Link>
@@ -327,7 +327,7 @@ export default function Home() {
 
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                 <Link
-                  to="/docs/dazzleduck-arrow-js-ui/overview"
+                  to=""
                   className="dd-button block text-center py-2 rounded-xl font-semibold text-sm bg-green-700 hover:bg-green-800 dark:bg-neutral-800 dark:hover:bg-neutral-700 hover:text-white transition-colors">
                   Know more
                 </Link>
