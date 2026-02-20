@@ -22,12 +22,6 @@ const files = [
         source: "https://github.com/dazzleduck-web/dazzleduck-sql-server/tree/main/dazzleduck-sql-micrometer",
         lable: "README - SQL Micrometer",
     },
-    {
-        url: "https://raw.githubusercontent.com/dazzleduck-web/dazzleduck-sql-server/main/dazzleduck-sql-logger/README.md",
-        out: "docs/dazzleduck-sql-logger/README.md",
-        source: "https://github.com/dazzleduck-web/dazzleduck-sql-server/tree/main/dazzleduck-sql-logger",
-        lable: "README - SQL Logger",
-    },
 ];
 
 /**

@@ -97,6 +97,32 @@
   white-space: nowrap;
 }
 
+/* Access UI button styling - light mode (green) */
+html[data-theme='light'] .navbar__items--right .button.button--primary {
+  color: #ffffff !important;
+  background-color: var(--ifm-color-primary) !important;
+}
+
+html[data-theme='light'] .navbar__items--right .button.button--primary:hover {
+  color: #ffffff !important;
+  background-color: var(--ifm-color-primary-dark) !important;
+}
+
+/* Access UI button styling - dark mode (neutral) */
+html[data-theme='dark'] .navbar__items--right .button.button--primary {
+  color: #ffffff !important;
+  background-color: #374151 !important;
+  border-color: #374151 !important;
+  /* dark gray */
+}
+
+html[data-theme='dark'] .navbar__items--right .button.button--primary:hover {
+  color: #ffffff !important;
+  background-color: #4b5563 !important;
+  border-color: #4b5563 !important;
+  /* lighter gray on hover */
+}
+
 /* Navbar background (SAFE blur) */
 html[data-theme='dark'] .navbar {
   @apply bg-linear-to-br dark:from-black dark:to-neutral-800;

@@ -37,7 +37,7 @@ yarn install
 Run the local Docusaurus development server:
 
 ```bash
-npm run start
+npm run dev
 ```
 
 Then open your browser at:
@@ -86,7 +86,7 @@ dazzleduck-website/
 | Command          | Description                             |
 | ---------------- | --------------------------------------- |
 | `npm install`    | Install needed dependencies             |
-| `npm run start`  | Starts local dev server with hot reload |
+| `npm run dev`    | Starts local dev server with hot reload |
 | `npm run build`  | Builds the site for production          |
 | `npm run serve`  | Serves the production build locally     |
 | `npm run deploy` | Deploys the site to GitHub Pages        |

@@ -85,6 +85,12 @@ const config = {
           { to: '/blog', label: 'Blog', position: 'left' },
           { to: 'about', label: 'About', position: 'left' },
           {
+            href: 'https://dazzleduck-ui.netlify.app/',
+            label: 'Access Frontend',
+            position: 'right',
+            className: 'button button--primary',
+          },
+          {
             href: 'https://github.com/dazzleduck-web/dazzleduck-sql-server',
             label: 'GitHub',
             position: 'right',
