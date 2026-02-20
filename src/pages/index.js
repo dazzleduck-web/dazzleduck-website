@@ -62,6 +62,28 @@ export default function Home() {
     },
   ];
 
+  const arrowJsUi = [
+    {
+      label: "Know more",
+      link: "",
+    },
+    {
+      label: "GitHub",
+      link: "https://github.com/dazzleduck-web/dazzleduck-sql-server/tree/main/ui/arrow-js-frontend",
+      external: true,
+    },
+    {
+      label: "NPM Package",
+      link: "https://www.npmjs.com/package/dazzleduck-arrow-ui",
+      external: true,
+    },
+    {
+      label: "Access Frontend",
+      link: "https://dazzleduck-ui.netlify.app/",
+      external: true,
+    },
+  ];
+
   /* =========================
      QUICK START TABS
   ========================= */
@@ -311,43 +333,31 @@ export default function Home() {
             </section>
 
             {/* CARD 4 - Arrow JS UI*/}
-            <section className="bg-white dark:bg-neutral-900 border border-gray-200 dark:border-neutral-700 rounded-2xl shadow-md hover:shadow-xl px-4 sm:px-6 py-4 transition-all duration-300 hover:-translate-y-1">
+            <section className="bg-white dark:bg-neutral-900 border border-gray-200 dark:border-neutral-700 rounded-2xl shadow-md hover:shadow-xl px-4 sm:px-6 py-2 transition-all duration-300 hover:-translate-y-1">
               <div className="text-center">
-                <span className="text-lg font-bold mb-4 text-gray-900 dark:text-gray-100">
+                <span className="text-lg font-bold text-gray-900 dark:text-gray-100">
                   DazzleDuck Arrow JS UI
                 </span>
               </div>
-
               <div className="dd-line-thin"></div>
-
               <p className="text-sm text-gray-600 dark:text-gray-400 mb-5">
                 A modern, browser-based SQL UI built with Arrow JS that connects
                 to the DazzleDuck HTTP Server for interactive query execution.
               </p>
-
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                <Link
-                  to=""
-                  className="dd-button block text-center py-2 rounded-xl font-semibold text-sm bg-green-700 hover:bg-green-800 dark:bg-neutral-800 dark:hover:bg-neutral-700 hover:text-white transition-colors">
-                  Know more
-                </Link>
-
-                <Link
-                  href="https://github.com/dazzleduck-web/dazzleduck-sql-server/tree/main/ui/arrow-js-frontend"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="dd-button block text-center py-2 rounded-xl font-semibold text-sm bg-green-700 hover:bg-green-800 dark:bg-neutral-800 dark:hover:bg-neutral-700 hover:text-white transition-colors">
-                  GitHub
-                </Link>
-
-                <Link
-                  href="https://www.npmjs.com/package/dazzleduck-arrow-ui"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="dd-button block text-center py-2 rounded-xl font-semibold text-sm bg-green-700 hover:bg-green-800 dark:bg-neutral-800 dark:hover:bg-neutral-700 hover:text-white transition-colors">
-                  NPM Package
-                </Link>
-              </div>
+              <ul className="dd-ul grid grid-cols-1 sm:grid-cols-2 gap-3">
+                {arrowJsUi.map(({ label, link, external }) => (
+                  <li key={label}>
+                    <Link
+                      to={link}
+                      href={external ? link : undefined}
+                      target={external ? "_blank" : undefined}
+                      rel={external ? "noopener noreferrer" : undefined}
+                      className="dd-button block text-center py-1.5 rounded-xl font-semibold text-sm bg-green-700 hover:bg-green-800 dark:bg-neutral-800 dark:hover:bg-neutral-700 hover:text-white transition-colors">
+                      {label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
             </section>
           </div>
         </div>

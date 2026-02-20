@@ -85,18 +85,6 @@ const sidebars = {
       items: [
         {
           type: 'category',
-          label: 'DazzleDuck SQL Logger',
-          items: [
-            'dazzleduck-sql-logger/overview',
-            'dazzleduck-sql-logger/architecture',
-            'dazzleduck-sql-logger/setup',
-            'dazzleduck-sql-logger/configuration',
-            'dazzleduck-sql-logger/internals',
-            'dazzleduck-sql-logger/README',
-          ],
-        },
-        {
-          type: 'category',
           label: 'DazzleDuck SQL Micrometer',
           items: [
             'dazzleduck-sql-micrometer/overview',
